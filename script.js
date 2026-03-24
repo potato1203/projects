@@ -29,6 +29,12 @@ const PROJECTS = [
     url: "./logo-draw/",
     icon: "⚽"
   },
+  {
+    title: "BrainrotDraw",
+    description: "Learn to draw Italian Brainrot characters step-by-step using the grid method. Features Tralalero Tralala, Bombardiro Crocodilo, Tung Tung Tung Sahur and more.",
+    url: "./brainrot-draw/",
+    icon: "🧠"
+  },
 ];
 
 // =============================================================
