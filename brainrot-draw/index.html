@@ -42,7 +42,7 @@
         .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; padding: 18px; max-width: 1200px; margin: 0 auto; }
         .card { background: white; border-radius: 18px; padding: 15px 12px 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: 0.25s; border: 2px solid transparent; display: flex; flex-direction: column; align-items: center; min-height: 185px; }
         .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-        .card img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; mix-blend-mode: multiply; }
+        .card img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; }
         .card b { font-size: 0.88rem; color: #222; text-align: center; line-height: 1.3; direction: ltr; }
         .card small { font-size: 0.75rem; color: #999; margin-top: 5px; }
 
@@ -127,7 +127,7 @@
         <div class="labels-top"><span>א</span><span>ב</span><span>ג</span><span>ד</span></div>
         <div class="labels-side"><span>1</span><span>2</span><span>3</span><span>4</span></div>
         <div class="image-container">
-            <img id="mainImg" class="mode-pencil" src="" alt="">
+            <img id="mainImg" class="mode-pencil" src="" alt="" crossorigin="anonymous">
             <div id="c0"  class="cell"></div><div id="c1"  class="cell"></div><div id="c2"  class="cell"></div><div id="c3"  class="cell"></div>
             <div id="c4"  class="cell"></div><div id="c5"  class="cell"></div><div id="c6"  class="cell"></div><div id="c7"  class="cell"></div>
             <div id="c8"  class="cell"></div><div id="c9"  class="cell"></div><div id="c10" class="cell"></div><div id="c11" class="cell"></div>
@@ -163,8 +163,62 @@
         "א4","ב4","ג4","ד4"
     ];
 
-    // Proxy images through weserv.nl to avoid CORS
+    // Proxy images through weserv.nl (which sends CORS headers)
     const img = c => `https://images.weserv.nl/?url=${encodeURIComponent(c.url)}`;
+
+    // ── Background removal ────────────────────────────────────────────────────
+    const _bgCache = new Map();
+
+    function removeBg(imgEl) {
+        const srcKey = imgEl.src;
+        if (_bgCache.has(srcKey)) { imgEl.src = _bgCache.get(srcKey); return; }
+
+        const MAX = 400;
+        const sw = imgEl.naturalWidth || MAX;
+        const sh = imgEl.naturalHeight || MAX;
+        const scale = Math.min(1, MAX / Math.max(sw, sh));
+        const w = Math.round(sw * scale);
+        const h = Math.round(sh * scale);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        try {
+            ctx.drawImage(imgEl, 0, 0, w, h);
+            const data = ctx.getImageData(0, 0, w, h);
+            const px = data.data;
+
+            // Sample all four corners to determine background color
+            const corners = [0, w - 1, w * (h - 1), w * h - 1];
+            let rSum = 0, gSum = 0, bSum = 0;
+            corners.forEach(i => { rSum += px[i*4]; gSum += px[i*4+1]; bSum += px[i*4+2]; });
+            const bgR = rSum / 4, bgG = gSum / 4, bgB = bSum / 4;
+            const tol = 45;
+
+            // Flood fill from corners — erase matching pixels
+            const visited = new Uint8Array(w * h);
+            const stack = [...corners];
+            while (stack.length) {
+                const pos = stack.pop();
+                if (visited[pos]) continue;
+                visited[pos] = 1;
+                const i = pos * 4;
+                if (Math.abs(px[i]-bgR) + Math.abs(px[i+1]-bgG) + Math.abs(px[i+2]-bgB) > tol * 3) continue;
+                px[i+3] = 0; // make transparent
+                const x = pos % w, y = (pos / w) | 0;
+                if (x > 0)     stack.push(pos - 1);
+                if (x < w - 1) stack.push(pos + 1);
+                if (y > 0)     stack.push(pos - w);
+                if (y < h - 1) stack.push(pos + w);
+            }
+
+            ctx.putImageData(data, 0, 0);
+            const result = canvas.toDataURL('image/png');
+            _bgCache.set(srcKey, result);
+            imgEl.src = result;
+        } catch (e) { /* CORS blocked — leave image as-is */ }
+    }
 
     const CHARS = [
         // OG Originals
@@ -283,11 +337,23 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.onclick = () => openTutorial(c);
-            card.innerHTML = `
-                <img src="${img(c)}" loading="lazy" alt="${c.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🧠</text></svg>'">
-                <b>${c.name}</b>
-                <small>${c.he}</small>
-            `;
+
+            const imgEl = document.createElement('img');
+            imgEl.crossOrigin = 'anonymous';
+            imgEl.loading = 'lazy';
+            imgEl.alt = c.name;
+            imgEl.src = img(c);
+            imgEl.onload = () => removeBg(imgEl);
+            imgEl.onerror = () => { imgEl.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🧠</text></svg>'; };
+
+            const name = document.createElement('b');
+            name.textContent = c.name;
+            const sub = document.createElement('small');
+            sub.textContent = c.he;
+
+            card.appendChild(imgEl);
+            card.appendChild(name);
+            card.appendChild(sub);
             gal.appendChild(card);
         });
     }
@@ -310,8 +376,15 @@
         currentPhase = 0;
         document.getElementById('tutorial').style.display = 'flex';
         document.getElementById('tName').innerText = c.name;
-        document.getElementById('mainImg').src = img(c);
         document.body.style.overflow = 'hidden';
+        const mainImg = document.getElementById('mainImg');
+        const url = img(c);
+        if (_bgCache.has(url)) {
+            mainImg.src = _bgCache.get(url);
+        } else {
+            mainImg.src = url;
+            mainImg.onload = () => removeBg(mainImg);
+        }
         updateUI();
     }
 
