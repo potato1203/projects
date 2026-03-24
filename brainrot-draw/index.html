@@ -155,8 +155,21 @@
     </div>
 </div>
 
-<script type="module">
-    import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/background-removal.js';
+<script>
+    // Background removal loads asynchronously — gallery renders immediately without waiting
+    let _removeBackground = null;
+    const _bgCache = new Map();
+
+    (async () => {
+        try {
+            const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/background-removal.js');
+            _removeBackground = mod.removeBackground;
+            // Re-process any images already in the gallery
+            document.querySelectorAll('.card img').forEach(el => {
+                if (el.complete && el.naturalWidth) removeBg(el);
+            });
+        } catch (e) { console.warn('BG removal unavailable:', e); }
+    })();
 
     const BG_CONFIG = {
         publicPath: 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/'
@@ -176,11 +189,12 @@
     const _bgCache = new Map();
 
     async function removeBg(imgEl) {
+        if (!_removeBackground) return;
         const srcKey = imgEl.src;
         if (_bgCache.has(srcKey)) { imgEl.src = _bgCache.get(srcKey); return; }
         try {
             imgEl.style.opacity = '0.35';
-            const blob = await removeBackground(srcKey, BG_CONFIG);
+            const blob = await _removeBackground(srcKey, BG_CONFIG);
             const url = URL.createObjectURL(blob);
             _bgCache.set(srcKey, url);
             imgEl.src = url;
@@ -406,12 +420,6 @@
     }
 
     // ── Init ─────────────────────────────────────────────────────────────────
-    // Expose functions for HTML onclick handlers (required for type="module")
-    window.filterChars   = filterChars;
-    window.setCategory   = setCategory;
-    window.closeTutorial = closeTutorial;
-    window.changeStep    = changeStep;
-
     renderGallery();
 </script>
 </body>
