@@ -23,16 +23,12 @@
 // =============================================================
 
 const PROJECTS = [
-  // Add your projects here. Example (remove the /* */ to uncomment):
-  /*
   {
-    title: "My First Project",
-    description: "A short description of what this project does.",
-    url: "./my-first-project/",
-    screenshot: "./my-first-project/screenshot.png",
-    icon: "🌐"
+    title: "GoalDraw",
+    description: "Learn to draw football club logos step-by-step using the grid method. Covers Premier League, La Liga, Bundesliga, Serie A, Ligue 1 and more.",
+    url: "./logo-draw/",
+    icon: "⚽"
   },
-  */
 ];
 
 // =============================================================
