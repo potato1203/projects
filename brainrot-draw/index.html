@@ -186,8 +186,6 @@
     const img = c => `https://images.weserv.nl/?url=${encodeURIComponent(c.url)}`;
 
     // ── Background removal ────────────────────────────────────────────────────
-    const _bgCache = new Map();
-
     async function removeBg(imgEl) {
         if (!_removeBackground) return;
         const srcKey = imgEl.src;
