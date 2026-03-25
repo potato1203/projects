@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -110,7 +110,7 @@
         <div class="labels-top"><span>א</span><span>ב</span><span>ג</span><span>ד</span></div>
         <div class="labels-side"><span>1</span><span>2</span><span>3</span><span>4</span></div>
         <div class="image-container">
-            <img id="mainImg" class="mode-pencil" src="" alt="" crossorigin="anonymous">
+            <img id="mainImg" class="mode-pencil" src="" alt="" >
             <div id="c0"  class="cell"></div><div id="c1"  class="cell"></div><div id="c2"  class="cell"></div><div id="c3"  class="cell"></div>
             <div id="c4"  class="cell"></div><div id="c5"  class="cell"></div><div id="c6"  class="cell"></div><div id="c7"  class="cell"></div>
             <div id="c8"  class="cell"></div><div id="c9"  class="cell"></div><div id="c10" class="cell"></div><div id="c11" class="cell"></div>
@@ -140,34 +140,35 @@
 <script>
     const COORDS = ["א1","ב1","ג1","ד1","א2","ב2","ג2","ד2","א3","ב3","ג3","ד3","א4","ב4","ג4","ד4"];
 
-    // All brainrot characters from the Steal a Brainrot wiki
+    // All brainrot characters from the Steal a Brainrot wiki (Category:Brainrots)
     const ALL_CHARS = [
-        "1x1x1x1","25","67","Agarrini la Palini","Alessio","Anpali Babel","Antonio","Aquanaut",
-        "Arachnid Family","Arcadopus","Astrolero Cervalero","Astrolero Cervarelo","Avocadini Antilopini",
-        "Avocadini Guffo","Avocadorilla","Bacuru and Egguru","Ballerina Cappuccina","Ballerina Peppermintina",
-        "Ballerino Lololo","Bambini Crostini","Bambu Bambu Sahur","Bananita Dolphinita","Bananito Bandito",
-        "Bandito Axolito","Bandito Bobritto","Belula Beluga","Berenjello Angello","Best Brainrot In Game",
-        "Bicicleteira Family","Bisonte Giuppitere","Blackhole Goat","Blueberrinni Octopusini",
-        "Boatito Auratito","Boba Panda","Bombardini Tortinii","Bombardiro Crocodilo","Bomomini Gusini",
-        "Boneca Ambalabu","Brainrot God","Brasilini Berimbini","Brr Brr Patapim","Brr es Teh Patipum",
-        "Brri Brri Bicus Dicus Bombicus","Brunito Marsito","Brutto Gialutto","Buho de Fuego",
-        "Buho de Noelo","Buho del Cielo","Bulbito Bandito Traktorito","Bunito Bunito Spinito",
-        "Bunnyman","Burbaloni Loliloli","Burguro And Fryuro","Burrito Bandito","Cacasito Satalito",
-        "Cachorrito Melonito","Cacto Hipopotamo","Capi Taco","Capitano Moby","Cappuccino Assassino",
-        "Cappuccino Clownino","Caramello Filtrello","Carloo","Carrotini Brainini","Cavallo Virtuoso",
-        "Celestial Pegasus","Celularcini Viciosini","Centrucci Nuclucci","Cerberus","Chachechi",
-        "Chef Crabracadabra","Chicleteira Bicicleteira","Chicleteira Cupideira","Chicleteira Noelteira",
-        "Chicleteirina Bicicleteirina","Chihuanini Taconini","Chill Puppy","Chillin Chili","Chimnino",
-        "Chimpanzini Bananini","Chimpanzini Spiderini","Chipso and Queso","Chocco Bunny","Chrismasmamat",
-        "Cigno Fulgoro","Clickerino Crabo","Cloverat Clapat","Clovkur Kurkur","Cocoa Assassino",
-        "Cocofanto Elefanto","Cocosini Mama","Coffin Tung Tung Tung Sahur","Cooki and Milki",
-        "Corn Corn Corn Sahur","Crabbo Limonetta","Cuadramat and Pakrahmatmamat","Cupcake Koala",
-        "Cupid Cupid Sahur","Cupid Hotspot","Divino Platypio","DJ Panda","Doi Doi Do",
-        "Dolphini Jetskini","Donkeyturbo Express","Dragon Cannelloni","Dragon Family","Dragon Gingerini",
-        "Dug dug dug","Dul Dul Dul","Dumborino Miracello","Duo Brainrots","Eid Eid Eid Sahur",
-        "Elefanto Frigo","Esok Sekolah","Espresso Signora","Eviledon","Extinct Ballerina",
-        "Extinct Matteo","Extinct Tralalero","Festive 67","Fishboard","Fishino Clownino","Fizzy Soda",
-        "Fluriflura","Fortunu and Cashuru","Foxini Lanternini","Fragola La La La","Fragrama and Chocrama",
+        "1x1x1x1","25","67","Admin Lucky Block","Agarrini la Palini","Alessio","Anpali Babel","Antonio",
+        "Aquanaut","Arachnid Family","Arcadopus","Astrolero Cervalero","Astrolero Cervarelo",
+        "Avocadini Antilopini","Avocadini Guffo","Avocadorilla","Bacuru and Egguru","Ballerina Cappuccina",
+        "Ballerina Peppermintina","Ballerino Lololo","Bambini Crostini","Bambu Bambu Sahur",
+        "Bananita Dolphinita","Bananito Bandito","Bandito Axolito","Bandito Bobritto","Belula Beluga",
+        "Berenjello Angello","Best Brainrot In Game","Bicicleteira Family","Bisonte Giuppitere",
+        "Blackhole Goat","Blueberrinni Octopusini","Boatito Auratito","Boba Panda","Bombardini Tortinii",
+        "Bombardiro Crocodilo","Bombombini Gusini","Boneca Ambalabu","Brainrot God","Brainrot Trader",
+        "Brasilini Berimbini","Brr Brr Patapim","Brr es Teh Patipum","Brri Brri Bicus Dicus Bombicus",
+        "Brunito Marsito","Brutto Gialutto","Buho de Fuego","Buho de Noelo","Buho del Cielo",
+        "Bulbito Bandito Traktorito","Bunito Bunito Spinito","Bunnyman","Burbaloni Loliloli",
+        "Burguro And Fryuro","Burrito Bandito","Cacasito Satalito","Cachorrito Melonito","Cacto Hipopotamo",
+        "Capi Taco","Capitano Moby","Cappuccino Assassino","Cappuccino Clownino","Caramello Filtrello",
+        "Carloo","Carrotini Brainini","Cavallo Virtuoso","Celestial Pegasus","Celularcini Viciosini",
+        "Centrucci Nuclucci","Cerberus","Chachechi","Chef Crabracadabra","Chicleteira Bicicleteira",
+        "Chicleteira Cupideira","Chicleteira Noelteira","Chicleteirina Bicicleteirina","Chihuanini Taconini",
+        "Chill Puppy","Chillin Chili","Chimnino","Chimpanzini Bananini","Chimpanzini Spiderini",
+        "Chipso and Queso","Chocco Bunny","Chrismasmamat","Cigno Fulgoro","Clickerino Crabo",
+        "Cloverat Clapat","Clovkur Kurkur","Cocoa Assassino","Cocofanto Elefanto","Cocosini Mama",
+        "Coffin Tung Tung Tung Sahur","Cooki and Milki","Corn Corn Corn Sahur","Crabbo Limonetta",
+        "Cuadramat and Pakrahmatmamat","Cupcake Koala","Cupid Cupid Sahur","Cupid Hotspot",
+        "Divino Platypio","DJ Panda","Doi Doi Do","Dolphini Jetskini","Donkeyturbo Express",
+        "Dragon Cannelloni","Dragon Family","Dragon Gingerini","Dug dug dug","Dul Dul Dul",
+        "Dumborino Miracello","Duo Brainrots","Eid Eid Eid Sahur","Elefanto Frigo","Esok Sekolah",
+        "Espresso Signora","Eviledon","Extinct Ballerina","Extinct Matteo","Extinct Tralalero",
+        "Festive 67","Festive Lucky Block","Fishboard","Fishino Clownino","Fizzy Soda","Fluriflura",
+        "Fortunu and Cashuru","Foxini Lanternini","Fragola La La La","Fragrama and Chocrama",
         "Frankentteo","Frigo Camelo","Frio Ninja","Frogato Pirato","Frogo Elfo","Ganganzelli Trulala",
         "Gangster Footera","Garama and Madundung","Gato Celesto","Gattatino Neonino","Gattatino Nyanino",
         "Gattito Tacoto","Giftini Spyderini","Ginger Cisterna","Ginger Gerat","Ginger Globo",
@@ -184,47 +185,46 @@
         "La Supreme Combinasion","La Taco Combinasion","La Vacca Jacko Linterino","La Vacca Lepre Lepreino",
         "La Vacca Prese Presente","La Vacca Saturno Saturnita","Las Capuchinas","Las Sis",
         "Las Tralaleritas","Las Vaquitas Saturnitas","Lavadorito Spinito","Lerulerulerule",
-        "Lionel Cactuseli","List List List Sahur","Los 25","Los 67","Los Amigos","Los Bombinitos",
-        "Los Bros","Los Burritos","Los Candies","Los Chicleteiras","Los Chihuaninis","Los Combinasionas",
-        "Los Crocodillitos","Los Cupids","Los Gattitos","Los Hotspotsitos","Los Jobcitos",
-        "Los Jolly Combinasionas","Los Karkeritos","Los Matteos","Los Mi Gatitos","Los Mobilis",
-        "Los Noobinis","Los Nooo My Hotspotsitos","Los Orcalitos","Los Planitos","Los Primos",
-        "Los Puggies","Los Quesadillas","Los Sekolahs","Los Spaghettis","Los Spooky Combinasionas",
-        "Los Spyderinis","Los Sweethearts","Los Tacoritas","Los Tipi Tacos","Los Tortus",
-        "Los Tralaleritos","Los Trios","Los Tungtungtungcitos","Love Love Bear","Love Love Love Sahur",
-        "Lovin Rose","Luck Luck Luck Sahur","Luv Luv Luv","Magi Ribbitini","Malame Amarele",
-        "Mangolini Parrocini","Mariachi Corazoni","Mastodontico Telepiedone","Matteo","Matteo Family",
-        "Megalodon Family","Meowl","Mi Gatito","Mieteteira Bicicleteira","Money Money Man",
+        "Lionel Cactuseli","Lirilì Larilà","List List List Sahur","Los 25","Los 67","Los Amigos",
+        "Los Bombinitos","Los Bros","Los Burritos","Los Candies","Los Chicleteiras","Los Chihuaninis",
+        "Los Combinasionas","Los Crocodillitos","Los Cucarachas","Los Cupids","Los Gattitos",
+        "Los Hotspotsitos","Los Jobcitos","Los Jolly Combinasionas","Los Karkeritos","Los Matteos",
+        "Los Mi Gatitos","Los Mobilis","Los Noobinis","Los Nooo My Hotspotsitos","Los Orcalitos",
+        "Los Planitos","Los Primos","Los Puggies","Los Quesadillas","Los Sekolahs","Los Spaghettis",
+        "Los Spooky Combinasionas","Los Spyderinis","Los Sweethearts","Los Tacoritas","Los Tipi Tacos",
+        "Los Tortus","Los Tralaleritos","Los Trios","Los Tungtungtungcitos","Love Love Bear",
+        "Love Love Love Sahur","Lovin Rose","Luck Luck Luck Sahur","Luv Luv Luv","Magi Ribbitini",
+        "Malame Amarele","Mangolini Parrocini","Mariachi Corazoni","Mastodontico Telepiedone","Matteo",
+        "Matteo Family","Megalodon Family","Meowl","Mi Gatito","Mieteteira Bicicleteira","Money Money Man",
         "Money Money Puggy","Money Money Reindeer","Mummio Rappitto","Mummy Ambalabu","Nacho Spyder",
-        "Naughty Naughty","Noo La Polizia","Noo my Candy","Noo my Gold","Noo my Heart",
+        "Naughty Naughty","Noo La Polizia","Noo my Candy","Noo my examine","Noo my Gold","Noo my Heart",
         "Noo my Present","Noobini Pizzanini","Noobini Santanini","Nooo My Hotspot","Nuclearo Dinossauro",
         "Odin Din Din Dun","Orangutini Ananassini","Orcaledon","Orcalero Orcala","Orcalita Orcala",
-        "Pakrahmatmamat","Pakrahmatmatina","Pandaccini Bananini","Pandanini Frostini",
-        "Paradiso Axolottino","Patteo","Pengolino Nuvoletto","Penguin Tree","Penguino Cocosino",
-        "Perochello Lemonchello","Perrito Burrito","Pi Pi Watermelon","Piccione Macchina",
-        "Piccionetta Machina","Pinealotto Fruttarino","Pipi Avocado","Pipi Corni","Pipi Kiwi",
-        "Pipi Potato","Pirulitoita Bicicleteira","Pop Pop Sahur","Popcuru and Fizzuru","Pot Hotspot",
-        "Pot Pumpkin","Prehistoric Family","Puffaball","Pumpkini Spyderini","Quackula",
-        "Quesadilla Crocodila","Quesadillo Vampiro","Quivioli Ameleonni","Raccooni Jandelini",
-        "Rang Ring Bus","Reindeer Tralala","Reinito Sleighito","Rhino Helicopterino","Rhino Toasterino",
-        "Rocco Disco","Rosetti Tualetti","Rosey and Teddy","Salamino Penguino","Sammyni Fattini",
-        "Sammyni Spyderini","Santa Hotspot","Santteo","Sealo Regalo","Serafinna Medusella",
-        "Seraphino Gruyero","Sigma Boy","Sigma Girl","Signore Carapace","Skibidi Toilet",
-        "Skull Skull Skull","Smurf Cat","Snailenzo","Snailo Clovero","Spaghetti Tualetti",
+        "Pakrahmatmamat","Pakrahmatmatina","Pandaccini Bananini","Pandanini Frostini","Paradiso Axolottino",
+        "Patteo","Pengolino Nuvoletto","Penguin Tree","Penguino Cocosino","Perochello Lemonchello",
+        "Perrito Burrito","Pi Pi Watermelon","Piccione Macchina","Piccionetta Machina","Pinealotto Fruttarino",
+        "Pipi Avocado","Pipi Corni","Pipi Kiwi","Pipi Potato","Pirulitoita Bicicleteira","Please my Present",
+        "Pop Pop Sahur","Popcuru and Fizzuru","Pot Hotspot","Pot Pumpkin","Prehistoric Family","Puffaball",
+        "Pumpkini Spyderini","Quackula","Quesadilla Crocodila","Quesadillo Vampiro","Quivioli Ameleonni",
+        "Raccooni Jandelini","Rang Ring Bus","Reindeer Tralala","Reinito Sleighito","Rhino Helicopterino",
+        "Rhino Toasterino","Rocco Disco","Rosetti Tualetti","Rosey and Teddy","Salamino Penguino",
+        "Sammyni Fattini","Sammyni Spyderini","Santa Hotspot","Santteo","Sealo Regalo",
+        "Serafinna Medusella","Seraphino Gruyero","Sigma Boy","Sigma Girl","Signore Carapace",
+        "Skibidi Toilet","Skull Skull Skull","Smurf Cat","Snailenzo","Snailo Clovero","Spaghetti Tualetti",
         "Spinny Hammy","Spioniro Golubiro","Spongini Quackini","Spooky and Pumpky","Squalanana",
         "Statutino Libertino","Stoppo Luminino","Strawberrelli Flamingelli","Strawberry Elephant",
-        "Svinina Bombardino","Swag Bunny","Swag Soda","Swaggy Bros","Ta Ta Ta Ta Sahur",
-        "Taco Brainrots","Tacorillo Crocodillo","Tacorita Bicicleta","Talpa Di Fero","Tang Tang Keletang",
-        "Tartaragno","Tartaruga Cisterna","Te Te Te Sahur","Telemorte","Tentacolo Tecnico",
-        "Ti Ti Ti Sahur","Tictac Sahur","Tigrilini Watermelini","Tigroligre Frutonni","Tim Cheese",
-        "Tipi Topi Taco","Tirilikalika Tirilikalako","To to to Sahur","Tob Tobi Tobi","Toiletto Focaccino",
-        "Tootini Shrimpini","Torrtuginni Dragonfrutini","Tracoducotulu Delapeladustuz","Tractoro Dinosauro",
-        "Tralaledon","Tralalero Tralala","Tralalita Tralala","Tree Tree Tree Sahur",
-        "Trenostruzzo Turbo 3000","Trenostruzzo Turbo 4000","Tric Trac Baraboom","Trickolino",
-        "Triplito Tralaleritos","Trippi Troppi","Trippi Troppi Troppa Trippa","Trulimero Trulicina",
-        "Tuff Toucan","Tukanno Bananno","Tung Tung Tung Sahur","Unclito Samito","Urubini Flamenguini",
-        "Vampira Cappuccina","Ventoliero Pavonero","Vulturino Skeletono","W or L","Wheelchair Granny",
-        "Wombo Rollo","Yeti Claus","Zibra Zubra Zibralini","Zombie Tralala"
+        "Svinina Bombardino","Swag Bunny","Swag Soda","Swaggy Bros","Ta Ta Ta Ta Sahur","Taco Brainrots",
+        "Tacorillo Crocodillo","Tacorita Bicicleta","Talpa Di Fero","Tang Tang Keletang","Tartaragno",
+        "Tartaruga Cisterna","Te Te Te Sahur","Telemorte","Tentacolo Tecnico","Ti Ti Ti Sahur",
+        "Tictac Sahur","Tigrilini Watermelini","Tigroligre Frutonni","Tim Cheese","Tipi Topi Taco",
+        "Tirilikalika Tirilikalako","To to to Sahur","Tob Tobi Tobi","Toiletto Focaccino","Tootini Shrimpini",
+        "Torrtuginni Dragonfrutini","Tracoducotulu Delapeladustuz","Tractoro Dinosauro","Tralaledon",
+        "Tralalero Tralala","Tralalita Tralala","Tree Tree Tree Sahur","Trenostruzzo Turbo 3000",
+        "Trenostruzzo Turbo 4000","Tric Trac Baraboom","Trickolino","Triplito Tralaleritos","Trippi Troppi",
+        "Trippi Troppi Troppa Trippa","Trulimero Trulicina","Tuff Toucan","Tukanno Bananno",
+        "Tung Tung Tung Sahur","Unclito Samito","Urubini Flamenguini","Vampira Cappuccina",
+        "Ventoliero Pavonero","Vulturino Skeletono","W or L","Wheelchair Granny","Wombo Rollo",
+        "Yess my examine","Yeti Claus","Zibra Zubra Zibralini","Zombie Tralala"
     ];
 
     // ── State ────────────────────────────────────────────────────────────────
@@ -232,73 +232,427 @@
     let currentStep = 0;
     let currentPhase = 0;
     let currentCharName = '';
-    const imageCache = {}; // name → image URL
 
-    // ── Background removal ────────────────────────────────────────────────────
-    let _removeBg = null;
-    const _bgCache = new Map();
+    // ── Image URLs from the Steal a Brainrot wiki ─────────────────────────────
+    const IMAGE_URLS = {
+  "1x1x1x1": "https://static.wikia.nocookie.net/stealabr/images/3/39/1x1x1x1t.png/revision/latest/scale-to-width-down/300?cb=20251102022532",
+  "25": "https://static.wikia.nocookie.net/stealabr/images/5/5c/Rework.png/revision/latest/scale-to-width-down/232?cb=20251207004831",
+  "67": "https://static.wikia.nocookie.net/stealabr/images/4/40/Fourtyone.png/revision/latest/scale-to-width-down/300?cb=20251014024859",
+  "Admin Lucky Block": "https://static.wikia.nocookie.net/stealabr/images/7/7c/AdminLuckyBlock.png/revision/latest/scale-to-width-down/300?cb=20251007132226",
+  "Agarrini la Palini": "https://static.wikia.nocookie.net/stealabr/images/d/de/Agarrini_la_Palini.png/revision/latest/scale-to-width-down/176?cb=20250915181151",
+  "Alessio": "https://static.wikia.nocookie.net/stealabr/images/9/90/Alessio.png/revision/latest/scale-to-width-down/214?cb=20250902183820",
+  "Anpali Babel": "https://static.wikia.nocookie.net/stealabr/images/f/fa/THE_ROCK.png/revision/latest/scale-to-width-down/287?cb=20250909165504",
+  "Antonio": "https://static.wikia.nocookie.net/stealabr/images/f/f0/Antonio.png/revision/latest/scale-to-width-down/108?cb=20250916001053",
+  "Aquanaut": "https://static.wikia.nocookie.net/stealabr/images/8/86/Astronaut.png/revision/latest/scale-to-width-down/227?cb=20251102022904",
+  "Arachnid Family": "https://static.wikia.nocookie.net/stealabr/images/5/5f/Chimpanzee_Spider.png/revision/latest/scale-to-width-down/291?cb=20251214230315",
+  "Arcadopus": "https://static.wikia.nocookie.net/stealabr/images/3/37/Arcadopus.png/revision/latest/scale-to-width-down/247?cb=20260210215041",
+  "Astrolero Cervalero": "https://static.wikia.nocookie.net/stealabr/images/b/bb/D7jkpe9xhxrmr0cwtrksm0k3gr-removebg-preview.png/revision/latest/scale-to-width-down/155?cb=20260310051131",
+  "Astrolero Cervarelo": "https://static.wikia.nocookie.net/stealabr/images/8/8a/UnknownBrainrot.png/revision/latest/scale-to-width-down/261?cb=20251112220842",
+  "Avocadini Antilopini": "https://static.wikia.nocookie.net/stealabr/images/1/1a/Avocadini_Antilopini.png/revision/latest/scale-to-width-down/224?cb=20250831081311",
+  "Avocadini Guffo": "https://static.wikia.nocookie.net/stealabr/images/b/bc/AvocadiniGuffo.png/revision/latest/scale-to-width-down/300?cb=20251128204546",
+  "Avocadorilla": "https://static.wikia.nocookie.net/stealabr/images/8/85/Avocadorilla.png/revision/latest/scale-to-width-down/300?cb=20251128210930",
+  "Bacuru and Egguru": "https://static.wikia.nocookie.net/stealabr/images/b/b5/Bacuru_and_Egguru.png/revision/latest/scale-to-width-down/300?cb=20260207220129",
+  "Ballerina Cappuccina": "https://static.wikia.nocookie.net/stealabr/images/0/0e/Ballerina_cappucinaaaa%21%21%21.png/revision/latest/scale-to-width-down/261?cb=20251108033515",
+  "Ballerina Peppermintina": "https://static.wikia.nocookie.net/stealabr/images/8/8e/Ballerina_Peppermintina.png/revision/latest/scale-to-width-down/229?cb=20251206214402",
+  "Ballerino Lololo": "https://static.wikia.nocookie.net/stealabr/images/c/c9/Ballerinolololo.png/revision/latest/scale-to-width-down/300?cb=20260124203255",
+  "Bambini Crostini": "https://static.wikia.nocookie.net/stealabr/images/0/0a/Untitled208_20250808152208.png/revision/latest/scale-to-width-down/268?cb=20250808202302",
+  "Bambu Bambu Sahur": "https://static.wikia.nocookie.net/stealabr/images/d/da/Bambu_sahur_full_rost.png/revision/latest/scale-to-width-down/150?cb=20251203093726",
+  "Bananita Dolphinita": "https://static.wikia.nocookie.net/stealabr/images/e/e4/Bananita_Dolphinita.png/revision/latest/scale-to-width-down/300?cb=20260323003244",
+  "Bananito Bandito": "https://static.wikia.nocookie.net/stealabr/images/2/2a/Screenshot_2025-10-04_132952.png/revision/latest/scale-to-width-down/198?cb=20260104194107",
+  "Bandito Axolito": "https://static.wikia.nocookie.net/stealabr/images/e/eb/Bandito_Axolito.png/revision/latest/scale-to-width-down/300?cb=20260323004820",
+  "Bandito Bobritto": "https://static.wikia.nocookie.net/stealabr/images/7/7e/Oi_Oi_Oi.png/revision/latest/scale-to-width-down/159?cb=20251226233319",
+  "Belula Beluga": "https://static.wikia.nocookie.net/stealabr/images/5/56/Belulaa.png/revision/latest/scale-to-width-down/300?cb=20251115205345",
+  "Berenjello Angello": "https://static.wikia.nocookie.net/stealabr/images/2/2b/Berenjello_Angello.png/revision/latest/scale-to-width-down/300?cb=20260322233848",
+  "Best Brainrot In Game": "https://static.wikia.nocookie.net/stealabr/images/3/39/Brainrot_trader.png/revision/latest/scale-to-width-down/300?cb=20251115213219",
+  "Bicicleteira Family": "https://static.wikia.nocookie.net/stealabr/images/8/83/Chicleteirina_Bicicleteirina.png/revision/latest/scale-to-width-down/199?cb=20251012024219",
+  "Bisonte Giuppitere": "https://static.wikia.nocookie.net/stealabr/images/1/1d/Bisonte_Giuppitere_normal.png/revision/latest/scale-to-width-down/281?cb=20250920023344",
+  "Blackhole Goat": "https://static.wikia.nocookie.net/stealabr/images/7/77/Blackhole_goat.png/revision/latest/scale-to-width-down/300?cb=20250824023245",
+  "Blueberrinni Octopusini": "https://static.wikia.nocookie.net/stealabr/images/d/d0/NewBlueberrinni.png/revision/latest/scale-to-width-down/300?cb=20250922050721",
+  "Boatito Auratito": "https://static.wikia.nocookie.net/stealabr/images/9/9e/Boatito_Auratito.png/revision/latest/scale-to-width-down/300?cb=20260324202958",
+  "Boba Panda": "https://static.wikia.nocookie.net/stealabr/images/0/00/Panda.png/revision/latest/scale-to-width-down/203?cb=20260124213234",
+  "Bombardini Tortinii": "https://static.wikia.nocookie.net/stealabr/images/a/af/Bombardini_tortilii.png/revision/latest/scale-to-width-down/300?cb=20250819012540",
+  "Bombardiro Crocodilo": "https://static.wikia.nocookie.net/stealabr/images/8/88/Bombardiro_Crocodilo.png/revision/latest/scale-to-width-down/300?cb=20251207121709",
+  "Bombombini Gusini": "https://static.wikia.nocookie.net/stealabr/images/a/ac/Cant_come_up_with_a_funny_joke_for_this_one.png/revision/latest/scale-to-width-down/300?cb=20250909223121",
+  "Boneca Ambalabu": "https://static.wikia.nocookie.net/stealabr/images/9/9c/Boneca_Ambalabu.png/revision/latest/scale-to-width-down/226?cb=20250729231053",
+  "Brainrot Trader": "https://static.wikia.nocookie.net/stealabr/images/3/39/Brainrot_trader.png/revision/latest/scale-to-width-down/300?cb=20251115213219",
+  "Brasilini Berimbini": "https://static.wikia.nocookie.net/stealabr/images/b/b6/BRABRABRAZILZILZILZIL.png/revision/latest/scale-to-width-down/200?cb=20251025215716",
+  "Brr Brr Patapim": "https://static.wikia.nocookie.net/stealabr/images/6/6d/Lil_wayne.png/revision/latest/scale-to-width-down/217?cb=20250902184123",
+  "Brr es Teh Patipum": "https://static.wikia.nocookie.net/stealabr/images/8/85/Am_i_right_lads_or_am_i_right_lads.png/revision/latest/scale-to-width-down/239?cb=20251025220427",
+  "Brri Brri Bicus Dicus Bombicus": "https://static.wikia.nocookie.net/stealabr/images/4/4e/Berry_berry_bicus_dickus.png/revision/latest/scale-to-width-down/172?cb=20250902180219",
+  "Brunito Marsito": "https://static.wikia.nocookie.net/stealabr/images/6/60/Brunito_Marsito_byLuiko.png/revision/latest/scale-to-width-down/233?cb=20260117223535",
+  "Brutto Gialutto": "https://static.wikia.nocookie.net/stealabr/images/6/64/Brutto_Gialutto_New.png/revision/latest/scale-to-width-down/300?cb=20260302030533",
+  "Buho de Fuego": "https://static.wikia.nocookie.net/stealabr/images/6/64/Buhodefuego.png/revision/latest/scale-to-width-down/244?cb=20251012024730",
+  "Buho de Noelo": "https://static.wikia.nocookie.net/stealabr/images/6/68/Buho_De_Nuelo.png/revision/latest/scale-to-width-down/300?cb=20251214040328",
+  "Buho del Cielo": "https://static.wikia.nocookie.net/stealabr/images/8/8c/Buho_del_Cielo.png/revision/latest/scale-to-width-down/300?cb=20260323005223",
+  "Bulbito Bandito Traktorito": "https://static.wikia.nocookie.net/stealabr/images/e/eb/Five_hotdogs_for_dinner_tonight.png/revision/latest/scale-to-width-down/282?cb=20250909222352",
+  "Bunito Bunito Spinito": "https://static.wikia.nocookie.net/stealabr/images/3/3f/BunitoBunitoSpinito.png/revision/latest/scale-to-width-down/217?cb=20260101134447",
+  "Bunnyman": "https://static.wikia.nocookie.net/stealabr/images/6/6b/Bunnyman.png/revision/latest/scale-to-width-down/270?cb=20251221003956",
+  "Burbaloni Loliloli": "https://static.wikia.nocookie.net/stealabr/images/f/fb/BurbaloniLuliloli.png/revision/latest/scale-to-width-down/300?cb=20251030014843",
+  "Burguro And Fryuro": "https://static.wikia.nocookie.net/stealabr/images/6/65/Burguro-And-Fryuro.png/revision/latest/scale-to-width-down/257?cb=20251007133840",
+  "Burrito Bandito": "https://static.wikia.nocookie.net/stealabr/images/e/e6/PoTaTo.png/revision/latest/scale-to-width-down/156?cb=20251022160548",
+  "Cacasito Satalito": "https://static.wikia.nocookie.net/stealabr/images/1/1e/Lebron_james.png/revision/latest/scale-to-width-down/300?cb=20250909161051",
+  "Cachorrito Melonito": "https://static.wikia.nocookie.net/stealabr/images/2/2d/Watermelon_Doggy.png/revision/latest/scale-to-width-down/210?cb=20251109125954",
+  "Cacto Hipopotamo": "https://static.wikia.nocookie.net/stealabr/images/a/af/Cacto_Hipopotamo1.png/revision/latest/scale-to-width-down/272?cb=20250826091108",
+  "Capi Taco": "https://static.wikia.nocookie.net/stealabr/images/a/ac/Capi_Taco.png/revision/latest/scale-to-width-down/239?cb=20250917001636",
+  "Capitano Moby": "https://static.wikia.nocookie.net/stealabr/images/e/ef/Moby.png/revision/latest/scale-to-width-down/300?cb=20251101185416",
+  "Cappuccino Assassino": "https://static.wikia.nocookie.net/stealabr/images/4/4e/Cappuccino_Assassino.png/revision/latest/scale-to-width-down/263?cb=20250809183502",
+  "Cappuccino Clownino": "https://static.wikia.nocookie.net/stealabr/images/7/73/Cappuccinoclown.png/revision/latest/scale-to-width-down/235?cb=20251030021526",
+  "Caramello Filtrello": "https://static.wikia.nocookie.net/stealabr/images/b/bd/Caramello_Filtrello2.png/revision/latest/scale-to-width-down/151?cb=20260118215113",
+  "Carloo": "https://static.wikia.nocookie.net/stealabr/images/a/ad/Mateo_fish.png/revision/latest/scale-to-width-down/233?cb=20250902184935",
+  "Carrotini Brainini": "https://static.wikia.nocookie.net/stealabr/images/e/ef/Famine.png/revision/latest/scale-to-width-down/300?cb=20250909161804",
+  "Cavallo Virtuoso": "https://static.wikia.nocookie.net/stealabr/images/c/ca/Cavallo_Virtuoso.png/revision/latest/scale-to-width-down/221?cb=20251128204759",
+  "Celestial Pegasus": "https://static.wikia.nocookie.net/stealabr/images/c/ce/Celestial_Pegasus.png/revision/latest/scale-to-width-down/300?cb=20260301002910",
+  "Celularcini Viciosini": "https://static.wikia.nocookie.net/stealabr/images/3/38/DO_NOT_GRAB_MY_PHONE%21%21%21.png/revision/latest?cb=20250914173250",
+  "Centrucci Nuclucci": "https://static.wikia.nocookie.net/stealabr/images/6/6e/Centrucci_Nuclucci.png/revision/latest/scale-to-width-down/300?cb=20260323005425",
+  "Cerberus": "https://static.wikia.nocookie.net/stealabr/images/4/45/Cerberus.png/revision/latest/scale-to-width-down/292?cb=20260217181804",
+  "Chachechi": "https://static.wikia.nocookie.net/stealabr/images/2/20/101_sin_t%C3%ADtulo_20251207165554.png/revision/latest/scale-to-width-down/300?cb=20251207225656",
+  "Chef Crabracadabra": "https://static.wikia.nocookie.net/stealabr/images/9/9d/Travis_scott.png/revision/latest/scale-to-width-down/275?cb=20250902183549",
+  "Chicleteira Bicicleteira": "https://static.wikia.nocookie.net/stealabr/images/5/5a/Chicleteira.png/revision/latest/scale-to-width-down/236?cb=20250921012655",
+  "Chicleteira Cupideira": "https://static.wikia.nocookie.net/stealabr/images/6/6f/Chicleteira_Cupideira.png/revision/latest/scale-to-width-down/300?cb=20260208175400",
+  "Chicleteira Noelteira": "https://static.wikia.nocookie.net/stealabr/images/b/b3/Noel.png/revision/latest/scale-to-width-down/259?cb=20251207005453",
+  "Chicleteirina Bicicleteirina": "https://static.wikia.nocookie.net/stealabr/images/a/aa/Chicliterita_bicicliterita.png/revision/latest/scale-to-width-down/199?cb=20251014135058",
+  "Chihuanini Taconini": "https://static.wikia.nocookie.net/stealabr/images/4/4a/Everybody_hates_Chihuanini_Taconini.webp/revision/latest/scale-to-width-down/218?cb=20251209150641",
+  "Chill Puppy": "https://static.wikia.nocookie.net/stealabr/images/e/e0/Chill_Puppy.png/revision/latest/scale-to-width-down/265?cb=20260207220051",
+  "Chillin Chili": "https://static.wikia.nocookie.net/stealabr/images/e/e0/Chilin.png/revision/latest/scale-to-width-down/238?cb=20251226231712",
+  "Chimnino": "https://static.wikia.nocookie.net/stealabr/images/c/c5/Chimnino.png/revision/latest/scale-to-width-down/177?cb=20251219223904",
+  "Chimpanzini Bananini": "https://static.wikia.nocookie.net/stealabr/images/4/47/ChimpanziniBananini.png/revision/latest/scale-to-width-down/262?cb=20250820121632",
+  "Chimpanzini Spiderini": "https://static.wikia.nocookie.net/stealabr/images/5/5f/Chimpanzee_Spider.png/revision/latest/scale-to-width-down/291?cb=20251214230315",
+  "Chipso and Queso": "https://static.wikia.nocookie.net/stealabr/images/f/f8/Chipsoqueso.png/revision/latest/scale-to-width-down/266?cb=20251030022105",
+  "Chocco Bunny": "https://static.wikia.nocookie.net/stealabr/images/6/66/Chocco_Bunny.png/revision/latest/scale-to-width-down/194?cb=20251207002601",
+  "Chrismasmamat": "https://static.wikia.nocookie.net/stealabr/images/8/82/Chrismasmatmamat.png/revision/latest/scale-to-width-down/161?cb=20251219225244",
+  "Cigno Fulgoro": "https://static.wikia.nocookie.net/stealabr/images/8/87/Birdy.png/revision/latest/scale-to-width-down/271?cb=20260307231251",
+  "Clickerino Crabo": "https://static.wikia.nocookie.net/stealabr/images/a/a1/Clickerinocrabo.png/revision/latest/scale-to-width-down/300?cb=20251108225425",
+  "Cloverat Clapat": "https://static.wikia.nocookie.net/stealabr/images/f/fd/Cloverat_Clapat.png/revision/latest/scale-to-width-down/281?cb=20260315011545",
+  "Clovkur Kurkur": "https://static.wikia.nocookie.net/stealabr/images/a/a9/Clovkur_Kurkur.png/revision/latest/scale-to-width-down/300?cb=20260323224034",
+  "Cocoa Assassino": "https://static.wikia.nocookie.net/stealabr/images/2/2b/Cocoa-Assassino.png/revision/latest/scale-to-width-down/249?cb=20251219223631",
+  "Cocofanto Elefanto": "https://static.wikia.nocookie.net/stealabr/images/d/d9/Cocofanto.png/revision/latest/scale-to-width-down/300?cb=20251006202715",
+  "Cocosini Mama": "https://static.wikia.nocookie.net/stealabr/images/c/ca/Cocosini_Mama.png/revision/latest/scale-to-width-down/248?cb=20260103034424",
+  "Coffin Tung Tung Tung Sahur": "https://static.wikia.nocookie.net/stealabr/images/2/2d/Tung_Tung_Tung_Sahur_doesn%27t_deserve_to_be_added_back.png/revision/latest/scale-to-width-down/300?cb=20251223162807",
+  "Cooki and Milki": "https://static.wikia.nocookie.net/stealabr/images/9/9b/Cooki_and_milki.png/revision/latest/scale-to-width-down/300?cb=20251106165517",
+  "Corn Corn Corn Sahur": "https://static.wikia.nocookie.net/stealabr/images/0/06/CornSahur.png/revision/latest/scale-to-width-down/158?cb=20251006205228",
+  "Crabbo Limonetta": "https://static.wikia.nocookie.net/stealabr/images/f/f9/Mr_krabs.png/revision/latest/scale-to-width-down/297?cb=20251025221925",
+  "Cuadramat and Pakrahmatmamat": "https://static.wikia.nocookie.net/stealabr/images/a/a3/Cuadramat.png/revision/latest/scale-to-width-down/300?cb=20251126164937",
+  "Cupcake Koala": "https://static.wikia.nocookie.net/stealabr/images/5/58/Cupcake_Koala.png/revision/latest/scale-to-width-down/252?cb=20251108231212",
+  "Cupid Cupid Sahur": "https://static.wikia.nocookie.net/stealabr/images/8/89/Cupid_Cupid_Sahur.png/revision/latest/scale-to-width-down/219?cb=20260208175914",
+  "Cupid Hotspot": "https://static.wikia.nocookie.net/stealabr/images/1/1f/Pot_Cupid.png/revision/latest/scale-to-width-down/156?cb=20260208175107",
+  "Divino Platypio": "https://static.wikia.nocookie.net/stealabr/images/1/16/Divino_Platypio.png/revision/latest/scale-to-width-down/300?cb=20260324201511",
+  "DJ Panda": "https://static.wikia.nocookie.net/stealabr/images/3/38/DJ_Panda.png/revision/latest/scale-to-width-down/201?cb=20260306024631",
+  "Doi Doi Do": "https://static.wikia.nocookie.net/stealabr/images/8/83/DoiDoi.png/revision/latest/scale-to-width-down/294?cb=20251109014533",
+  "Dolphini Jetskini": "https://static.wikia.nocookie.net/stealabr/images/6/69/Dolphini_Jetskini.png/revision/latest/scale-to-width-down/261?cb=20260125102730",
+  "Donkeyturbo Express": "https://static.wikia.nocookie.net/stealabr/images/9/9a/DonkeyturboExpress.png/revision/latest/scale-to-width-down/211?cb=20251221003819",
+  "Dragon Cannelloni": "https://static.wikia.nocookie.net/stealabr/images/3/31/Nah_uh.png/revision/latest/scale-to-width-down/300?cb=20250919124457",
+  "Dragon Family": "https://static.wikia.nocookie.net/stealabr/images/3/3a/DragonGingerini.png/revision/latest/scale-to-width-down/300?cb=20251221003419",
+  "Dragon Gingerini": "https://static.wikia.nocookie.net/stealabr/images/3/3a/DragonGingerini.png/revision/latest/scale-to-width-down/300?cb=20251221003419",
+  "Dug dug dug": "https://static.wikia.nocookie.net/stealabr/images/d/df/Dug_dug_dug.png/revision/latest/scale-to-width-down/300?cb=20260323193013",
+  "Dul Dul Dul": "https://static.wikia.nocookie.net/stealabr/images/8/82/Dul_Dul_Dul.png/revision/latest/scale-to-width-down/215?cb=20250909224519",
+  "Dumborino Miracello": "https://static.wikia.nocookie.net/stealabr/images/f/fd/Dumborino_Miracello.png/revision/latest/scale-to-width-down/300?cb=20260324200954",
+  "Duo Brainrots": "https://static.wikia.nocookie.net/stealabr/images/f/f8/Chipsoqueso.png/revision/latest/scale-to-width-down/266?cb=20251030022105",
+  "Eid Eid Eid Sahur": "https://static.wikia.nocookie.net/stealabr/images/0/0a/Eid.png/revision/latest/scale-to-width-down/180?cb=20260322000303",
+  "Elefanto Frigo": "https://static.wikia.nocookie.net/stealabr/images/f/ff/Elefanto_Frigo_Transparent.png/revision/latest?cb=20251013151804",
+  "Esok Sekolah": "https://static.wikia.nocookie.net/stealabr/images/2/2a/EsokSekolah2.png/revision/latest/scale-to-width-down/300?cb=20250819001020",
+  "Espresso Signora": "https://static.wikia.nocookie.net/stealabr/images/4/48/Espresso_Signora.png/revision/latest/scale-to-width-down/232?cb=20250902180333",
+  "Eviledon": "https://static.wikia.nocookie.net/stealabr/images/7/78/Eviledonn.png/revision/latest/scale-to-width-down/300?cb=20251012023919",
+  "Extinct Ballerina": "https://static.wikia.nocookie.net/stealabr/images/7/74/Dead_art_form.png/revision/latest/scale-to-width-down/300?cb=20250914041054",
+  "Extinct Matteo": "https://static.wikia.nocookie.net/stealabr/images/0/0a/Man_im_dead.png/revision/latest/scale-to-width-down/211?cb=20250914041037",
+  "Extinct Tralalero": "https://static.wikia.nocookie.net/stealabr/images/c/cd/Jaws.png/revision/latest/scale-to-width-down/300?cb=20250914040916",
+  "Festive 67": "https://static.wikia.nocookie.net/stealabr/images/c/c8/TransparentFestive67.png/revision/latest/scale-to-width-down/300?cb=20251219224148",
+  "Festive Lucky Block": "https://static.wikia.nocookie.net/stealabr/images/2/24/FestiveLuckyBlockRealF4Leak.png/revision/latest/scale-to-width-down/300?cb=20251130105118",
+  "Fishboard": "https://static.wikia.nocookie.net/stealabr/images/d/da/Fishboard.png/revision/latest/scale-to-width-down/300?cb=20260301003229",
+  "Fishino Clownino": "https://static.wikia.nocookie.net/stealabr/images/d/d6/Fishino_Clownino.png/revision/latest/scale-to-width-down/199?cb=20251123122601",
+  "Fizzy Soda": "https://static.wikia.nocookie.net/stealabr/images/f/f3/Fizzy_Soda.png/revision/latest/scale-to-width-down/195?cb=20260125102651",
+  "Fluriflura": "https://static.wikia.nocookie.net/stealabr/images/7/77/Fluriflura.png/revision/latest/scale-to-width-down/215?cb=20250729184916",
+  "Fortunu and Cashuru": "https://static.wikia.nocookie.net/stealabr/images/9/96/Fortunu_and_Coinuru1.png/revision/latest/scale-to-width-down/300?cb=20260315003852",
+  "Foxini Lanternini": "https://static.wikia.nocookie.net/stealabr/images/4/41/Foxini_Lanternini.png/revision/latest/scale-to-width-down/300?cb=20260323235130",
+  "Fragola La La La": "https://static.wikia.nocookie.net/stealabr/images/a/af/Sammy_the_strawberry.png/revision/latest/scale-to-width-down/282?cb=20250919134001",
+  "Fragrama and Chocrama": "https://static.wikia.nocookie.net/stealabr/images/5/56/Fragrama.png/revision/latest/scale-to-width-down/300?cb=20251109011733",
+  "Frankentteo": "https://static.wikia.nocookie.net/stealabr/images/6/6a/Frankenmtteo.png/revision/latest/scale-to-width-down/169?cb=20251023041610",
+  "Frigo Camelo": "https://static.wikia.nocookie.net/stealabr/images/a/a7/Lol_Fridge.png/revision/latest/scale-to-width-down/297?cb=20251107125708",
+  "Frio Ninja": "https://static.wikia.nocookie.net/stealabr/images/a/a3/FrioNinja.png/revision/latest/scale-to-width-down/237?cb=20251102023515",
+  "Frogato Pirato": "https://static.wikia.nocookie.net/stealabr/images/c/cc/Bigfrog.png/revision/latest/scale-to-width-down/289?cb=20251018143432",
+  "Frogo Elfo": "https://static.wikia.nocookie.net/stealabr/images/2/2d/Frogo_Elfo.png/revision/latest/scale-to-width-down/181?cb=20251207003636",
+  "Ganganzelli Trulala": "https://static.wikia.nocookie.net/stealabr/images/b/b4/Ganganzelli_Trulala.png/revision/latest/scale-to-width-down/247?cb=20251125173952",
+  "Gangster Footera": "https://static.wikia.nocookie.net/stealabr/images/7/73/Gangster_Footera.png/revision/latest?cb=20260306211838",
+  "Garama and Madundung": "https://static.wikia.nocookie.net/stealabr/images/e/ee/Garamadundung.png/revision/latest/scale-to-width-down/300?cb=20250816022557",
+  "Gato Celesto": "https://static.wikia.nocookie.net/stealabr/images/a/a9/Gato_Celesto.png/revision/latest/scale-to-width-down/300?cb=20260323004948",
+  "Gattatino Neonino": "https://static.wikia.nocookie.net/stealabr/images/4/40/Gattatinoneonino.png/revision/latest/scale-to-width-down/300?cb=20250828181620",
+  "Gattatino Nyanino": "https://static.wikia.nocookie.net/stealabr/images/e/e4/Gattatin.png/revision/latest/scale-to-width-down/300?cb=20250825132851",
+  "Gattito Tacoto": "https://static.wikia.nocookie.net/stealabr/images/6/67/Gattatino_Nyaninno.png/revision/latest/scale-to-width-down/300?cb=20250909170101",
+  "Giftini Spyderini": "https://static.wikia.nocookie.net/stealabr/images/4/46/Giftspider.png/revision/latest/scale-to-width-down/300?cb=20251129210010",
+  "Ginger Cisterna": "https://static.wikia.nocookie.net/stealabr/images/b/ba/Ginger_Cisterna.png/revision/latest/scale-to-width-down/233?cb=20251207004333",
+  "Ginger Gerat": "https://static.wikia.nocookie.net/stealabr/images/8/85/GingerGerat.png/revision/latest/scale-to-width-down/210?cb=20251227115546",
+  "Ginger Globo": "https://static.wikia.nocookie.net/stealabr/images/e/e0/Ginger_Globo.png/revision/latest/scale-to-width-down/211?cb=20251207004555",
+  "Girafa Celestre": "https://static.wikia.nocookie.net/stealabr/images/7/70/...---....png/revision/latest/scale-to-width-down/205?cb=20250902180602",
+  "Glorbo Fruttodrillo": "https://static.wikia.nocookie.net/stealabr/images/d/da/GlorboFruttodrillo.png/revision/latest/scale-to-width-down/300?cb=20250821143713",
+  "GOAT": "https://static.wikia.nocookie.net/stealabr/images/7/7b/GOAT.png/revision/latest/scale-to-width-down/294?cb=20260117210909",
+  "Gobblino Uniciclino": "https://static.wikia.nocookie.net/stealabr/images/c/c5/Gobblino_Uniciclino.png/revision/latest/scale-to-width-down/281?cb=20251126164826",
+  "Gold Elf": "https://static.wikia.nocookie.net/stealabr/images/0/0b/GoldElfBackground.png/revision/latest?cb=20251225165011",
+  "Gold Gold Gold": "https://static.wikia.nocookie.net/stealabr/images/f/f4/Gold_Gold_Gold1.png/revision/latest/scale-to-width-down/225?cb=20260320021455",
+  "Gorillo Subwoofero": "https://static.wikia.nocookie.net/stealabr/images/0/08/Dubstep_boy.png/revision/latest/scale-to-width-down/248?cb=20250909170929",
+  "Gorillo Watermelondrillo": "https://static.wikia.nocookie.net/stealabr/images/e/ea/Gorillo-Watermelondrillo.png/revision/latest/scale-to-width-down/300?cb=20250730162924",
+  "Graipuss Medussi": "https://static.wikia.nocookie.net/stealabr/images/b/b8/Graipuss.png/revision/latest/scale-to-width-down/300?cb=20250816173622",
+  "Granchiello Spiritell": "https://static.wikia.nocookie.net/stealabr/images/c/c9/Gangster_Crab.png/revision/latest/scale-to-width-down/300?cb=20251123083118",
+  "Granny": "https://static.wikia.nocookie.net/stealabr/images/9/92/Granny_Brainrot.png/revision/latest/scale-to-width-down/300?cb=20260323000715",
+  "Griffin": "https://static.wikia.nocookie.net/stealabr/images/f/f8/Griffin.png/revision/latest/scale-to-width-down/300?cb=20260308110336",
+  "Guerriro Digitale": "https://static.wikia.nocookie.net/stealabr/images/9/98/Guerrirodigitale.png/revision/latest/scale-to-width-down/300?cb=20251226213615",
+  "Guest 666": "https://static.wikia.nocookie.net/stealabr/images/9/99/Guest666t.png/revision/latest/scale-to-width-down/300?cb=20251102022619",
+  "Harpuccino": "https://static.wikia.nocookie.net/stealabr/images/d/d4/X3t5ywjmmsrmr0cwtrgtd1p3cr-removebg-preview.png/revision/latest/scale-to-width-down/177?cb=20260310050516",
+  "Headless Horseman": "https://static.wikia.nocookie.net/stealabr/images/f/ff/Headlesshorseman.png/revision/latest/scale-to-width-down/253?cb=20251030020338",
+  "Ho Ho Ho Sahur": "https://static.wikia.nocookie.net/stealabr/images/5/5e/HoHoHoSahur.png/revision/latest/scale-to-width-down/222?cb=20251207002356",
+  "Holy Arepa": "https://static.wikia.nocookie.net/stealabr/images/c/c1/Holy_Arepa_Image.png/revision/latest/scale-to-width-down/300?cb=20260317020735",
+  "Horegini Boom": "https://static.wikia.nocookie.net/stealabr/images/5/51/Hboom.png/revision/latest/scale-to-width-down/300?cb=20251018135659",
+  "Hydra Dragon Cannelloni": "https://static.wikia.nocookie.net/stealabr/images/e/ee/Hydra_Dragon_Cannelloni.png/revision/latest/scale-to-width-down/261?cb=20260207220000",
+  "Ice Dragon": "https://static.wikia.nocookie.net/stealabr/images/2/28/Navidaddragon.png/revision/latest/scale-to-width-down/300?cb=20251216203117",
+  "Jacko Jack Jack": "https://static.wikia.nocookie.net/stealabr/images/1/1c/Jacko_Jack_Jack.png/revision/latest/scale-to-width-down/300?cb=20251012005914",
+  "Jacko Spaventosa": "https://static.wikia.nocookie.net/stealabr/images/c/c0/JKspaventosa.png/revision/latest/scale-to-width-down/213?cb=20251125164126",
+  "Jackorilla": "https://static.wikia.nocookie.net/stealabr/images/3/32/Jackorilla.png/revision/latest/scale-to-width-down/300?cb=20260322234620",
+  "Jingle Jingle Sahur": "https://static.wikia.nocookie.net/stealabr/images/0/06/JingleJingleSahur.png/revision/latest/scale-to-width-down/300?cb=20251207003956",
+  "Job Job Job Sahur": "https://static.wikia.nocookie.net/stealabr/images/0/03/Job.webp/revision/latest/scale-to-width-down/263?cb=20250817162104",
+  "John Pork": "https://static.wikia.nocookie.net/stealabr/images/3/3d/Svina_pork.webp/revision/latest/scale-to-width-down/300?cb=20260308162904",
+  "Jolly Jolly Sahur": "https://static.wikia.nocookie.net/stealabr/images/f/f1/JollyJollySahur.png/revision/latest/scale-to-width-down/207?cb=20251227120057",
+  "Karker Sahur": "https://static.wikia.nocookie.net/stealabr/images/f/f7/Karkar_sahur.png/revision/latest/scale-to-width-down/252?cb=20260202171037",
+  "Karkerheart Luvkur": "https://static.wikia.nocookie.net/stealabr/images/0/0e/Karkerheart_Luvkur.png/revision/latest/scale-to-width-down/219?cb=20260208174543",
+  "Karkerkar Kurkur": "https://static.wikia.nocookie.net/stealabr/images/d/d9/Karkerkar_kurkur.png/revision/latest/scale-to-width-down/254?cb=20250819015531",
+  "Karkerkur Family": "https://static.wikia.nocookie.net/stealabr/images/f/f7/Karkar_sahur.png/revision/latest/scale-to-width-down/252?cb=20260202171037",
+  "Ketchuru and Musturu": "https://static.wikia.nocookie.net/stealabr/images/1/14/Ketchuru.png/revision/latest/scale-to-width-down/296?cb=20251021163857",
+  "Ketupat Bros": "https://static.wikia.nocookie.net/stealabr/images/4/4d/Ketupat_Bros.png/revision/latest/scale-to-width-down/300?cb=20260207220106",
+  "Ketupat Kepat": "https://static.wikia.nocookie.net/stealabr/images/a/ac/KetupatKepat.png/revision/latest/scale-to-width-down/300?cb=20260324191002",
+  "Krupuk Pagi Pagi": "https://static.wikia.nocookie.net/stealabr/images/5/54/Cookie_no_bg.png/revision/latest/scale-to-width-down/239?cb=20251021140500",
+  "La Casa Boo": "https://static.wikia.nocookie.net/stealabr/images/8/8c/La_Casa_Boo.png/revision/latest/scale-to-width-down/300?cb=20260323192902",
+  "La Cucaracha": "https://static.wikia.nocookie.net/stealabr/images/4/46/La_Cucaracha.png/revision/latest/scale-to-width-down/253?cb=20250920195538",
+  "La Extinct Grande": "https://static.wikia.nocookie.net/stealabr/images/c/cd/La_Extinct_Grande.png/revision/latest/scale-to-width-down/208?cb=20260321213339",
+  "La Food Combinasion": "https://static.wikia.nocookie.net/stealabr/images/5/5a/La_Food_Combination.png/revision/latest/scale-to-width-down/192?cb=20260222122456",
+  "La Ginger Sekolah": "https://static.wikia.nocookie.net/stealabr/images/1/14/Esok_Ginger.png/revision/latest/scale-to-width-down/252?cb=20251219224302",
+  "La Grande Combinasion": "https://static.wikia.nocookie.net/stealabr/images/d/d8/Carti.png/revision/latest/scale-to-width-down/225?cb=20250909171004",
+  "La Jolly Grande": "https://static.wikia.nocookie.net/stealabr/images/5/5f/La_Chrismas_Grande.png/revision/latest/scale-to-width-down/172?cb=20251207091730",
+  "La Karkerkar Combinasion": "https://static.wikia.nocookie.net/stealabr/images/2/2d/Holy_falloff.png/revision/latest/scale-to-width-down/226?cb=20250909231025",
+  "La Lucky Grande": "https://static.wikia.nocookie.net/stealabr/images/5/55/La_Lucky_Grande.png/revision/latest/scale-to-width-down/300?cb=20260323180752",
+  "La Romantic Grande": "https://static.wikia.nocookie.net/stealabr/images/6/69/La_Romantic_Grande2.png/revision/latest/scale-to-width-down/286?cb=20260221005900",
+  "La Sahur Combinasion": "https://static.wikia.nocookie.net/stealabr/images/e/eb/Sahuria.png/revision/latest/scale-to-width-down/260?cb=20250920025821",
+  "La Secret Combinasion": "https://static.wikia.nocookie.net/stealabr/images/f/f2/Lasecretcombinasion.png/revision/latest/scale-to-width-down/226?cb=20251006044448",
+  "La Spooky Grande": "https://static.wikia.nocookie.net/stealabr/images/5/51/Spooky_Grande.png/revision/latest/scale-to-width-down/225?cb=20251012022949",
+  "La Supreme Combinasion": "https://static.wikia.nocookie.net/stealabr/images/5/52/SupremeCombinasion.png/revision/latest/scale-to-width-down/203?cb=20250825130920",
+  "La Taco Combinasion": "https://static.wikia.nocookie.net/stealabr/images/8/84/Latacocombi.png/revision/latest/scale-to-width-down/296?cb=20251030015001",
+  "La Vacca Jacko Linterino": "https://static.wikia.nocookie.net/stealabr/images/c/c6/JackoVacca.png/revision/latest/scale-to-width-down/300?cb=20251012025230",
+  "La Vacca Lepre Lepreino": "https://static.wikia.nocookie.net/stealabr/images/c/c1/La_Vacca_Lepre_Lepreino.png/revision/latest/scale-to-width-down/297?cb=20260314195233",
+  "La Vacca Prese Presente": "https://static.wikia.nocookie.net/stealabr/images/3/32/La_Present_Vacca.png/revision/latest/scale-to-width-down/300?cb=20251207005642",
+  "La Vacca Saturno Saturnita": "https://static.wikia.nocookie.net/stealabr/images/a/a5/La_vacca_no_effects.png/revision/latest/scale-to-width-down/300?cb=20260124181452",
+  "Las Capuchinas": "https://static.wikia.nocookie.net/stealabr/images/3/39/Las_Cappuchinas.png/revision/latest/scale-to-width-down/300?cb=20251005122531",
+  "Las Sis": "https://static.wikia.nocookie.net/stealabr/images/e/e8/Las_Sis.png/revision/latest/scale-to-width-down/270?cb=20250914042020",
+  "Las Tralaleritas": "https://static.wikia.nocookie.net/stealabr/images/f/f4/LasTralaleritas.png/revision/latest/scale-to-width-down/300?cb=20250817183119",
+  "Las Vaquitas Saturnitas": "https://static.wikia.nocookie.net/stealabr/images/e/e9/Chick_fil_a.png/revision/latest/scale-to-width-down/300?cb=20250902172807",
+  "Lavadorito Spinito": "https://static.wikia.nocookie.net/stealabr/images/f/ff/Lavadorito_Spinito.png/revision/latest/scale-to-width-down/203?cb=20251123122422",
+  "Lerulerulerule": "https://static.wikia.nocookie.net/stealabr/images/5/55/Image-removebg-preview_%287%29.png/revision/latest/scale-to-width-down/256?cb=20251107051833",
+  "Lionel Cactuseli": "https://static.wikia.nocookie.net/stealabr/images/7/7d/Lionel-Cactuseli.png/revision/latest/scale-to-width-down/300?cb=20250730161749",
+  "Liril?× Laril?": "https://static.wikia.nocookie.net/stealabr/images/c/c8/Liliri_Lalira.png/revision/latest/scale-to-width-down/300?cb=20250729184448",
+  "List List List Sahur": "https://static.wikia.nocookie.net/stealabr/images/d/d6/List_List_List_Sahur.png/revision/latest/scale-to-width-down/264?cb=20251207005813",
+  "Los 25": "https://static.wikia.nocookie.net/stealabr/images/9/9b/Transparent_Los_25.png/revision/latest/scale-to-width-down/300?cb=20251218122100",
+  "Los 67": "https://static.wikia.nocookie.net/stealabr/images/d/db/Los-67.png/revision/latest/scale-to-width-down/300?cb=20251103171526",
+  "Los Amigos": "https://static.wikia.nocookie.net/stealabr/images/0/01/Los_Amigos.png/revision/latest/scale-to-width-down/300?cb=20260222122638",
+  "Los Bombinitos": "https://static.wikia.nocookie.net/stealabr/images/1/16/Alvin_and_the_chipmunks.png/revision/latest/scale-to-width-down/300?cb=20250902182634",
+  "Los Bros": "https://static.wikia.nocookie.net/stealabr/images/5/53/BROOOOOOOO.png/revision/latest/scale-to-width-down/300?cb=20250909152032",
+  "Los Burritos": "https://static.wikia.nocookie.net/stealabr/images/9/97/LosBurritos.png/revision/latest/scale-to-width-down/300?cb=20251123123907",
+  "Los Candies": "https://static.wikia.nocookie.net/stealabr/images/f/f9/Candy%21.png/revision/latest/scale-to-width-down/300?cb=20251218124920",
+  "Los Chicleteiras": "https://static.wikia.nocookie.net/stealabr/images/4/4d/Los_ditos.png/revision/latest/scale-to-width-down/300?cb=20251221211400",
+  "Los Chihuaninis": "https://static.wikia.nocookie.net/stealabr/images/0/01/Los_Chihuaninis.png/revision/latest/scale-to-width-down/300?cb=20251123123029",
+  "Los Combinasionas": "https://static.wikia.nocookie.net/stealabr/images/3/36/Stop_taking_my_chips_im_just_a_baybeh.png/revision/latest/scale-to-width-down/300?cb=20250909223756",
+  "Los Crocodillitos": "https://static.wikia.nocookie.net/stealabr/images/9/95/LosCrocodillitos.png/revision/latest/scale-to-width-down/300?cb=20251006203748",
+  "Los Cucarachas": "https://static.wikia.nocookie.net/stealabr/images/a/a5/Los_Cucarachas.png/revision/latest/scale-to-width-down/300?cb=20251123123354",
+  "Los Cupids": "https://static.wikia.nocookie.net/stealabr/images/b/bb/Los_Cupids2.png/revision/latest/scale-to-width-down/252?cb=20260308003310",
+  "Los Gattitos": "https://static.wikia.nocookie.net/stealabr/images/9/97/Los_Gattitos.png/revision/latest/scale-to-width-down/300?cb=20251123123200",
+  "Los Hotspotsitos": "https://static.wikia.nocookie.net/stealabr/images/6/69/Loshotspotsitos.png/revision/latest/scale-to-width-down/281?cb=20251226204212",
+  "Los Jobcitos": "https://static.wikia.nocookie.net/stealabr/images/a/af/LosJobcitos.png/revision/latest/scale-to-width-down/300?cb=20251006202121",
+  "Los Jolly Combinasionas": "https://static.wikia.nocookie.net/stealabr/images/7/7b/Los_jollycombos.png/revision/latest/scale-to-width-down/300?cb=20251227115909",
+  "Los Karkeritos": "https://static.wikia.nocookie.net/stealabr/images/a/a8/Loskarkeritos.png/revision/latest/scale-to-width-down/300?cb=20251006210532",
+  "Los Matteos": "https://static.wikia.nocookie.net/stealabr/images/8/8a/LosMatteos.png/revision/latest/scale-to-width-down/300?cb=20250817040306",
+  "Los Mi Gatitos": "https://static.wikia.nocookie.net/stealabr/images/c/c0/Los_Ay_Mi_Gatitos.png/revision/latest/scale-to-width-down/300?cb=20260219033604",
+  "Los Mobilis": "https://static.wikia.nocookie.net/stealabr/images/2/27/Losmobil.png/revision/latest/scale-to-width-down/225?cb=20251012023251",
+  "Los Noobinis": "https://static.wikia.nocookie.net/stealabr/images/d/db/Noobinis.png/revision/latest/scale-to-width-down/300?cb=20250909173512",
+  "Los Nooo My Hotspotsitos": "https://static.wikia.nocookie.net/stealabr/images/c/cb/LosNooMyHotspotsitos.png/revision/latest/scale-to-width-down/300?cb=20250903124000",
+  "Los Orcalitos": "https://static.wikia.nocookie.net/stealabr/images/2/27/Los_orcalitos.png/revision/latest/scale-to-width-down/300?cb=20251006201225",
+  "Los Planitos": "https://static.wikia.nocookie.net/stealabr/images/8/83/Los_Planitos.png/revision/latest/scale-to-width-down/300?cb=20251123122230",
+  "Los Primos": "https://static.wikia.nocookie.net/stealabr/images/9/96/LosPrimos.png/revision/latest/scale-to-width-down/300?cb=20251006044831",
+  "Los Puggies": "https://static.wikia.nocookie.net/stealabr/images/c/c8/LosPuggies2.png/revision/latest/scale-to-width-down/300?cb=20251109012744",
+  "Los Quesadillas": "https://static.wikia.nocookie.net/stealabr/images/9/99/LosQuesadillas.png/revision/latest/scale-to-width-down/300?cb=20251123123650",
+  "Los Sekolahs": "https://static.wikia.nocookie.net/stealabr/images/2/2c/Los_Sekolahs2.png/revision/latest/scale-to-width-down/300?cb=20260223143009",
+  "Los Spaghettis": "https://static.wikia.nocookie.net/stealabr/images/3/33/Los_Spaghettis.png/revision/latest/scale-to-width-down/300?cb=20260129153809",
+  "Los Spooky Combinasionas": "https://static.wikia.nocookie.net/stealabr/images/8/8a/Lospookycombi.png/revision/latest/scale-to-width-down/300?cb=20251030015823",
+  "Los Spyderinis": "https://static.wikia.nocookie.net/stealabr/images/f/ff/Los_Spyderinis.png/revision/latest/scale-to-width-down/300?cb=20250823230850",
+  "Los Sweethearts": "https://static.wikia.nocookie.net/stealabr/images/e/ed/Los_Sweetheart_s.png/revision/latest/scale-to-width-down/300?cb=20260221000709",
+  "Los Tacoritas": "https://static.wikia.nocookie.net/stealabr/images/4/40/My_kids_will_also_rob_you.png/revision/latest/scale-to-width-down/300?cb=20250921171602",
+  "Los Tipi Tacos": "https://static.wikia.nocookie.net/stealabr/images/f/f2/Los_tipi_tacos.png/revision/latest/scale-to-width-down/300?cb=20250914130151",
+  "Los Tortus": "https://static.wikia.nocookie.net/stealabr/images/c/cb/LosTortuss.png/revision/latest/scale-to-width-down/300?cb=20251006205613",
+  "Los Tralaleritos": "https://static.wikia.nocookie.net/stealabr/images/0/0f/Los_Tralaleritos.png/revision/latest/scale-to-width-down/300?cb=20250816183135",
+  "Los Trios": "https://static.wikia.nocookie.net/stealabr/images/f/f1/Los_Trios.png/revision/latest/scale-to-width-down/300?cb=20260322235046",
+  "Los Tungtungtungcitos": "https://static.wikia.nocookie.net/stealabr/images/d/de/The_middle_one_clawed_out_my_eyes.png/revision/latest/scale-to-width-down/300?cb=20250902182803",
+  "Love Love Bear": "https://static.wikia.nocookie.net/stealabr/images/b/bf/Love_Love_Bear.png/revision/latest/scale-to-width-down/248?cb=20260208190306",
+  "Love Love Love Sahur": "https://static.wikia.nocookie.net/stealabr/images/0/0a/Love_Love_Love_Sahur.png/revision/latest/scale-to-width-down/300?cb=20260323000424",
+  "Lovin Rose": "https://static.wikia.nocookie.net/stealabr/images/2/22/Lovin_Rose.png/revision/latest/scale-to-width-down/300?cb=20260323193259",
+  "Luck Luck Luck Sahur": "https://static.wikia.nocookie.net/stealabr/images/1/1e/LuckLuckSahur2.png/revision/latest/scale-to-width-down/300?cb=20260314234317",
+  "Luv Luv Luv": "https://static.wikia.nocookie.net/stealabr/images/9/9b/LuvLuvLuv.png/revision/latest/scale-to-width-down/156?cb=20260208174351",
+  "Magi Ribbitini": "https://static.wikia.nocookie.net/stealabr/images/6/60/MagiRibbit.png/revision/latest/scale-to-width-down/299?cb=20251013014847",
+  "Malame Amarele": "https://static.wikia.nocookie.net/stealabr/images/2/28/MalameAmarele.png/revision/latest/scale-to-width-down/200?cb=20250907003733",
+  "Mangolini Parrocini": "https://static.wikia.nocookie.net/stealabr/images/1/1c/MANGOES_MANGOES_MANGOES_MANGOES_MANGHOES_MANGOES_MANGOES_MANGOES_MANGOES_MANGOES_BOIIIIII_SIX_SEVEEEEEEEEN.png/revision/latest/scale-to-width-down/264?cb=20251012050322",
+  "Mariachi Corazoni": "https://static.wikia.nocookie.net/stealabr/images/5/5a/MariachiCora.png/revision/latest/scale-to-width-down/198?cb=20251006211910",
+  "Mastodontico Telepiedone": "https://static.wikia.nocookie.net/stealabr/images/a/a5/Clanker.png/revision/latest/scale-to-width-down/221?cb=20250902184428",
+  "Matteo": "https://static.wikia.nocookie.net/stealabr/images/7/7d/Matteofr.png/revision/latest/scale-to-width-down/235?cb=20250816180126",
+  "Matteo Family": "https://static.wikia.nocookie.net/stealabr/images/2/2f/Patteo.png/revision/latest/scale-to-width-down/179?cb=20260314192140",
+  "Megalodon Family": "https://static.wikia.nocookie.net/stealabr/images/1/1d/TralaledonImg.png/revision/latest/scale-to-width-down/265?cb=20250908114334",
+  "Meowl": "https://static.wikia.nocookie.net/stealabr/images/b/b8/Clear_background_clear_meowl_image.png/revision/latest/scale-to-width-down/207?cb=20251022133154",
+  "Mi Gatito": "https://static.wikia.nocookie.net/stealabr/images/d/df/Mi_GatitoHD.png/revision/latest?cb=20260202205929",
+  "Mieteteira Bicicleteira": "https://static.wikia.nocookie.net/stealabr/images/8/86/Mieteteira_Bicicleteira.png/revision/latest/scale-to-width-down/241?cb=20251125132431",
+  "Money Money Man": "https://static.wikia.nocookie.net/stealabr/images/e/e3/Money_Money_Man.png/revision/latest/scale-to-width-down/204?cb=20251108232228",
+  "Money Money Puggy": "https://static.wikia.nocookie.net/stealabr/images/0/09/Money_money_puggy.png/revision/latest/scale-to-width-down/265?cb=20260217180308",
+  "Money Money Reindeer": "https://static.wikia.nocookie.net/stealabr/images/e/ec/MoneyMoneyReindeer.png/revision/latest/scale-to-width-down/237?cb=20251221003105",
+  "Mummio Rappitto": "https://static.wikia.nocookie.net/stealabr/images/b/b2/Mummio_Rappitto.png/revision/latest/scale-to-width-down/215?cb=20251012045417",
+  "Mummy Ambalabu": "https://static.wikia.nocookie.net/stealabr/images/a/ae/Mummy_Ambalabu.png/revision/latest/scale-to-width-down/300?cb=20260324202305",
+  "Nacho Spyder": "https://static.wikia.nocookie.net/stealabr/images/3/36/Nacho_Spyder.png/revision/latest/scale-to-width-down/300?cb=20260308105833",
+  "Naughty Naughty": "https://static.wikia.nocookie.net/stealabr/images/1/13/Sought_the_naught.png/revision/latest/scale-to-width-down/191?cb=20251213213636",
+  "Noo La Polizia": "https://static.wikia.nocookie.net/stealabr/images/8/8f/Nooo_my_polizia.png/revision/latest/scale-to-width-down/300?cb=20251111082121",
+  "Noo my Candy": "https://static.wikia.nocookie.net/stealabr/images/1/12/Noo_my_candy_transparent.png/revision/latest/scale-to-width-down/218?cb=20251105045041",
+  "Noo my examine": "https://static.wikia.nocookie.net/stealabr/images/b/b9/Noo_My_Examen.png/revision/latest/scale-to-width-down/270?cb=20251007131207",
+  "Noo my Gold": "https://static.wikia.nocookie.net/stealabr/images/f/fa/Noo_my_Gold.png/revision/latest/scale-to-width-down/300?cb=20260324203400",
+  "Noo my Heart": "https://static.wikia.nocookie.net/stealabr/images/7/75/NooMyLoveheart.png/revision/latest/scale-to-width-down/300?cb=20260208175244",
+  "Noo my Present": "https://static.wikia.nocookie.net/stealabr/images/3/35/Noo_my_Present.png/revision/latest/scale-to-width-down/291?cb=20251219224536",
+  "Noobini Pizzanini": "https://static.wikia.nocookie.net/stealabr/images/8/85/New_Noobini_Pizzanini.png/revision/latest/scale-to-width-down/222?cb=20260310155410",
+  "Noobini Santanini": "https://static.wikia.nocookie.net/stealabr/images/c/cd/NoobiniSantanini.png/revision/latest/scale-to-width-down/204?cb=20251207000659",
+  "Nooo My Hotspot": "https://static.wikia.nocookie.net/stealabr/images/9/97/NoMyHotspot.png/revision/latest/scale-to-width-down/300?cb=20250818145403",
+  "Nuclearo Dinossauro": "https://static.wikia.nocookie.net/stealabr/images/c/c6/Nuclearo_Dinosauro.png/revision/latest/scale-to-width-down/300?cb=20250902180735",
+  "Odin Din Din Dun": "https://static.wikia.nocookie.net/stealabr/images/9/96/Me_irl.png/revision/latest/scale-to-width-down/278?cb=20251231233309",
+  "Orangutini Ananassini": "https://static.wikia.nocookie.net/stealabr/images/6/69/Banana.png/revision/latest/scale-to-width-down/242?cb=20250902181417",
+  "Orcaledon": "https://static.wikia.nocookie.net/stealabr/images/a/a6/Orcaledon.png/revision/latest/scale-to-width-down/300?cb=20251119170121",
+  "Orcalero Orcala": "https://static.wikia.nocookie.net/stealabr/images/d/d4/Orcalero_Orcala.png/revision/latest/scale-to-width-down/300?cb=20260202032629",
+  "Orcalita Orcala": "https://static.wikia.nocookie.net/stealabr/images/5/51/IMG_2496.png/revision/latest/scale-to-width-down/300?cb=20260224205546",
+  "Pakrahmatmamat": "https://static.wikia.nocookie.net/stealabr/images/e/e7/Pakrah.png/revision/latest/scale-to-width-down/255?cb=20250823233234",
+  "Pakrahmatmatina": "https://static.wikia.nocookie.net/stealabr/images/f/fa/Pakrematina.png/revision/latest/scale-to-width-down/300?cb=20251018140110",
+  "Pandaccini Bananini": "https://static.wikia.nocookie.net/stealabr/images/0/03/Pandaccini_Bananini.png/revision/latest/scale-to-width-down/267?cb=20251116171201",
+  "Pandanini Frostini": "https://static.wikia.nocookie.net/stealabr/images/c/ca/Frost_Panda.png/revision/latest/scale-to-width-down/199?cb=20251219223755",
+  "Paradiso Axolottino": "https://static.wikia.nocookie.net/stealabr/images/c/c1/Paradiso_Axolottino.png/revision/latest/scale-to-width-down/300?cb=20260322235617",
+  "Patteo": "https://static.wikia.nocookie.net/stealabr/images/2/2f/Patteo.png/revision/latest/scale-to-width-down/179?cb=20260314192140",
+  "Pengolino Nuvoletto": "https://static.wikia.nocookie.net/stealabr/images/7/71/Screenshot_2026-03-07_170743.png/revision/latest/scale-to-width-down/246?cb=20260308004149",
+  "Penguin Tree": "https://static.wikia.nocookie.net/stealabr/images/8/88/PenguinTree.png/revision/latest/scale-to-width-down/157?cb=20251207003327",
+  "Penguino Cocosino": "https://static.wikia.nocookie.net/stealabr/images/6/6a/Penguino_Cocosino.png/revision/latest/scale-to-width-down/300?cb=20260119201430",
+  "Perochello Lemonchello": "https://static.wikia.nocookie.net/stealabr/images/a/a2/PeroLemonfulldetial.png/revision/latest/scale-to-width-down/300?cb=20250905124054",
+  "Perrito Burrito": "https://static.wikia.nocookie.net/stealabr/images/e/e2/Perrito_Burrito.png/revision/latest/scale-to-width-down/300?cb=20260322235752",
+  "Pi Pi Watermelon": "https://static.wikia.nocookie.net/stealabr/images/8/84/Pi_Pi_Watermelon.png/revision/latest/scale-to-width-down/300?cb=20251103172551",
+  "Piccione Macchina": "https://static.wikia.nocookie.net/stealabr/images/e/e2/PIGEONS_ARE_SPIES_MADE_BY_THE_GOVERNMENT.png/revision/latest/scale-to-width-down/265?cb=20250902181833",
+  "Piccionetta Machina": "https://static.wikia.nocookie.net/stealabr/images/7/79/That_one_pink_bird_from_angry_birds.png/revision/latest/scale-to-width-down/242?cb=20250909170602",
+  "Pinealotto Fruttarino": "https://static.wikia.nocookie.net/stealabr/images/b/ba/Pintealotto.png/revision/latest/scale-to-width-down/299?cb=20251013015531",
+  "Pipi Avocado": "https://static.wikia.nocookie.net/stealabr/images/9/91/Pipi_Avocado.png/revision/latest/scale-to-width-down/300?cb=20251127034719",
+  "Pipi Corni": "https://static.wikia.nocookie.net/stealabr/images/5/53/PipiCorni.png/revision/latest/scale-to-width-down/270?cb=20251128210620",
+  "Pipi Kiwi": "https://static.wikia.nocookie.net/stealabr/images/9/92/Pipi_Kiwi.png/revision/latest/scale-to-width-down/269?cb=20251023015503",
+  "Pipi Potato": "https://static.wikia.nocookie.net/stealabr/images/c/cc/POTATO.png/revision/latest/scale-to-width-down/236?cb=20250920182758",
+  "Pirulitoita Bicicleteira": "https://static.wikia.nocookie.net/stealabr/images/d/dc/Piruleta.png/revision/latest/scale-to-width-down/223?cb=20251109011358",
+  "Please my Present": "https://static.wikia.nocookie.net/stealabr/images/a/aa/Christmas_Chachechi.png/revision/latest/scale-to-width-down/242?cb=20251207010049",
+  "Pop Pop Sahur": "https://static.wikia.nocookie.net/stealabr/images/3/39/PopPopSahur.png/revision/latest/scale-to-width-down/253?cb=20251006142317",
+  "Popcuru and Fizzuru": "https://static.wikia.nocookie.net/stealabr/images/a/a9/Popuru_and_Fizzuru.png/revision/latest/scale-to-width-down/240?cb=20260213204324",
+  "Pot Hotspot": "https://static.wikia.nocookie.net/stealabr/images/4/4b/Pot_Hotspot.png/revision/latest/scale-to-width-down/143?cb=20250915194349",
+  "Pot Pumpkin": "https://static.wikia.nocookie.net/stealabr/images/e/e9/PotHotpumkin.png/revision/latest/scale-to-width-down/164?cb=20251108082242",
+  "Prehistoric Family": "https://static.wikia.nocookie.net/stealabr/images/7/79/Brr_Brr_Patapem.png/revision/latest/scale-to-width-down/300?cb=20250909171639",
+  "Puffaball": "https://static.wikia.nocookie.net/stealabr/images/f/fb/Puffaball.png/revision/latest/scale-to-width-down/300?cb=20251123121946",
+  "Pumpkini Spyderini": "https://static.wikia.nocookie.net/stealabr/images/d/da/Sammypumpkin.png/revision/latest/scale-to-width-down/300?cb=20251030021310",
+  "Quackula": "https://static.wikia.nocookie.net/stealabr/images/2/23/Quackula.png/revision/latest/scale-to-width-down/300?cb=20251022155959",
+  "Quesadilla Crocodila": "https://static.wikia.nocookie.net/stealabr/images/3/3f/QuesadillaCrocodilla.png/revision/latest/scale-to-width-down/294?cb=20251006143118",
+  "Quesadillo Vampiro": "https://static.wikia.nocookie.net/stealabr/images/0/0e/VampiroQuesa.png/revision/latest/scale-to-width-down/195?cb=20260124140040",
+  "Quivioli Ameleonni": "https://static.wikia.nocookie.net/stealabr/images/c/cd/Quivioli_Ameleonni.png/revision/latest/scale-to-width-down/300?cb=20250831171040",
+  "Raccooni Jandelini": "https://static.wikia.nocookie.net/stealabr/images/2/2d/Raccooni.png/revision/latest/scale-to-width-down/197?cb=20251127133032",
+  "Rang Ring Bus": "https://static.wikia.nocookie.net/stealabr/images/2/2b/RingRangBus2.png/revision/latest/scale-to-width-down/297?cb=20251018134839",
+  "Reindeer Tralala": "https://static.wikia.nocookie.net/stealabr/images/9/9c/Reindeer_Tralala.png/revision/latest/scale-to-width-down/300?cb=20251207010226",
+  "Reinito Sleighito": "https://static.wikia.nocookie.net/stealabr/images/c/ca/Reinito_Sleighito.png/revision/latest/scale-to-width-down/300?cb=20260323193841",
+  "Rhino Helicopterino": "https://static.wikia.nocookie.net/stealabr/images/1/10/Rhino_Helicopterino.png/revision/latest/scale-to-width-down/300?cb=20260322225518",
+  "Rhino Toasterino": "https://static.wikia.nocookie.net/stealabr/images/1/1a/Untitled210_20250808180116.png/revision/latest/scale-to-width-down/249?cb=20250808233001",
+  "Rocco Disco": "https://static.wikia.nocookie.net/stealabr/images/5/55/Rocco_Discoooooo.png/revision/latest/scale-to-width-down/201?cb=20260101134246",
+  "Rosetti Tualetti": "https://static.wikia.nocookie.net/stealabr/images/f/f8/Rossetti_Tualetti.png/revision/latest/scale-to-width-down/300?cb=20260208175516",
+  "Rosey and Teddy": "https://static.wikia.nocookie.net/stealabr/images/9/9b/Rosey_and_Teddy.png/revision/latest/scale-to-width-down/300?cb=20260208175726",
+  "Salamino Penguino": "https://static.wikia.nocookie.net/stealabr/images/5/59/Salamino-Penguino.png/revision/latest/scale-to-width-down/300?cb=20250730172949",
+  "Sammyni Fattini": "https://static.wikia.nocookie.net/stealabr/images/0/01/Sammyni_Fattini.png/revision/latest/scale-to-width-down/206?cb=20260224002154",
+  "Sammyni Spyderini": "https://static.wikia.nocookie.net/stealabr/images/9/98/Sammy_blud.png/revision/latest/scale-to-width-down/300?cb=20250920142855",
+  "Santa Hotspot": "https://static.wikia.nocookie.net/stealabr/images/4/4d/Santa_Hotspot.png/revision/latest/scale-to-width-down/181?cb=20251214182235",
+  "Santteo": "https://static.wikia.nocookie.net/stealabr/images/c/c8/Santteo.png/revision/latest/scale-to-width-down/178?cb=20251207010345",
+  "Sealo Regalo": "https://static.wikia.nocookie.net/stealabr/images/a/a2/Sealo_Regalo.png/revision/latest/scale-to-width-down/228?cb=20251214115245",
+  "Serafinna Medusella": "https://static.wikia.nocookie.net/stealabr/images/2/2d/Serafinna_Medusella.png/revision/latest/scale-to-width-down/300?cb=20260308002100",
+  "Seraphino Gruyero": "https://static.wikia.nocookie.net/stealabr/images/6/64/Divine_Starfish.png/revision/latest/scale-to-width-down/300?cb=20260306163225",
+  "Sigma Boy": "https://static.wikia.nocookie.net/stealabr/images/2/24/Sig_ma_Boy.png/revision/latest/scale-to-width-down/240?cb=20251220202502",
+  "Sigma Girl": "https://static.wikia.nocookie.net/stealabr/images/a/af/SigmaGirl.png/revision/latest/scale-to-width-down/216?cb=20251006212211",
+  "Signore Carapace": "https://static.wikia.nocookie.net/stealabr/images/4/43/Teenage_turtle.png/revision/latest/scale-to-width-down/207?cb=20251217013246",
+  "Skibidi Toilet": "https://static.wikia.nocookie.net/stealabr/images/3/34/Skibidi_toilet.png/revision/latest/scale-to-width-down/193?cb=20251227221221",
+  "Skull Skull Skull": "https://static.wikia.nocookie.net/stealabr/images/9/9c/Skully.png/revision/latest/scale-to-width-down/191?cb=20251113131814",
+  "Smurf Cat": "https://static.wikia.nocookie.net/stealabr/images/b/bb/Smurf_cat.svg/revision/latest/scale-to-width-down/168?cb=20250912023312",
+  "Snailenzo": "https://static.wikia.nocookie.net/stealabr/images/4/40/Snailenzo.png/revision/latest/scale-to-width-down/299?cb=20251013015309",
+  "Snailo Clovero": "https://static.wikia.nocookie.net/stealabr/images/a/ae/Snailo_Clovero.png/revision/latest/scale-to-width-down/300?cb=20260323001345",
+  "Spaghetti Tualetti": "https://static.wikia.nocookie.net/stealabr/images/b/b8/Spaghettitualetti.png/revision/latest/scale-to-width-down/300?cb=20251122142032",
+  "Spinny Hammy": "https://static.wikia.nocookie.net/stealabr/images/c/cb/Spinny_Hammy.png/revision/latest/scale-to-width-down/300?cb=20260323001156",
+  "Spioniro Golubiro": "https://static.wikia.nocookie.net/stealabr/images/4/40/Weed.png/revision/latest/scale-to-width-down/215?cb=20250902182104",
+  "Spongini Quackini": "https://static.wikia.nocookie.net/stealabr/images/e/ec/Spongini_Quackini.png/revision/latest/scale-to-width-down/179?cb=20260125102619",
+  "Spooky and Pumpky": "https://static.wikia.nocookie.net/stealabr/images/d/d6/Spookypumpky.png/revision/latest/scale-to-width-down/300?cb=20251012023638",
+  "Squalanana": "https://static.wikia.nocookie.net/stealabr/images/4/42/SqualananaNew.png/revision/latest/scale-to-width-down/300?cb=20251230195828",
+  "Statutino Libertino": "https://static.wikia.nocookie.net/stealabr/images/4/4d/StatutinoLibertino.png/revision/latest/scale-to-width-down/300?cb=20250820123002",
+  "Stoppo Luminino": "https://static.wikia.nocookie.net/stealabr/images/b/b6/Stoppo_Luminino.png/revision/latest/scale-to-width-down/266?cb=20251108231758",
+  "Strawberrelli Flamingelli": "https://static.wikia.nocookie.net/stealabr/images/2/21/Strawberrelli_Flamingelli.png/revision/latest/scale-to-width-down/300?cb=20250929145823",
+  "Strawberry Elephant": "https://static.wikia.nocookie.net/stealabr/images/5/58/Strawberryelephant.png/revision/latest/scale-to-width-down/288?cb=20260317001745",
+  "Svinina Bombardino": "https://static.wikia.nocookie.net/stealabr/images/2/26/Homicidio_doloso.png/revision/latest/scale-to-width-down/300?cb=20250729225915",
+  "Swag Bunny": "https://static.wikia.nocookie.net/stealabr/images/a/aa/Swag_Bunny.webp/revision/latest/scale-to-width-down/215?cb=20260322174403",
+  "Swag Soda": "https://static.wikia.nocookie.net/stealabr/images/9/9f/Swag_Soda.png/revision/latest/scale-to-width-down/300?cb=20260323193131",
+  "Swaggy Bros": "https://static.wikia.nocookie.net/stealabr/images/8/85/Swaggy_Bros.png/revision/latest/scale-to-width-down/300?cb=20251223161444",
+  "Ta Ta Ta Ta Sahur": "https://static.wikia.nocookie.net/stealabr/images/b/b2/TaTas.png/revision/latest/scale-to-width-down/263?cb=20250902182129",
+  "Taco Brainrots": "https://static.wikia.nocookie.net/stealabr/images/8/81/TacoLuckyBlock2.png/revision/latest/scale-to-width-down/300?cb=20251007133142",
+  "Tacorillo Crocodillo": "https://static.wikia.nocookie.net/stealabr/images/7/78/Tacorillo_Crocodrilo.png/revision/latest/scale-to-width-down/173?cb=20260304221935",
+  "Tacorita Bicicleta": "https://static.wikia.nocookie.net/stealabr/images/0/0f/Gonna_rob_you_twin.png/revision/latest/scale-to-width-down/282?cb=20251006133721",
+  "Talpa Di Fero": "https://static.wikia.nocookie.net/stealabr/images/b/b1/Talpa_Di_Fero.png/revision/latest/scale-to-width-down/240?cb=20250729185233",
+  "Tang Tang Keletang": "https://static.wikia.nocookie.net/stealabr/images/c/ce/TangTangVfx.png/revision/latest/scale-to-width-down/298?cb=20251014025849",
+  "Tartaragno": "https://static.wikia.nocookie.net/stealabr/images/d/de/Tartaragnoo.png/revision/latest/scale-to-width-down/300?cb=20251013020010",
+  "Tartaruga Cisterna": "https://static.wikia.nocookie.net/stealabr/images/8/8d/Tartaruga_Cisternaaaa.png/revision/latest/scale-to-width-down/300?cb=20251130165328",
+  "Te Te Te Sahur": "https://static.wikia.nocookie.net/stealabr/images/3/37/Te_Te_Te_Sahur.png/revision/latest/scale-to-width-down/300?cb=20251129112156",
+  "Telemorte": "https://static.wikia.nocookie.net/stealabr/images/2/20/Telemorte.png/revision/latest/scale-to-width-down/250?cb=20251030015504",
+  "Tentacolo Tecnico": "https://static.wikia.nocookie.net/stealabr/images/a/ac/SQUID_GAME.png/revision/latest/scale-to-width-down/300?cb=20251012051834",
+  "Ti Ti Ti Sahur": "https://static.wikia.nocookie.net/stealabr/images/7/7c/Ti_ti_ti_shaur.png/revision/latest?cb=20251014140349",
+  "Tictac Sahur": "https://static.wikia.nocookie.net/stealabr/images/6/6f/Time_moving_slow.png/revision/latest/scale-to-width-down/293?cb=20251103171934",
+  "Tigrilini Watermelini": "https://static.wikia.nocookie.net/stealabr/images/5/59/Tigrilini_Watermelini1.png/revision/latest/scale-to-width-down/245?cb=20260130020058",
+  "Tigroligre Frutonni": "https://static.wikia.nocookie.net/stealabr/images/7/71/Tigroligre.png/revision/latest/scale-to-width-down/264?cb=20250916002012",
+  "Tim Cheese": "https://static.wikia.nocookie.net/stealabr/images/1/11/Tim_Cheese.png/revision/latest/scale-to-width-down/161?cb=20250729184731",
+  "Tipi Topi Taco": "https://static.wikia.nocookie.net/stealabr/images/7/72/Tipi_Topi_Taco.png/revision/latest/scale-to-width-down/300?cb=20250812213834",
+  "Tirilikalika Tirilikalako": "https://static.wikia.nocookie.net/stealabr/images/2/2f/TirilikalikaTirilikalakoTransparent.png/revision/latest/scale-to-width-down/300?cb=20250915152802",
+  "To to to Sahur": "https://static.wikia.nocookie.net/stealabr/images/5/58/Africa_by_toto_%28to_sahur%29.png/revision/latest/scale-to-width-down/266?cb=20250924041210",
+  "Tob Tobi Tobi": "https://static.wikia.nocookie.net/stealabr/images/b/b0/Tob_Tobi_Tobi.png/revision/latest?cb=20251015000944",
+  "Toiletto Focaccino": "https://static.wikia.nocookie.net/stealabr/images/5/54/Toiletto.png/revision/latest/scale-to-width-down/235?cb=20251128204636",
+  "Tootini Shrimpini": "https://static.wikia.nocookie.net/stealabr/images/f/f7/TootiniShrimpini.png/revision/latest/scale-to-width-down/300?cb=20260101134605",
+  "Torrtuginni Dragonfrutini": "https://static.wikia.nocookie.net/stealabr/images/8/8c/Crack.png/revision/latest/scale-to-width-down/300?cb=20250919134500",
+  "Tracoducotulu Delapeladustuz": "https://static.wikia.nocookie.net/stealabr/images/8/80/Tracoducotulu.png/revision/latest/scale-to-width-down/253?cb=20251006203120",
+  "Tractoro Dinosauro": "https://static.wikia.nocookie.net/stealabr/images/f/f5/TractorDino.png/revision/latest/scale-to-width-down/300?cb=20251201150504",
+  "Tralaledon": "https://static.wikia.nocookie.net/stealabr/images/1/1d/TralaledonImg.png/revision/latest/scale-to-width-down/265?cb=20250908114334",
+  "Tralalero Tralala": "https://static.wikia.nocookie.net/stealabr/images/1/16/TralaleroTralala.png/revision/latest/scale-to-width-down/300?cb=20250820114624",
+  "Tralalita Tralala": "https://static.wikia.nocookie.net/stealabr/images/1/15/Tralalita.png/revision/latest/scale-to-width-down/296?cb=20250818004150",
+  "Tree Tree Tree Sahur": "https://static.wikia.nocookie.net/stealabr/images/3/35/TreeTreeTreeSahur.png/revision/latest/scale-to-width-down/210?cb=20251207004205",
+  "Trenostruzzo Turbo 3000": "https://static.wikia.nocookie.net/stealabr/images/3/30/Trenostruzzo_Turbo_3000.png/revision/latest/scale-to-width-down/300?cb=20250816031405",
+  "Trenostruzzo Turbo 4000": "https://static.wikia.nocookie.net/stealabr/images/b/b0/Trenostruzzo4000.png/revision/latest/scale-to-width-down/271?cb=20250920025139",
+  "Tric Trac Baraboom": "https://static.wikia.nocookie.net/stealabr/images/5/5a/Tric-Trac-Baraboom-5.png/revision/latest/scale-to-width-down/300?cb=20250730160553",
+  "Trickolino": "https://static.wikia.nocookie.net/stealabr/images/1/1d/Trickolino.png/revision/latest/scale-to-width-down/300?cb=20260322235319",
+  "Triplito Tralaleritos": "https://static.wikia.nocookie.net/stealabr/images/9/9b/Triplito_Tralaleritos.png/revision/latest/scale-to-width-down/254?cb=20251219040132",
+  "Trippi Troppi": "https://static.wikia.nocookie.net/stealabr/images/f/fa/Untitled211_20250809125319.png/revision/latest/scale-to-width-down/291?cb=20250809181508",
+  "Trippi Troppi Troppa Trippa": "https://static.wikia.nocookie.net/stealabr/images/f/fa/Untitled211_20250809125319.png/revision/latest/scale-to-width-down/291?cb=20250809181508",
+  "Trulimero Trulicina": "https://static.wikia.nocookie.net/stealabr/images/f/fa/Untitled211_20250809125319.png/revision/latest/scale-to-width-down/291?cb=20250809181508",
+  "Tuff Toucan": "https://static.wikia.nocookie.net/stealabr/images/3/3e/TuffToucan.png/revision/latest/scale-to-width-down/243?cb=20260101134815",
+  "Tukanno Bananno": "https://static.wikia.nocookie.net/stealabr/images/8/87/Tukanno_Bananno.png/revision/latest/scale-to-width-down/300?cb=20251209235928",
+  "Tung Tung Tung Sahur": "https://static.wikia.nocookie.net/stealabr/images/e/e3/Tung_Tung_Tung_Sahur.png/revision/latest/scale-to-width-down/188?cb=20260125163843",
+  "Unclito Samito": "https://static.wikia.nocookie.net/stealabr/images/4/4c/Elon_musk.png/revision/latest/scale-to-width-down/215?cb=20250909165824",
+  "Urubini Flamenguini": "https://static.wikia.nocookie.net/stealabr/images/3/36/Currently_on_fire.png/revision/latest/scale-to-width-down/181?cb=20250902182315",
+  "Vampira Cappuccina": "https://static.wikia.nocookie.net/stealabr/images/6/60/VampiraCappuccina.png/revision/latest/scale-to-width-down/272?cb=20251012025500",
+  "Ventoliero Pavonero": "https://static.wikia.nocookie.net/stealabr/images/4/4d/Ventoliero_Pavonero.png/revision/latest/scale-to-width-down/237?cb=20260301003532",
+  "Vulturino Skeletono": "https://static.wikia.nocookie.net/stealabr/images/e/e0/Vulturino.png/revision/latest/scale-to-width-down/300?cb=20251012030529",
+  "W or L": "https://static.wikia.nocookie.net/stealabr/images/2/28/Win_Or_Lose.png/revision/latest/scale-to-width-down/300?cb=20251123084507",
+  "Wheelchair Granny": "https://static.wikia.nocookie.net/stealabr/images/b/b0/Oi.png/revision/latest/scale-to-width-down/272?cb=20260322001237",
+  "Wombo Rollo": "https://static.wikia.nocookie.net/stealabr/images/0/0c/Wombo.png/revision/latest/scale-to-width-down/200?cb=20251102023250",
+  "Yess my examine": "https://static.wikia.nocookie.net/stealabr/images/8/8f/Yessmyexamine.png/revision/latest/scale-to-width-down/268?cb=20251006200210",
+  "Yeti Claus": "https://static.wikia.nocookie.net/stealabr/images/0/0e/Yeti_Claus.png/revision/latest/scale-to-width-down/255?cb=20251207005135",
+  "Zibra Zubra Zibralini": "https://static.wikia.nocookie.net/stealabr/images/f/fc/Zibra_Zubra_Zibralini.png/revision/latest/scale-to-width-down/300?cb=20260324202706",
+  "Zombie Tralala": "https://static.wikia.nocookie.net/stealabr/images/6/62/ZombieTralala.png/revision/latest/scale-to-width-down/300?cb=20251012025915",
+};
 
-    (async () => {
-        try {
-            const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/background-removal.js');
-            _removeBg = mod.removeBackground;
-            document.querySelectorAll('.card img[data-ready]').forEach(el => applyBgRemoval(el));
-        } catch(e) {}
-    })();
 
-    async function applyBgRemoval(imgEl) {
-        if (!_removeBg) return;
-        const key = imgEl.src;
-        if (_bgCache.has(key)) { imgEl.src = _bgCache.get(key); return; }
-        try {
-            imgEl.style.opacity = '0.35';
-            const blob = await _removeBg(key, { publicPath: 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/' });
-            const url = URL.createObjectURL(blob);
-            _bgCache.set(key, url);
-            imgEl.src = url;
-        } catch(e) {}
-        finally { imgEl.style.opacity = '1'; }
-    }
-
-    // ── Image fetching via JSONP (bypasses CORS) ─────────────────────────────
-    function jsonp(url) {
-        return new Promise((resolve, reject) => {
-            const cb = '__cb_' + Date.now() + '_' + (Math.random() * 1e6 | 0);
-            const t = setTimeout(() => { cleanup(); reject(); }, 12000);
-            function cleanup() { clearTimeout(t); delete window[cb]; s.remove(); }
-            window[cb] = data => { cleanup(); resolve(data); };
-            const s = document.createElement('script');
-            s.onerror = () => { cleanup(); reject(); };
-            s.src = url + '&callback=' + cb;
-            document.head.appendChild(s);
-        });
-    }
-
-    async function fetchBatch(names) {
-        const url = `https://stealabrainrot.fandom.com/api.php?action=query&titles=${encodeURIComponent(names.join('|'))}&prop=pageimages&piprop=thumbnail&pithumbsize=400&format=json`;
-        try {
-            const data = await jsonp(url);
-            Object.values(data.query?.pages || {}).forEach(p => {
-                if (p.thumbnail?.source) imageCache[p.title] = p.thumbnail.source;
-            });
-        } catch(e) {}
-    }
-
-    async function fetchAllImages() {
-        const size = 50;
-        const batches = [];
-        for (let i = 0; i < ALL_CHARS.length; i += size) batches.push(ALL_CHARS.slice(i, i + size));
-        await Promise.all(batches.map(fetchBatch));
-        // Update any cards already rendered
-        document.querySelectorAll('.card[data-name]').forEach(card => {
-            const name = card.dataset.name;
-            const imgEl = card.querySelector('img');
-            if (imgEl && imageCache[name] && !imgEl.dataset.ready) {
-                imgEl.src = imageCache[name];
-                imgEl.dataset.ready = '1';
-                imgEl.onload = () => applyBgRemoval(imgEl);
-            }
-        });
+    function getImageUrl(name) {
+        const url = IMAGE_URLS[name];
+        if (!url) return null;
+        // Route through wsrv.nl proxy to bypass Fandom CDN hotlink protection
+        return 'https://wsrv.nl/?url=' + encodeURIComponent(url) + '&w=220&output=webp';
     }
 
     // ── Gallery ──────────────────────────────────────────────────────────────
@@ -326,13 +680,7 @@
 
             const imgEl = document.createElement('img');
             imgEl.alt = name;
-            if (imageCache[name]) {
-                imgEl.src = imageCache[name];
-                imgEl.dataset.ready = '1';
-                imgEl.onload = () => applyBgRemoval(imgEl);
-            } else {
-                imgEl.src = PLACEHOLDER;
-            }
+            imgEl.src = getImageUrl(name) || PLACEHOLDER;
             imgEl.onerror = () => { imgEl.src = PLACEHOLDER; };
 
             const b = document.createElement('b');
@@ -359,13 +707,8 @@
         document.getElementById('tName').innerText = name;
         document.body.style.overflow = 'hidden';
         const mainImg = document.getElementById('mainImg');
-        const src = imageCache[name] || PLACEHOLDER;
-        if (_bgCache.has(src)) {
-            mainImg.src = _bgCache.get(src);
-        } else {
-            mainImg.src = src;
-            if (imageCache[name]) mainImg.onload = () => applyBgRemoval(mainImg);
-        }
+        mainImg.src = getImageUrl(name) || PLACEHOLDER;
+        mainImg.onerror = () => { mainImg.src = PLACEHOLDER; };
         updateUI();
     }
 
@@ -407,7 +750,6 @@
 
     // ── Init ─────────────────────────────────────────────────────────────────
     renderGallery();
-    fetchAllImages();
 </script>
 </body>
 </html>
