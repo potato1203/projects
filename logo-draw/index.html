@@ -162,11 +162,13 @@
         '</svg>'
     );
 
-    // ── Image URL via Google Favicon API ─────────────────────────────────────
+    // ── Image URL: Simple Icons (crisp SVG) with Google favicon fallback ────────
     function getImageUrl(name) {
-        const domain = LOGO_DOMAINS[name];
-        if (!domain) return PLACEHOLDER;
-        return 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=256';
+        const data = LOGO_DATA[name];
+        if (!data) return PLACEHOLDER;
+        if (data.icon) return 'https://cdn.simpleicons.org/' + data.icon + '/' + data.color;
+        if (data.domain) return 'https://www.google.com/s2/favicons?domain=' + data.domain + '&sz=256';
+        return PLACEHOLDER;
     }
 
     // ── All logos with categories ─────────────────────────────────────────────
