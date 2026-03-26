@@ -163,6 +163,12 @@
     );
 
     // ── Image URL: Simple Icons (crisp SVG) with Google favicon fallback ────────
+    function getFaviconUrl(name) {
+        const data = LOGO_DATA[name];
+        return (data && data.domain)
+            ? 'https://www.google.com/s2/favicons?domain=' + data.domain + '&sz=256'
+            : PLACEHOLDER;
+    }
     function getImageUrl(name) {
         const data = LOGO_DATA[name];
         if (!data) return PLACEHOLDER;
@@ -363,7 +369,11 @@
             imgEl.alt     = item.name;
             imgEl.loading = 'lazy';
             imgEl.src     = getImageUrl(item.name);
-            imgEl.onerror = () => { imgEl.src = PLACEHOLDER; };
+            imgEl.onerror = () => {
+                const fb = getFaviconUrl(item.name);
+                imgEl.onerror = () => { imgEl.src = PLACEHOLDER; };
+                imgEl.src = fb;
+            };
 
             const b = document.createElement('b');
             b.textContent = item.name;
@@ -388,7 +398,11 @@
 
         const mainImg = document.getElementById('mainImg');
         mainImg.src     = getImageUrl(name);
-        mainImg.onerror = () => { mainImg.src = PLACEHOLDER; };
+        mainImg.onerror = () => {
+            const fb = getFaviconUrl(name);
+            mainImg.onerror = () => { mainImg.src = PLACEHOLDER; };
+            mainImg.src = fb;
+        };
 
         document.getElementById('tName').innerText = name;
         document.getElementById('print-name').textContent = name;
