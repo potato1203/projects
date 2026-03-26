@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoalDraw - ציירו סמלי קבוצות כדורגל ⚽</title>
+    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/browser.js"></script>
     <style>
         :root {
             --green: #1a7a4a;
@@ -42,7 +43,8 @@
         .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; padding: 18px; max-width: 1200px; margin: 0 auto; }
         .card { background: white; border-radius: 18px; padding: 15px 12px 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: 0.25s; border: 2px solid transparent; display: flex; flex-direction: column; align-items: center; min-height: 185px; }
         .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-        .card img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; mix-blend-mode: multiply; }
+        .card img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; transition: opacity 0.3s; }
+        .card img.processing { opacity: 0.5; }
         .card b { font-size: 0.95rem; color: #222; text-align: center; line-height: 1.3; }
         .card small { font-size: 0.75rem; color: #999; margin-top: 5px; }
 
@@ -242,6 +244,22 @@
         { id: 683, he: "פיינורד",               en: "Feyenoord",           league: "Other", url: "https://r2.thesportsdb.com/images/media/team/badge/uturtx1473534803.png" },
     ];
 
+    // ── Background removal ────────────────────────────────────────────────────
+    const bgCache = new Map();
+    async function removeBg(imgEl, key, url) {
+        if (bgCache.has(key)) { imgEl.src = bgCache.get(key); return; }
+        imgEl.classList.add('processing');
+        try {
+            const blob = await BackgroundRemoval.removeBackground(url, {
+                publicPath: 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/'
+            });
+            const objectUrl = URL.createObjectURL(blob);
+            bgCache.set(key, objectUrl);
+            imgEl.src = objectUrl;
+        } catch(e) {}
+        imgEl.classList.remove('processing');
+    }
+
     // ── State ────────────────────────────────────────────────────────────────
     let currentStep = 0;
     let currentPhase = 0;
@@ -269,11 +287,21 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.onclick = () => openTutorial(t);
-            card.innerHTML = `
-                <img src="${logo(t)}" loading="lazy" alt="${t.en}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⚽</text></svg>'">
-                <b>${t.he}</b>
-                <small>${t.en}</small>
-            `;
+            const BALL = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="80">⚽</text></svg>');
+            const imgEl = document.createElement('img');
+            imgEl.alt = t.en;
+            imgEl.loading = 'lazy';
+            const rawUrl = logo(t);
+            imgEl.src = bgCache.has(t.en) ? bgCache.get(t.en) : rawUrl;
+            imgEl.onerror = () => { imgEl.src = BALL; };
+            if (!bgCache.has(t.en)) imgEl.onload = () => removeBg(imgEl, t.en, rawUrl);
+            const b = document.createElement('b');
+            b.textContent = t.he;
+            const small = document.createElement('small');
+            small.textContent = t.en;
+            card.appendChild(imgEl);
+            card.appendChild(b);
+            card.appendChild(small);
             gal.appendChild(card);
         });
     }
@@ -296,7 +324,10 @@
         currentPhase = 0;
         document.getElementById('tutorial').style.display = 'flex';
         document.getElementById('tName').innerText = t.he + ' — ' + t.en;
-        document.getElementById('mainImg').src = logo(t);
+        const mainImg = document.getElementById('mainImg');
+        const rawUrl = logo(t);
+        mainImg.src = bgCache.has(t.en) ? bgCache.get(t.en) : rawUrl;
+        if (!bgCache.has(t.en)) mainImg.onload = () => removeBg(mainImg, t.en, rawUrl);
         document.body.style.overflow = 'hidden';
         updateUI();
     }

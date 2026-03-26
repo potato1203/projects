@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodDraw - צייר אוכל מכל העולם 🍕</title>
+    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/browser.js"></script>
     <style>
         :root {
             --orange: #e85d04;
@@ -45,7 +46,8 @@
         .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; padding: 18px; max-width: 1400px; margin: 0 auto; }
         .card { background: white; border-radius: 18px; padding: 15px 12px 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: 0.25s; border: 2px solid transparent; display: flex; flex-direction: column; align-items: center; min-height: 175px; }
         .card:hover { border-color: var(--orange); transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-        .card img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; filter: saturate(4) contrast(1.35) brightness(1.05); }
+        .card img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; transition: opacity 0.3s; }
+        .card img.processing { opacity: 0.5; }
         .card b { font-size: 0.82rem; color: #222; text-align: center; line-height: 1.3; direction: ltr; word-break: break-word; }
 
         /* ── Tutorial overlay ── */
@@ -320,12 +322,26 @@
         { id: "condiments", label: "🧂 רטבים" },
     ];
 
-    function getImageUrl(name) {
+    function getRawUrl(name) {
         const url = IMAGE_URLS[name];
         if (url) return 'https://wsrv.nl/?url=' + encodeURIComponent(url) + '&w=300&output=webp';
-        // Fallback: AI-generated cartoon for foods without a wiki image
         const prompt = encodeURIComponent(`cute cartoon ${name} food illustration, simple flat design, colorful, white background, clipart style, no text`);
         return `https://image.pollinations.ai/prompt/${prompt}?width=300&height=300&nologo=true&seed=77`;
+    }
+
+    const bgCache = new Map();
+    async function removeBg(imgEl, key, url) {
+        if (bgCache.has(key)) { imgEl.src = bgCache.get(key); return; }
+        imgEl.classList.add('processing');
+        try {
+            const blob = await BackgroundRemoval.removeBackground(url, {
+                publicPath: 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/'
+            });
+            const objectUrl = URL.createObjectURL(blob);
+            bgCache.set(key, objectUrl);
+            imgEl.src = objectUrl;
+        } catch(e) {}
+        imgEl.classList.remove('processing');
     }
 
     // ── Coordinates ───────────────────────────────────────────────────────────
@@ -382,8 +398,10 @@
             const imgEl = document.createElement('img');
             imgEl.alt = food.name;
             imgEl.loading = 'lazy';
-            imgEl.src = getImageUrl(food.name) || PLACEHOLDER;
+            const rawUrl = getRawUrl(food.name) || PLACEHOLDER;
+            imgEl.src = bgCache.has(food.name) ? bgCache.get(food.name) : rawUrl;
             imgEl.onerror = () => { imgEl.src = PLACEHOLDER; };
+            if (!bgCache.has(food.name)) imgEl.onload = () => removeBg(imgEl, food.name, rawUrl);
 
             const b = document.createElement('b');
             b.textContent = food.name;
@@ -409,8 +427,10 @@
         document.getElementById('tName').innerText = name;
         document.body.style.overflow = 'hidden';
         const mainImg = document.getElementById('mainImg');
-        mainImg.src = getImageUrl(name) || PLACEHOLDER;
+        const rawUrl = getRawUrl(name) || PLACEHOLDER;
+        mainImg.src = bgCache.has(name) ? bgCache.get(name) : rawUrl;
         mainImg.onerror = () => { mainImg.src = PLACEHOLDER; };
+        if (!bgCache.has(name)) mainImg.onload = () => removeBg(mainImg, name, rawUrl);
         document.getElementById('print-name').textContent = name;
         updateUI();
     }
