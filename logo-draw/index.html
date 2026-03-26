@@ -166,7 +166,6 @@
     function getFaviconUrl(name) {
         const data = LOGO_DATA[name];
         if (!data) return PLACEHOLDER;
-        if (data.url)    return data.url;
         if (data.domain) return 'https://www.google.com/s2/favicons?domain=' + data.domain + '&sz=256';
         return PLACEHOLDER;
     }
