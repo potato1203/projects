@@ -174,16 +174,17 @@
 
     .team-row {
       display: flex; align-items: center; gap: 14px;
-      background: rgba(255,255,255,.06);
-      border: 2px solid rgba(255,255,255,.1);
+      background: rgba(50,0,110,.75);
+      border: 2px solid rgba(180,100,255,.35);
       border-radius: var(--rad); padding: 14px 18px;
       margin-bottom: 10px; transition: .25s;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
     }
     .team-row:focus-within {
-      border-color: var(--team-border, rgba(255,107,53,.5));
-      background: rgba(255,255,255,.1);
-      box-shadow: 0 0 24px var(--team-s, rgba(255,107,53,.25));
+      border-color: var(--team-border, rgba(255,107,53,.7));
+      background: rgba(70,0,140,.82);
+      box-shadow: 0 0 24px var(--team-s, rgba(255,107,53,.3));
     }
 
     .team-icon-big { font-size: 2.2rem; flex-shrink: 0; }
