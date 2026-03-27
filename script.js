@@ -54,6 +54,12 @@ const PROJECTS = [
     icon: "🏀"
   },
   {
+    title: "מרוץ למיליון",
+    description: "השלימו משימות קטנות בבית וצברו נקודות במרוץ לעבר מיליון! ספורט, יצירה, מטבח, מוח, בית, מצחיק, חברתי, טבע ואתגרי אפיק.",
+    url: "./race-million/",
+    icon: "🏆"
+  },
+  {
     title: "AnimalDraw",
     description: "Learn to draw animals from around the world step-by-step using the grid method. Covers mammals, birds, reptiles, sea creatures, insects and farm animals.",
     url: "./animal-draw/",

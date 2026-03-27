@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מרוץ למיליון 🏆</title>
+  <style>
+    :root {
+      --gold: #FFD700;
+      --gold2: #FF9500;
+      --bg: #08090f;
+      --card: #10121c;
+      --card-h: #181b2a;
+      --done-c: #10b981;
+      --epic-c: #a855f7;
+      --txt: #e2e8f0;
+      --dim: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--txt);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: linear-gradient(180deg, #04050a 0%, #0a0c17 100%);
+      border-bottom: 1px solid rgba(255,215,0,.15);
+      box-shadow: 0 4px 30px rgba(0,0,0,.6);
+    }
+
+    .h-inner {
+      max-width: 1200px; margin: 0 auto; padding: 14px 20px 0;
+    }
+
+    .h-top {
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.5rem; font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 0 30px rgba(255,215,0,.5);
+      white-space: nowrap; letter-spacing: -.5px;
+    }
+
+    .score-block { text-align: center; }
+
+    .score-num {
+      font-size: 2.4rem; font-weight: 900; line-height: 1;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(255,215,0,.35);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score-sub { font-size: .72rem; color: var(--dim); margin-top: 2px; }
+
+    .tasks-badge {
+      font-size: .85rem; color: #94a3b8; white-space: nowrap;
+    }
+    .tasks-badge b { color: var(--gold); }
+
+    /* progress */
+    .prog-wrap { margin: 12px 0 0; direction: ltr; }
+
+    .prog-track {
+      background: rgba(255,255,255,.06);
+      border-radius: 99px; height: 12px;
+      overflow: hidden;
+    }
+
+    .prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff6b35, var(--gold), #fffbe0);
+      border-radius: 99px;
+      transition: width .6s cubic-bezier(.34,1.56,.64,1);
+      position: relative; min-width: 2px;
+    }
+
+    .prog-fill::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      animation: shine 2.2s infinite;
+    }
+
+    @keyframes shine {
+      0%   { transform: translateX(-200%); }
+      100% { transform: translateX(500%); }
+    }
+
+    .prog-labels {
+      display: flex; justify-content: space-between;
+      font-size: .72rem; color: var(--dim);
+      padding: 5px 2px 11px;
+    }
+    .prog-pct { color: var(--gold); font-weight: 700; }
+
+    /* category strip */
+    .cat-strip {
+      border-top: 1px solid rgba(255,255,255,.05);
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .cat-strip::-webkit-scrollbar { display: none; }
+
+    .cat-row {
+      display: flex; gap: 6px;
+      padding: 9px 20px;
+      width: max-content; min-width: 100%;
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    .cat-btn {
+      padding: 6px 14px; border-radius: 99px;
+      border: 1.5px solid rgba(255,255,255,.12);
+      background: transparent; color: #94a3b8;
+      cursor: pointer; font-size: .8rem; font-weight: 600;
+      white-space: nowrap; transition: .16s;
+    }
+    .cat-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .cat-btn.active {
+      background: var(--gold); color: #000;
+      border-color: var(--gold); font-weight: 700;
+    }
+    .cat-btn.is-epic { border-color: rgba(168,85,247,.35); color: #c084fc; }
+    .cat-btn.is-epic.active { background: var(--epic-c); border-color: var(--epic-c); color: #fff; }
+
+    /* ── GRID ───────────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 14px;
+      padding: 18px 18px 30px;
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    /* ── CARD ───────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border-radius: 20px; padding: 18px;
+      border: 1.5px solid rgba(255,255,255,.06);
+      display: flex; flex-direction: column; gap: 8px;
+      position: relative; overflow: hidden;
+      transition: .2s;
+    }
+    .card:hover {
+      border-color: rgba(255,215,0,.3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.35);
+      background: var(--card-h);
+    }
+
+    /* done state */
+    .card.done {
+      opacity: .55;
+      border-color: rgba(16,185,129,.25) !important;
+    }
+    .card.done .card-emoji::after {
+      content: '✓';
+      position: absolute; top: -4px; right: -4px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--done-c);
+      color: #fff; font-size: .7rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* epic style */
+    .card.epic {
+      background: linear-gradient(135deg, #0f0c1a, #130f22);
+      border-color: rgba(168,85,247,.18) !important;
+    }
+    .card.epic:hover { border-color: rgba(168,85,247,.45) !important; }
+
+    .card-emoji {
+      font-size: 2.2rem; line-height: 1;
+      position: relative; display: inline-block;
+      width: fit-content;
+    }
+
+    .card-title {
+      font-size: .95rem; font-weight: 700; line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: .8rem; color: #64748b; line-height: 1.5; flex: 1;
+    }
+
+    .card-foot {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: 6px;
+    }
+
+    .pts-pill {
+      background: rgba(255,215,0,.08);
+      border: 1px solid rgba(255,215,0,.25);
+      color: var(--gold);
+      font-size: .78rem; font-weight: 800;
+      padding: 4px 11px; border-radius: 99px;
+    }
+    .card.epic .pts-pill {
+      background: rgba(168,85,247,.1);
+      border-color: rgba(168,85,247,.35);
+      color: #c084fc;
+    }
+
+    .btn-do {
+      padding: 6px 15px; border-radius: 99px;
+      border: 1.5px solid var(--gold);
+      background: transparent; color: var(--gold);
+      font-size: .78rem; font-weight: 700;
+      cursor: pointer; transition: .16s;
+    }
+    .btn-do:hover { background: var(--gold); color: #000; }
+
+    .card.done .btn-do {
+      border-color: rgba(16,185,129,.4);
+      color: #10b981;
+    }
+    .card.done .btn-do:hover { background: rgba(16,185,129,.15); }
+
+    .card.epic .btn-do { border-color: #c084fc; color: #c084fc; }
+    .card.epic .btn-do:hover { background: var(--epic-c); color: #fff; }
+
+    /* ── MILESTONE POPUP ────────────────────────────────── */
+    #ms-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.92); z-index: 9999;
+      align-items: center; justify-content: center;
+    }
+
+    .ms-box { text-align: center; padding: 40px 30px; max-width: 380px; }
+
+    .ms-emo {
+      font-size: 5rem; display: block;
+      margin-bottom: 14px;
+      animation: bounce .6s ease infinite alternate;
+    }
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-12px); }
+    }
+
+    .ms-pts { font-size: 3rem; font-weight: 900; color: var(--gold); line-height: 1; }
+    .ms-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+    .ms-sub { font-size: 1rem; color: #94a3b8; margin-bottom: 28px; }
+
+    .btn-ms {
+      background: var(--gold); color: #000;
+      font-weight: 900; font-size: 1.05rem;
+      border: none; padding: 14px 40px;
+      border-radius: 99px; cursor: pointer;
+      box-shadow: 0 0 30px rgba(255,215,0,.4);
+      transition: .2s;
+    }
+    .btn-ms:hover { transform: scale(1.06); }
+
+    /* ── CONFETTI ───────────────────────────────────────── */
+    #cnv {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9998;
+    }
+
+    /* ── BOTTOM ─────────────────────────────────────────── */
+    .bottom {
+      text-align: center; padding: 20px;
+    }
+    .btn-reset {
+      background: none;
+      border: 1px solid rgba(255,255,255,.08);
+      color: #475569; padding: 7px 20px;
+      border-radius: 99px; cursor: pointer;
+      font-size: .78rem; transition: .2s;
+    }
+    .btn-reset:hover { color: #94a3b8; border-color: rgba(255,255,255,.18); }
+
+    @media (max-width: 480px) {
+      .logo { font-size: 1.15rem; }
+      .score-num { font-size: 1.9rem; }
+      .grid { padding: 10px 10px 24px; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="cnv"></canvas>
+
+<header>
+  <div class="h-inner">
+    <div class="h-top">
+      <div class="logo">🏆 מרוץ למיליון</div>
+      <div class="score-block">
+        <div class="score-num" id="pts-num">0</div>
+        <div class="score-sub">מתוך 1,000,000 נקודות</div>
+      </div>
+      <div class="tasks-badge" id="tasks-badge">0 משימות</div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-track">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+      <div class="prog-labels">
+        <span id="pts-left">נותרו 1,000,000 נ׳</span>
+        <span class="prog-pct" id="prog-pct">0%</span>
+      </div>
+    </div>
+  </div>
+  <div class="cat-strip">
+    <div class="cat-row" id="cat-row"></div>
+  </div>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<div class="bottom">
+  <button class="btn-reset" onclick="confirmReset()">🔄 אפס התקדמות</button>
+</div>
+
+<div id="ms-overlay">
+  <div class="ms-box">
+    <span class="ms-emo" id="ms-emo"></span>
+    <div class="ms-pts" id="ms-pts"></div>
+    <div class="ms-name" id="ms-name"></div>
+    <div class="ms-sub" id="ms-sub"></div>
+    <button class="btn-ms" onclick="closeMilestone()">קדימה! 🚀</button>
+  </div>
+</div>
+
+<script>
+/* ── DATA ─────────────────────────────────────────────── */
+const CATS = [
+  { id: 'all',     label: '🌍 הכל' },
+  { id: 'sport',   label: '🏃 ספורט' },
+  { id: 'create',  label: '🎨 יצירה' },
+  { id: 'kitchen', label: '🍳 מטבח' },
+  { id: 'brain',   label: '🧠 מוח' },
+  { id: 'home',    label: '🏡 בית' },
+  { id: 'silly',   label: '😂 מצחיק' },
+  { id: 'social',  label: '❤️ חברתי' },
+  { id: 'nature',  label: '🌿 טבע' },
+  { id: 'epic',    label: '⚡ אפיק', epic: true },
+];
+
+const TASKS = [
+  // ── ספורט ──────────────────────────────────────────────
+  { id:1,  cat:'sport',   e:'💪', t:'100 ג׳אמפינג ג׳קס',       d:'לעשות 100 קפיצות ג׳אמפינג ג׳קס ברצף בלי לעצור', pts:2000 },
+  { id:2,  cat:'sport',   e:'🧘', t:'פלאנק 2 דקות',            d:'להחזיק עמדת פלאנק רצופה 2 דקות שלמות', pts:5000 },
+  { id:3,  cat:'sport',   e:'💪', t:'50 שכיבות סמיכה',         d:'לעשות 50 שכיבות סמיכה ביום אחד', pts:8000 },
+  { id:4,  cat:'sport',   e:'🪢', t:'קפיצת חבל 200 פעם',       d:'לקפוץ חבל 200 קפיצות ברצף בלי להיתקל', pts:10000 },
+  { id:5,  cat:'sport',   e:'🏃', t:'ריצת 5 ק"מ',              d:'לרוץ 5 קילומטר ברצף בלי לעצור', pts:20000 },
+  { id:6,  cat:'sport',   e:'🤸', t:'עמידת ראש 30 שניות',      d:'לעמוד על הראש (מול קיר) 30 שניות לפחות', pts:15000 },
+  { id:7,  cat:'sport',   e:'🏠', t:'20 ריצות מדרגות',         d:'לרוץ למעלה ולמטה במדרגות 20 פעמים ברצף', pts:3000 },
+  { id:8,  cat:'sport',   e:'⭕', t:'הולה הופ 3 דקות',         d:'לסובב הולה הופ 3 דקות מלאות', pts:4000 },
+  { id:9,  cat:'sport',   e:'🌀', t:'20 סיבובים ולא ליפול',    d:'להסתובב 20 סיבובים ולהצליח לעמוד יציב', pts:1000 },
+  { id:10, cat:'sport',   e:'👣', t:'10,000 צעדים ביום',       d:'ללכת 10,000 צעדים ביום אחד (מד צעדים)', pts:12000 },
+
+  // ── יצירה ──────────────────────────────────────────────
+  { id:11, cat:'create',  e:'🎨', t:'פורטרט משפחתי',           d:'לצייר פורטרט של מישהו מהמשפחה שניתן לזהות אותו', pts:5000 },
+  { id:12, cat:'create',  e:'🏗️', t:'מגדל מטר ממצרים',        d:'לבנות מגדל ממצרים ביתיים שמגיע לגובה מטר', pts:3000 },
+  { id:13, cat:'create',  e:'📝', t:'שיר מקורי',              d:'לכתוב שיר מקורי של 12 שורות לפחות — עם חריזה', pts:8000 },
+  { id:14, cat:'create',  e:'✈️', t:'מטוס נייר אלוף',          d:'לקפל מטוס נייר שיעוף 5 מטרים לפחות', pts:2000 },
+  { id:15, cat:'create',  e:'🃏', t:'בית קלפים — 3 קומות',     d:'לבנות בית קלפים עם 3 קומות לפחות', pts:10000 },
+  { id:16, cat:'create',  e:'🎬', t:'לצלם סרטון',              d:'לצלם ולערוך סרטון מקורי של 2 דקות לפחות', pts:25000 },
+  { id:17, cat:'create',  e:'♻️', t:'אמנות ממחזור',            d:'להכין יצירת אמנות אמיתית מחומרים שאחרת היו בפח', pts:6000 },
+  { id:18, cat:'create',  e:'📖', t:'סיפור קצר',               d:'לכתוב סיפור מקורי עם דמויות ועלילה — 2 עמודים', pts:15000 },
+  { id:19, cat:'create',  e:'🏠', t:'תכנון חדר חלומות',        d:'לתכנן ולצייר את חדר החלומות שלך בפרטים רבים', pts:5000 },
+  { id:20, cat:'create',  e:'🦢', t:'אוריגמי מורכב',           d:'ללמוד וליצור מודל אוריגמי מורכב: דרקון, כלב, פרח', pts:8000 },
+
+  // ── מטבח ───────────────────────────────────────────────
+  { id:21, cat:'kitchen', e:'🎂', t:'עוגה מאפס',               d:'לאפות עוגה מאפס — בלי תערובת מוכנה מהחנות', pts:15000 },
+  { id:22, cat:'kitchen', e:'🍕', t:'פיצה ביתית',              d:'להכין פיצה ביתית כולל הבצק מאפס', pts:12000 },
+  { id:23, cat:'kitchen', e:'🍳', t:'ארוחת בוקר למשפחה',       d:'להכין ארוחת בוקר מלאה ומגוונת לכל בני הבית', pts:8000 },
+  { id:24, cat:'kitchen', e:'🥤', t:'שייק 5 מרכיבים',          d:'להכין שייק עם לפחות 5 מרכיבים שונים', pts:3000 },
+  { id:25, cat:'kitchen', e:'🍦', t:'גלידה ביתית',             d:'להכין גלידה ביתית מאפס בטעם שתבחרו', pts:20000 },
+  { id:26, cat:'kitchen', e:'🍪', t:'24 עוגיות',               d:'לאפות 24 עוגיות ביום אחד', pts:10000 },
+  { id:27, cat:'kitchen', e:'🍝', t:'פסטה מאפס',               d:'להכין פסטה ביתית כולל הבצק + רוטב ביתי', pts:25000 },
+  { id:28, cat:'kitchen', e:'🍲', t:'ארוחה של שעה',            d:'לבשל ארוחה שלוקחת מעל שעה מהתחלה עד סוף', pts:20000 },
+
+  // ── מוח ────────────────────────────────────────────────
+  { id:29, cat:'brain',   e:'🌍', t:'20 בירות של מדינות',      d:'לשנן 20 בירות של מדינות שונות ולהוכיח', pts:10000 },
+  { id:30, cat:'brain',   e:'🃏', t:'קסם קלפים',               d:'ללמוד קסם קלפים ולהצליח להדהים מישהו', pts:8000 },
+  { id:31, cat:'brain',   e:'📜', t:'שיר שלם בעל פה',         d:'לשנן שיר שלם של 16+ שורות ולהגיד ללא עזרה', pts:12000 },
+  { id:32, cat:'brain',   e:'🧊', t:'קובייה הונגרית',          d:'ללמוד לפתור קובייה הונגרית מאפס — מכל מצב', pts:50000 },
+  { id:33, cat:'brain',   e:'🧩', t:'פאזל 500 חלקים',          d:'לסיים פאזל של לפחות 500 חלקים', pts:20000 },
+  { id:34, cat:'brain',   e:'🔬', t:'30 יסודות כימיים',        d:'לשנן 30 יסודות מהטבלה המחזורית עם הסמל', pts:20000 },
+  { id:35, cat:'brain',   e:'🗺️', t:'שלום ב-20 שפות',         d:'לדעת להגיד שלום ב-20 שפות שונות ברצף', pts:5000 },
+  { id:36, cat:'brain',   e:'🔢', t:'50 ספרות של π',           d:'לשנן 50 ספרות של המספר פאי ולהגיד ברצף', pts:25000 },
+  { id:37, cat:'brain',   e:'♟️', t:'5 משחקי שח-מט',          d:'לשחק 5 משחקי שח-מט שלמים', pts:10000 },
+
+  // ── בית ────────────────────────────────────────────────
+  { id:38, cat:'home',    e:'🛏️', t:'חדר מסודר לגמרי',         d:'לנקות ולסדר את החדר לגמרי — כולל מתחת למיטה', pts:8000 },
+  { id:39, cat:'home',    e:'🍽️', t:'כל הכלים',                d:'לשטוף ולנגב את כל הכלים שבבית', pts:3000 },
+  { id:40, cat:'home',    e:'🚿', t:'ניקוי חדר אמבטיה',        d:'לנקות את כל חדר האמבטיה עד שיבריק', pts:5000 },
+  { id:41, cat:'home',    e:'👕', t:'ארון מסודר',               d:'לסדר ארון בגדים שלם — לקפל, לתלות, למיין צבעים', pts:6000 },
+  { id:42, cat:'home',    e:'🌀', t:'שאיבת אבק בכל הבית',      d:'לשאוב אבק בכל חדרי הבית', pts:4000 },
+  { id:43, cat:'home',    e:'🪟', t:'ניקוי כל החלונות',        d:'לנקות את כל החלונות בבית מבפנים', pts:7000 },
+  { id:44, cat:'home',    e:'🎁', t:'תרומת בגדים',             d:'למיין בגדים ישנים ולמסור לתרומה — שקית מלאה', pts:10000 },
+
+  // ── מצחיק ──────────────────────────────────────────────
+  { id:45, cat:'silly',   e:'🎭', t:'לדבר בלהגה מצחיקה שעה',  d:'לדבר בלהגה מצחיקה (בריטי, עתיק, רוסי) שעה שלמה', pts:5000 },
+  { id:46, cat:'silly',   e:'🥢', t:'ארוחה עם מקלות אכילה',   d:'לאכול ארוחה שלמה עם מקלות אכילה בלבד', pts:2000 },
+  { id:47, cat:'silly',   e:'🤚', t:'יד לא דומיננטית',         d:'לעשות הכל עם היד הלא דומיננטית 30 דקות', pts:3000 },
+  { id:48, cat:'silly',   e:'😂', t:'להצחיק 10 פעמים ברצף',   d:'להצחיק בן משפחה 10 פעמים שונות ברצף', pts:4000 },
+  { id:49, cat:'silly',   e:'💃', t:'מטלות בריקוד',            d:'לעשות את כל המטלות הביתיות שלך בריקוד ושיר', pts:3000 },
+  { id:50, cat:'silly',   e:'📢', t:'פרשן חיים שעה',           d:'לפרש בקול רם כל פעולה שאתה עושה במשך שעה', pts:4000 },
+  { id:51, cat:'silly',   e:'🦸', t:'גלימת גיבור שעתיים',      d:'ללבוש גלימה (מגבת / ממחטה) ולא להסיר 2 שעות', pts:2000 },
+  { id:52, cat:'silly',   e:'🎬', t:'5 חיקויים מוצלחים',      d:'לחקות 5 אנשים שונים עד שיזהו מי הם', pts:3000 },
+
+  // ── חברתי ──────────────────────────────────────────────
+  { id:53, cat:'social',  e:'📬', t:'מכתבים מהלב',             d:'לכתוב מכתבים מרגשים ואמיתיים ל-3 בני משפחה', pts:8000 },
+  { id:54, cat:'social',  e:'📞', t:'30 דקות עם סבא/סבתא',    d:'להתקשר לסבא או סבתא ולשוחח לפחות 30 דקות', pts:10000 },
+  { id:55, cat:'social',  e:'👨‍🏫', t:'ללמד משהו חדש',          d:'ללמד אח, אחות או חבר משהו שלמדת — לפחות 20 דקות', pts:6000 },
+  { id:56, cat:'social',  e:'🎲', t:'ערב משחקים משפחתי',       d:'לארגן ערב משחקים משפחתי עם לפחות 3 משחקים', pts:8000 },
+  { id:57, cat:'social',  e:'🎁', t:'מתנה בעבודת יד',          d:'להכין מתנה ביד מאפס לאדם שאוהבים אותו', pts:12000 },
+  { id:58, cat:'social',  e:'🤝', t:'עזרה מיוזמה',             d:'לעזור למישהו בבית בלי שיבקש ממך', pts:5000 },
+  { id:59, cat:'social',  e:'📷', t:'אלבום משפחתי',            d:'לאסוף תמונות וליצור אלבום משפחתי — דיגיטלי או פיזי', pts:20000 },
+
+  // ── טבע ────────────────────────────────────────────────
+  { id:60, cat:'nature',  e:'🌱', t:'לגדל צמח שבוע',           d:'לשתול משהו ולטפל בו מדי יום במשך שבוע שלם', pts:15000 },
+  { id:61, cat:'nature',  e:'🥾', t:'טיול 5 ק"מ',              d:'לצאת לטיול רגלי של 5 קילומטר לפחות', pts:10000 },
+  { id:62, cat:'nature',  e:'🍂', t:'לזהות 10 סוגי עלים',      d:'לאסוף ולזהות 10 סוגים שונים של עלים', pts:3000 },
+  { id:63, cat:'nature',  e:'🌅', t:'זריחה או שקיעה בלי טלפון', d:'לצפות בזריחה או שקיעה מהתחלה עד הסוף — בלי טלפון', pts:5000 },
+  { id:64, cat:'nature',  e:'🪨', t:'50 אבנים/קונכיות',        d:'לאסוף 50 אבנים או קונכיות ולמיין אותן', pts:3000 },
+  { id:65, cat:'nature',  e:'🐾', t:'לתעד 10 חיות ביום',       d:'לצלם או לצייר 10 חיות שונות שרואים ביום אחד', pts:8000 },
+
+  // ── אפיק (EPIC) ─────────────────────────────────────────
+  { id:66, cat:'epic',    e:'🎸', t:'ללמוד מיומנות חדשה לגמרי', d:'לסרוג, לנגן אקורד, לאפות לחם, ליוגה — עד שאתה ממש יודע', pts:75000 },
+  { id:67, cat:'epic',    e:'📚', t:'ספר שלם 200+ עמודים',     d:'לקרוא ספר שלם של לפחות 200 עמודים מהתחלה ועד הסוף', pts:50000 },
+  { id:68, cat:'epic',    e:'🎲', t:'המצאת משחק קופסא',        d:'להמציא ולייצר משחק קופסא מקורי עם כללים, לוח ואביזרים', pts:60000 },
+  { id:69, cat:'epic',    e:'🏅', t:'אתגר 30 יום',             d:'לבחור אתגר ולעשות אותו כל יום — 30 יום ברצף', pts:150000 },
+  { id:70, cat:'epic',    e:'🏃‍♂️', t:'חצי מרתון — 21 ק"מ',   d:'לרוץ 21 קילומטר ברצף', pts:100000 },
+  { id:71, cat:'epic',    e:'🎥', t:'סרטון יוטיוב מוגמר',      d:'לצלם, לערוך ולפרסם סרטון יוטיוב מקורי ומלוטש', pts:80000 },
+  { id:72, cat:'epic',    e:'💻', t:'לבנות אתר/אפליקציה',      d:'ללמוד ולבנות אתר אינטרנט או אפליקציה פשוטה מאפס', pts:100000 },
+  { id:73, cat:'epic',    e:'📵', t:'שבוע ללא מסכים',          d:'לעבור שבוע שלם ללא מסכים — חוץ משיעורים', pts:200000 },
+];
+
+const MILESTONES = [
+  { pts:100000,  emo:'⭐', pts_lbl:'100,000',  name:'הגעתם ל-100K!',    sub:'התחלה מרשימה — המשיכו לרוץ!' },
+  { pts:250000,  emo:'🌟', pts_lbl:'250,000',  name:'רבע מיליון!',      sub:'אתם בדרך הנכונה — יאללה!' },
+  { pts:500000,  emo:'💫', pts_lbl:'500,000',  name:'חצי מיליון!',      sub:'אמצע הדרך — אל תעצרו!' },
+  { pts:750000,  emo:'🔥', pts_lbl:'750,000',  name:'75% — כמעט שם!',   sub:'עוד רבע ומגיעים!' },
+  { pts:1000000, emo:'🏆', pts_lbl:'1,000,000',name:'מיליון!!! 🎉',      sub:'עשיתם את זה! אלופים מוחלטים!' },
+];
+
+/* ── STATE ──────────────────────────────────────────────── */
+const KEY_DONE = 'rm-done-v1';
+const KEY_MS   = 'rm-ms-v1';
+
+let done     = new Set(JSON.parse(localStorage.getItem(KEY_DONE) || '[]'));
+let shownMs  = new Set(JSON.parse(localStorage.getItem(KEY_MS)  || '[]'));
+let activeCat = 'all';
+let animPts  = 0;   // current displayed value (for counter animation)
+
+/* ── UTILS ──────────────────────────────────────────────── */
+function fmt(n) { return n.toLocaleString('he-IL'); }
+function getTotal() { return TASKS.filter(t => done.has(t.id)).reduce((s,t) => s + t.pts, 0); }
+function save() {
+  localStorage.setItem(KEY_DONE, JSON.stringify([...done]));
+  localStorage.setItem(KEY_MS,   JSON.stringify([...shownMs]));
+}
+
+/* ── HEADER UPDATE ──────────────────────────────────────── */
+let countAnim = null;
+function updateHeader(prevPts) {
+  const total = getTotal();
+  const pct   = Math.min(100, total / 10000);    // 1M = 100%
+
+  // animate counter
+  if (countAnim) cancelAnimationFrame(countAnim);
+  const from = prevPts ?? total;
+  const start = performance.now();
+  const dur = 700;
+  (function step(now) {
+    const p = Math.min(1, (now - start) / dur);
+    const ease = 1 - Math.pow(1 - p, 3);
+    animPts = Math.round(from + (total - from) * ease);
+    document.getElementById('pts-num').textContent = fmt(animPts);
+    if (p < 1) countAnim = requestAnimationFrame(step);
+    else document.getElementById('pts-num').textContent = fmt(total);
+  })(start);
+
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent  = pct.toFixed(1) + '%';
+  const left = Math.max(0, 1000000 - total);
+  document.getElementById('pts-left').textContent  =
+    left === 0 ? '🎉 הגעתם למיליון!' : 'נותרו ' + fmt(left) + ' נ׳';
+
+  const doneCount = done.size;
+  document.getElementById('tasks-badge').innerHTML =
+    `<b>${doneCount}</b> מתוך ${TASKS.length} משימות`;
+}
+
+/* ── CATEGORIES ─────────────────────────────────────────── */
+function renderCats() {
+  const row = document.getElementById('cat-row');
+  row.innerHTML = '';
+  CATS.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (c.id === activeCat ? ' active' : '') + (c.epic ? ' is-epic' : '');
+    const count  = c.id === 'all' ? TASKS.length : TASKS.filter(t => t.cat === c.id).length;
+    const dcount = c.id === 'all' ? done.size    : TASKS.filter(t => t.cat === c.id && done.has(t.id)).length;
+    btn.textContent = `${c.label} (${dcount}/${count})`;
+    btn.onclick = () => { activeCat = c.id; renderCats(); renderGrid(); };
+    row.appendChild(btn);
+  });
+}
+
+/* ── GRID ────────────────────────────────────────────────── */
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const list = activeCat === 'all' ? TASKS : TASKS.filter(t => t.cat === activeCat);
+  list.forEach(t => {
+    const isDone = done.has(t.id);
+    const isEpic = t.cat === 'epic';
+    const card = document.createElement('div');
+    card.className = 'card' + (isDone ? ' done' : '') + (isEpic ? ' epic' : '');
+    card.innerHTML = `
+      <div class="card-emoji">${t.e}</div>
+      <div class="card-title">${t.t}</div>
+      <div class="card-desc">${t.d}</div>
+      <div class="card-foot">
+        <div class="pts-pill">+${fmt(t.pts)} נ׳</div>
+        <button class="btn-do" onclick="toggleTask(${t.id}, this)">
+          ${isDone ? '✓ בוצע' : 'בצעתי! ✓'}
+        </button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ── TOGGLE TASK ─────────────────────────────────────────── */
+function toggleTask(id, btn) {
+  const prev = getTotal();
+  if (done.has(id)) {
+    done.delete(id);
+  } else {
+    done.add(id);
+    const task = TASKS.find(t => t.id === id);
+    flyPoints(task.pts, btn);
+  }
+  save();
+  const next = getTotal();
+  updateHeader(prev);
+  checkMilestones(prev, next);
+  renderCats();
+  // update just this card visually
+  const card = btn.closest('.card');
+  const isDone = done.has(id);
+  card.classList.toggle('done', isDone);
+  btn.textContent = isDone ? '✓ בוצע' : 'בצעתי! ✓';
+}
+
+/* ── FLY POINTS ──────────────────────────────────────────── */
+function flyPoints(pts, btn) {
+  const rect = btn.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.textContent = '+' + fmt(pts);
+  Object.assign(el.style, {
+    position: 'fixed',
+    left: rect.left + rect.width / 2 + 'px',
+    top:  rect.top + 'px',
+    transform: 'translateX(-50%)',
+    color: '#FFD700',
+    fontWeight: '900',
+    fontSize: '1.4rem',
+    pointerEvents: 'none',
+    zIndex: '9997',
+    textShadow: '0 0 12px rgba(255,215,0,.6)',
+  });
+  document.body.appendChild(el);
+  el.animate([
+    { opacity: 1, transform: 'translateX(-50%) translateY(0)'    },
+    { opacity: 0, transform: 'translateX(-50%) translateY(-70px)' },
+  ], { duration: 900, easing: 'ease-out' }).onfinish = () => el.remove();
+}
+
+/* ── MILESTONES ──────────────────────────────────────────── */
+function checkMilestones(prev, next) {
+  for (const ms of MILESTONES) {
+    if (!shownMs.has(ms.pts) && prev < ms.pts && next >= ms.pts) {
+      shownMs.add(ms.pts);
+      save();
+      showMilestone(ms);
+      launchConfetti();
+      return;
+    }
+  }
+}
+
+function showMilestone(ms) {
+  document.getElementById('ms-emo').textContent  = ms.emo;
+  document.getElementById('ms-pts').textContent  = ms.pts_lbl;
+  document.getElementById('ms-name').textContent = ms.name;
+  document.getElementById('ms-sub').textContent  = ms.sub;
+  document.getElementById('ms-overlay').style.display = 'flex';
+}
+
+function closeMilestone() {
+  document.getElementById('ms-overlay').style.display = 'none';
+  stopConfetti();
+}
+
+/* ── CONFETTI ────────────────────────────────────────────── */
+const cnv = document.getElementById('cnv');
+const cx  = cnv.getContext('2d');
+let particles = [];
+let confAnim  = null;
+const COLORS  = ['#FFD700','#FF6B35','#4ECDC4','#FF2D55','#00C4FF','#ffffff','#c084fc'];
+
+function launchConfetti() {
+  cnv.width  = window.innerWidth;
+  cnv.height = window.innerHeight;
+  particles  = Array.from({ length: 180 }, () => ({
+    x: Math.random() * cnv.width,
+    y: Math.random() * -cnv.height * .6,
+    w: Math.random() * 10 + 5,
+    h: Math.random() * 5 + 3,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    vy: Math.random() * 3 + 2,
+    vx: (Math.random() - .5) * 2,
+    rot: Math.random() * 360,
+    rs: (Math.random() - .5) * 6,
+  }));
+  animConfetti();
+}
+
+function animConfetti() {
+  cx.clearRect(0, 0, cnv.width, cnv.height);
+  let alive = false;
+  particles.forEach(p => {
+    p.y   += p.vy;
+    p.x   += p.vx;
+    p.rot += p.rs;
+    if (p.y < cnv.height + 20) alive = true;
+    cx.save();
+    cx.translate(p.x, p.y);
+    cx.rotate(p.rot * Math.PI / 180);
+    cx.fillStyle = p.color;
+    cx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    cx.restore();
+  });
+  if (alive) confAnim = requestAnimationFrame(animConfetti);
+  else stopConfetti();
+}
+
+function stopConfetti() {
+  if (confAnim) cancelAnimationFrame(confAnim);
+  cx.clearRect(0, 0, cnv.width, cnv.height);
+}
+
+/* ── RESET ───────────────────────────────────────────────── */
+function confirmReset() {
+  if (confirm('לאפס את כל ההתקדמות? ✗')) {
+    done.clear(); shownMs.clear();
+    localStorage.removeItem(KEY_DONE);
+    localStorage.removeItem(KEY_MS);
+    updateHeader(0);
+    renderCats();
+    renderGrid();
+  }
+}
+
+/* ── INIT ────────────────────────────────────────────────── */
+renderCats();
+renderGrid();
+updateHeader();
+</script>
+</body>
+</html>
