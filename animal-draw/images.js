@@ -1,5 +1,5 @@
 // Animal cartoon images — Twemoji SVG emoji + Wikimedia Commons SVG illustrations
-// Starfish and Dragonfly keep Wikipedia photos (no suitable SVG found)
+// All animals use SVG — Twemoji emoji + Wikimedia Commons illustrations
 const T = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/";
 
 const IMAGE_URLS = {
@@ -51,11 +51,11 @@ const IMAGE_URLS = {
   "Seahorse":      "https://upload.wikimedia.org/wikipedia/commons/f/f0/Seahorse-no-square.svg",
   "Crab":          T + "1f980.svg",
   "Clownfish":     T + "1f420.svg",
-  "Starfish":      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Starfish_montage.png/330px-Starfish_montage.png",
+  "Starfish":      "https://upload.wikimedia.org/wikipedia/commons/e/e8/Starfish_%28PSF%29.svg",
   // ── Insects ───────────────────────────────────────────────────────────────
   "Butterfly":     T + "1f98b.svg",
   "Bee":           T + "1f41d.svg",
-  "Dragonfly":     "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Gemeine_Heidelibelle_%28Sympetrum_vulgatum%29_4.jpg/330px-Gemeine_Heidelibelle_%28Sympetrum_vulgatum%29_4.jpg",
+  "Dragonfly":     "https://upload.wikimedia.org/wikipedia/commons/6/63/Dragonfly_2_%28PSF%29.svg",
   "Ladybug":       T + "1f41e.svg",
   "Ant":           T + "1f41c.svg",
   // ── Farm ──────────────────────────────────────────────────────────────────
