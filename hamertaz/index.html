@@ -51,7 +51,7 @@
 
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #ff8c00, #ffd700, #ff6b35, #ff4500, #ffb300, #ff8c00);
+      background: linear-gradient(135deg, #1a0042, #0a0070, #001268, #320060, #580018, #1a0042);
       background-size: 400% 400%;
       animation: bgGradientShift 16s ease infinite;
       color: var(--txt);
@@ -59,14 +59,14 @@
       overflow-x: hidden;
     }
 
-    /* subtle warm shimmer */
+    /* colour orbs */
     body::before {
       content: '';
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
-        radial-gradient(ellipse 55% 45% at 20% 20%, rgba(255,255,200,.18) 0%, transparent 55%),
-        radial-gradient(ellipse 45% 55% at 80% 80%, rgba(255,150,0,.15)   0%, transparent 55%),
-        radial-gradient(ellipse 40% 35% at 55% 50%, rgba(255,255,255,.08) 0%, transparent 50%);
+        radial-gradient(ellipse 55% 45% at 15% 20%, rgba(180,60,255,.2)  0%, transparent 55%),
+        radial-gradient(ellipse 50% 55% at 85% 80%, rgba(60,100,255,.18) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 35% at 55% 50%, rgba(255,40,120,.12) 0%, transparent 50%);
       animation: bgDrift 14s ease-in-out infinite alternate;
     }
 
@@ -174,18 +174,20 @@
 
     .team-row {
       display: flex; align-items: center; gap: 14px;
-      background: rgba(50,0,110,.75);
-      border: 2px solid rgba(180,100,255,.35);
+      background: rgba(255,248,235,.92);
+      border: 2px solid rgba(255,255,255,.7);
       border-radius: var(--rad); padding: 14px 18px;
       margin-bottom: 10px; transition: .25s;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      box-shadow: 0 4px 20px rgba(0,0,0,.3);
     }
     .team-row:focus-within {
-      border-color: var(--team-border, rgba(255,107,53,.7));
-      background: rgba(70,0,140,.82);
-      box-shadow: 0 0 24px var(--team-s, rgba(255,107,53,.3));
+      border-color: var(--team-border, rgba(255,107,53,.9));
+      background: rgba(255,255,255,.97);
+      box-shadow: 0 0 28px var(--team-s, rgba(255,107,53,.4));
     }
+
+    .team-input { color: #1a0042 !important; }
+    .team-input::placeholder { color: #9980bb !important; }
 
     .team-icon-big { font-size: 2.2rem; flex-shrink: 0; }
 
@@ -201,9 +203,9 @@
     ═══════════════════════════════════════ */
     #g-header {
       position: sticky; top: 0; z-index: 50;
-      background: rgba(60,0,120,.55);
+      background: rgba(10,0,50,.75);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(200,100,255,.3);
+      border-bottom: 1px solid rgba(180,100,255,.3);
       padding: 10px 16px;
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
     }
