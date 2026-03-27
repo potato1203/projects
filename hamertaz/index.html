@@ -51,22 +51,22 @@
 
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #3a006f, #1a0099, #0047c2, #7200a8, #c40062, #3a006f);
+      background: linear-gradient(135deg, #ff8c00, #ffd700, #ff6b35, #ff4500, #ffb300, #ff8c00);
       background-size: 400% 400%;
-      animation: bgGradientShift 18s ease infinite;
+      animation: bgGradientShift 16s ease infinite;
       color: var(--txt);
       min-height: 100dvh;
       overflow-x: hidden;
     }
 
-    /* shimmer overlay */
+    /* subtle warm shimmer */
     body::before {
       content: '';
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
-        radial-gradient(ellipse 60% 50% at 20% 25%, rgba(255,255,255,.07) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 60% at 80% 75%, rgba(255,255,255,.06) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 35% at 55% 50%, rgba(255,220,255,.05) 0%, transparent 50%);
+        radial-gradient(ellipse 55% 45% at 20% 20%, rgba(255,255,200,.18) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 55% at 80% 80%, rgba(255,150,0,.15)   0%, transparent 55%),
+        radial-gradient(ellipse 40% 35% at 55% 50%, rgba(255,255,255,.08) 0%, transparent 50%);
       animation: bgDrift 14s ease-in-out infinite alternate;
     }
 
@@ -200,9 +200,9 @@
     ═══════════════════════════════════════ */
     #g-header {
       position: sticky; top: 0; z-index: 50;
-      background: rgba(255,255,255,.12);
+      background: rgba(60,0,120,.55);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,.2);
+      border-bottom: 1px solid rgba(200,100,255,.3);
       padding: 10px 16px;
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
     }
@@ -400,7 +400,7 @@
     ═══════════════════════════════════════ */
     .overlay {
       display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(60,0,100,.55);
+      background: rgba(40,0,100,.65);
       align-items: center; justify-content: center; flex-direction: column;
       backdrop-filter: blur(14px);
     }
