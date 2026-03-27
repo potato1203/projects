@@ -1,5 +1,5 @@
-// Animal cartoon images — Twemoji SVG emoji for most animals
-// (12 without a dedicated emoji keep their Wikipedia photo and get AI background removal)
+// Animal cartoon images — Twemoji SVG emoji + Wikimedia Commons SVG illustrations
+// Starfish and Dragonfly keep Wikipedia photos (no suitable SVG found)
 const T = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/";
 
 const IMAGE_URLS = {
@@ -10,7 +10,7 @@ const IMAGE_URLS = {
   "Giraffe":       T + "1f992.svg",
   "Zebra":         T + "1f993.svg",
   "Leopard":       T + "1f406.svg",
-  "Cheetah":       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Male_cheetah_facing_left_in_South_Africa.jpg/330px-Male_cheetah_facing_left_in_South_Africa.jpg",
+  "Cheetah":       "https://upload.wikimedia.org/wikipedia/commons/4/4b/Creative-Tail-Animal-cheetah.svg",
   "Bear":          T + "1f43b.svg",
   "Wolf":          T + "1f43a.svg",
   "Fox":           T + "1f98a.svg",
@@ -31,24 +31,24 @@ const IMAGE_URLS = {
   "Flamingo":      T + "1f9a9.svg",
   "Peacock":       T + "1f99a.svg",
   "Owl":           T + "1f989.svg",
-  "Toucan":        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Toucans_%28Ramphastidae%29.jpg/330px-Toucans_%28Ramphastidae%29.jpg",
+  "Toucan":        "https://upload.wikimedia.org/wikipedia/commons/5/56/Toucan_cartoon.svg",
   "Swan":          T + "1f9a2.svg",
-  "Hummingbird":   "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Trinidad_and_Tobago_hummingbirds_composite.jpg/330px-Trinidad_and_Tobago_hummingbirds_composite.jpg",
-  "Ostrich":       "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Struthio_Diversity.jpg/330px-Struthio_Diversity.jpg",
+  "Hummingbird":   "https://upload.wikimedia.org/wikipedia/commons/7/71/Hummingbird_-_Delapouite_-_game-icons.svg",
+  "Ostrich":       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Ostrich_-_Delapouite_-_game-icons.svg",
   // ── Reptiles ──────────────────────────────────────────────────────────────
   "Crocodile":     T + "1f40a.svg",
   "Snake":         T + "1f40d.svg",
   "Turtle":        T + "1f422.svg",
-  "Chameleon":     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Chamaeleonidae-01.jpg/330px-Chamaeleonidae-01.jpg",
-  "Iguana":        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Green_Iguana_In_Florida.jpg/330px-Green_Iguana_In_Florida.jpg",
-  "Komodo Dragon": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/202306_Varanus_komodoensis.jpg/330px-202306_Varanus_komodoensis.jpg",
+  "Chameleon":     "https://upload.wikimedia.org/wikipedia/commons/8/83/Chameleon_illustration.svg",
+  "Iguana":        T + "1f98e.svg",
+  "Komodo Dragon": "https://upload.wikimedia.org/wikipedia/commons/2/29/Komodo-dragon-animal-0035620.svg",
   // ── Sea ───────────────────────────────────────────────────────────────────
   "Dolphin":       T + "1f42c.svg",
   "Shark":         T + "1f988.svg",
   "Blue Whale":    T + "1f40b.svg",
   "Octopus":       T + "1f419.svg",
-  "Jellyfish":     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Jelly_cc11.jpg/330px-Jelly_cc11.jpg",
-  "Seahorse":      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Hippocampus_hippocampus_%28on_Ascophyllum_nodosum%29.jpg/330px-Hippocampus_hippocampus_%28on_Ascophyllum_nodosum%29.jpg",
+  "Jellyfish":     "https://upload.wikimedia.org/wikipedia/commons/f/fe/Cannonball_jellyfish_%281261028%29_-_The_Noun_Project.svg",
+  "Seahorse":      "https://upload.wikimedia.org/wikipedia/commons/f/f0/Seahorse-no-square.svg",
   "Crab":          T + "1f980.svg",
   "Clownfish":     T + "1f420.svg",
   "Starfish":      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Starfish_montage.png/330px-Starfish_montage.png",
@@ -66,5 +66,5 @@ const IMAGE_URLS = {
   "Sheep":         T + "1f411.svg",
   "Goat":          T + "1f410.svg",
   "Duck":          T + "1f986.svg",
-  "Donkey":        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Donkey_in_Clovelly%2C_North_Devon%2C_England.jpg/330px-Donkey_in_Clovelly%2C_North_Devon%2C_England.jpg",
+  "Donkey":        "https://upload.wikimedia.org/wikipedia/commons/2/21/Donkey_cartoon_04.svg",
 };
