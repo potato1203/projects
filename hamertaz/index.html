@@ -10,17 +10,35 @@
        BASE
     ═══════════════════════════════════════ */
     :root {
-      --bg:     #08050f;
-      --card:   #12102a;
+      --bg:     #0d0520;
       --gold:   #FFD700;
       --gold2:  #FF9500;
+      --pink:   #ff6b9d;
+      --cyan:   #00d4ff;
+      --purp:   #b24bff;
+      --lime:   #00e676;
       --txt:    #f1f5f9;
-      --dim:    #64748b;
-      --green:  #22c55e;
-      --red:    #ef4444;
+      --dim:    #94a3b8;
+      --green:  #00e676;
+      --red:    #ff4757;
       --rad:    22px;
       --team:   #FF6B35;
       --team-s: rgba(255,107,53,.3);
+    }
+
+    @keyframes rainbowShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes bgDrift {
+      0%   { transform: scale(1)    rotate(0deg);   opacity: .75; }
+      50%  { transform: scale(1.12) rotate(4deg);   opacity: 1;   }
+      100% { transform: scale(1)    rotate(-2deg);  opacity: .8;  }
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -33,13 +51,17 @@
       overflow-x: hidden;
     }
 
-    /* starfield */
+    /* animated colour-orb background */
     body::before {
       content: '';
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,.55) 1px, transparent 1px);
-      background-size: 28px 28px;
-      opacity: .04;
+      background:
+        radial-gradient(ellipse 55% 45% at 15% 20%, rgba(255,60,150,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 55% at 85% 80%, rgba(60,160,255,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 40% at 50% 50%, rgba(170,60,255,.15) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 35% at 10% 80%, rgba(0,230,118,.14)  0%, transparent 55%),
+        radial-gradient(ellipse 35% 45% at 88% 15%, rgba(255,180,60,.14)  0%, transparent 50%);
+      animation: bgDrift 12s ease-in-out infinite alternate;
     }
 
     .screen {
@@ -54,18 +76,29 @@
       display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
 
+    /* rainbow top bar on every screen */
+    .screen::before {
+      content: '';
+      display: block;
+      width: 100%; height: 5px;
+      background: linear-gradient(90deg, #ff6b6b, #ffd93d, #00d4ff, #b24bff, #ff6b9d, #ff6b6b);
+      background-size: 300% 100%;
+      animation: rainbowShift 4s linear infinite;
+      flex-shrink: 0;
+    }
+
     /* ═══════════════════════════════════════
        TYPOGRAPHY
     ═══════════════════════════════════════ */
     .logo-title {
       font-size: clamp(2rem, 8vw, 3rem);
       font-weight: 900; color: var(--gold);
-      text-shadow: 0 0 40px rgba(255,215,0,.4);
+      text-shadow: 0 0 40px rgba(255,215,0,.5);
       text-align: center; line-height: 1.1;
     }
     .logo-sub {
       font-size: clamp(1.1rem, 4vw, 1.5rem);
-      color: #94a3b8; text-align: center; margin-top: 4px;
+      color: var(--dim); text-align: center; margin-top: 4px;
     }
 
     /* ═══════════════════════════════════════
@@ -81,40 +114,46 @@
     .btn:active { transform: scale(.96); }
 
     .btn-gold {
-      background: linear-gradient(135deg, var(--gold2), var(--gold));
-      color: #000; box-shadow: 0 4px 20px rgba(255,215,0,.35);
+      background: linear-gradient(90deg, #ff9500, #FFD700, #ff6b9d, #FFD700, #ff9500);
+      background-size: 300% 100%;
+      animation: rainbowShift 3s linear infinite;
+      color: #000; box-shadow: 0 4px 28px rgba(255,180,80,.45);
+      font-size: 1.2rem;
     }
-    .btn-gold:hover { box-shadow: 0 6px 28px rgba(255,215,0,.5); }
+    .btn-gold:hover { box-shadow: 0 6px 36px rgba(255,180,80,.65); }
 
     .btn-green {
-      background: var(--green); color: #fff;
+      background: linear-gradient(135deg, #00c853, #00e676);
+      color: #000;
       font-size: clamp(1.1rem, 4vw, 1.5rem); padding: 20px 24px;
-      box-shadow: 0 4px 16px rgba(34,197,94,.35);
+      box-shadow: 0 4px 24px rgba(0,230,118,.45);
     }
     .btn-red {
-      background: var(--red); color: #fff;
+      background: linear-gradient(135deg, #ff4757, #ff6b81);
+      color: #fff;
       font-size: clamp(1.1rem, 4vw, 1.5rem); padding: 20px 24px;
-      box-shadow: 0 4px 16px rgba(239,68,68,.35);
+      box-shadow: 0 4px 24px rgba(255,71,87,.45);
     }
     .btn-ghost {
-      background: rgba(255,255,255,.07);
-      border: 2px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.08);
+      border: 2px solid rgba(255,255,255,.2);
       color: var(--txt); padding: 14px 32px;
     }
-    .btn-ghost:hover { background: rgba(255,255,255,.12); }
+    .btn-ghost:hover { background: rgba(255,255,255,.14); }
 
     .num-row { display: flex; gap: 14px; justify-content: center; }
     .num-btn {
       width: 72px; height: 72px; border-radius: 50%;
-      border: 3px solid rgba(255,255,255,.15);
-      background: rgba(255,255,255,.06);
+      border: 3px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.07);
       color: var(--txt); font-size: 2rem; font-weight: 900;
-      cursor: pointer; transition: .15s; font-family: inherit;
+      cursor: pointer; transition: .2s; font-family: inherit;
     }
     .num-btn.sel {
-      background: var(--gold); color: #000;
-      border-color: var(--gold);
-      box-shadow: 0 0 20px rgba(255,215,0,.4);
+      background: linear-gradient(135deg, var(--pink), var(--purp));
+      color: #fff; border-color: var(--pink);
+      box-shadow: 0 0 28px rgba(178,75,255,.55);
+      transform: scale(1.08);
     }
     .num-btn:active { transform: scale(.9); }
 
@@ -123,18 +162,23 @@
     ═══════════════════════════════════════ */
     .setup-section { width: 100%; }
     .setup-label {
-      font-size: 1rem; font-weight: 700; color: #94a3b8;
+      font-size: 1rem; font-weight: 700; color: var(--dim);
       margin-bottom: 12px; text-align: center;
     }
 
     .team-row {
       display: flex; align-items: center; gap: 14px;
-      background: rgba(255,255,255,.05);
-      border: 2px solid transparent;
+      background: rgba(255,255,255,.06);
+      border: 2px solid rgba(255,255,255,.1);
       border-radius: var(--rad); padding: 14px 18px;
-      margin-bottom: 10px; transition: .2s;
+      margin-bottom: 10px; transition: .25s;
+      backdrop-filter: blur(10px);
     }
-    .team-row:focus-within { border-color: var(--team-border, rgba(255,215,0,.4)); }
+    .team-row:focus-within {
+      border-color: var(--team-border, rgba(255,107,53,.5));
+      background: rgba(255,255,255,.1);
+      box-shadow: 0 0 24px var(--team-s, rgba(255,107,53,.25));
+    }
 
     .team-icon-big { font-size: 2.2rem; flex-shrink: 0; }
 
@@ -150,16 +194,17 @@
     ═══════════════════════════════════════ */
     #g-header {
       position: sticky; top: 0; z-index: 50;
-      background: rgba(8,5,15,.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: linear-gradient(90deg,
+        rgba(255,60,150,.14), rgba(178,75,255,.14), rgba(0,212,255,.12));
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(178,75,255,.28);
       padding: 10px 16px;
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
     }
 
     #g-round {
       font-size: .95rem; font-weight: 700; color: var(--gold);
-      white-space: nowrap;
+      white-space: nowrap; text-shadow: 0 0 12px rgba(255,215,0,.4);
     }
 
     #g-scores {
@@ -172,8 +217,8 @@
     }
 
     #btn-lang {
-      background: rgba(255,255,255,.1);
-      border: 1.5px solid rgba(255,255,255,.2);
+      background: rgba(178,75,255,.2);
+      border: 1.5px solid rgba(178,75,255,.45);
       color: var(--txt); border-radius: 8px;
       padding: 5px 10px; font-size: .82rem; font-weight: 700;
       cursor: pointer; font-family: inherit; white-space: nowrap;
@@ -188,10 +233,15 @@
       padding: 16px 20px;
       display: flex; align-items: center; gap: 14px;
       border: 2px solid; position: relative; overflow: hidden;
+      backdrop-filter: blur(10px);
     }
     .team-banner::before {
       content: ''; position: absolute; inset: 0;
-      background: currentColor; opacity: .08;
+      background: currentColor; opacity: .1;
+    }
+    .team-banner::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.08) 0%, transparent 60%);
     }
     .tb-icon { font-size: 2.5rem; }
     .tb-name { font-size: 1.6rem; font-weight: 900; flex: 1; }
@@ -203,36 +253,41 @@
     #g-card-wrap { padding: 16px; width: 100%; }
 
     .c-card {
-      background: rgba(255,255,255,.04);
-      border: 2px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.05);
+      border: 2px solid rgba(255,255,255,.1);
       border-radius: var(--rad);
       padding: 28px 24px; text-align: center;
       transition: .3s; width: 100%;
+      backdrop-filter: blur(10px);
     }
     .c-card.closed {
-      background: linear-gradient(135deg, #1a0a3e, #0a0a2e);
-      border-color: rgba(255,215,0,.2);
+      background: linear-gradient(135deg,
+        rgba(178,75,255,.22), rgba(13,5,32,.95), rgba(0,100,220,.16));
+      border-color: rgba(178,75,255,.4);
       min-height: 220px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 0 48px rgba(178,75,255,.18), inset 0 0 60px rgba(178,75,255,.06);
     }
 
     .card-qmarks {
-      font-size: 3rem; letter-spacing: 8px; opacity: .4; margin-bottom: 12px;
+      font-size: 3rem; letter-spacing: 8px; opacity: .5; margin-bottom: 12px;
     }
     .card-hint {
-      font-size: 1.1rem; color: #94a3b8; font-weight: 600;
+      font-size: 1.1rem; color: var(--cyan); font-weight: 700;
+      text-shadow: 0 0 18px rgba(0,212,255,.5);
     }
 
     .c-cat {
       display: inline-block;
-      background: rgba(255,255,255,.08);
+      background: linear-gradient(135deg, rgba(178,75,255,.3), rgba(0,212,255,.22));
+      border: 1px solid rgba(178,75,255,.35);
       border-radius: 99px; padding: 4px 14px;
-      font-size: .8rem; font-weight: 700; color: var(--dim);
+      font-size: .8rem; font-weight: 700; color: var(--cyan);
       margin-bottom: 14px;
     }
     .c-emoji { font-size: 3.5rem; margin-bottom: 10px; display: block; }
     .c-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 10px; }
-    .c-desc  { font-size: 1rem; color: #94a3b8; line-height: 1.6; margin-bottom: 14px; }
+    .c-desc  { font-size: 1rem; color: var(--dim); line-height: 1.6; margin-bottom: 14px; }
     .c-time  { font-size: .9rem; color: var(--gold); font-weight: 700; }
 
     @keyframes cardFlip {
@@ -252,9 +307,10 @@
       font-size: clamp(5rem, 22vw, 8rem);
       font-weight: 900; line-height: 1;
       color: var(--green); transition: color .5s;
+      text-shadow: 0 0 30px rgba(0,230,118,.45);
     }
-    #timer-num.yellow { color: #eab308; }
-    #timer-num.red    { color: var(--red); }
+    #timer-num.yellow { color: #ffd93d; text-shadow: 0 0 30px rgba(255,217,61,.45); }
+    #timer-num.red    { color: var(--red); text-shadow: 0 0 30px rgba(255,71,87,.55); }
 
     @keyframes timerPulse {
       0%,100% { transform: scale(1); }
@@ -267,8 +323,9 @@
       border-radius: 99px; overflow: hidden; margin: 8px 0;
     }
     #timer-bar {
-      height: 100%; border-radius: 99px; background: var(--green);
-      transition: width 1s linear, background .5s;
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #ff4757 0%, #ffd93d 50%, #00e676 100%);
+      transition: width 1s linear;
     }
     #timer-label { font-size: .9rem; color: var(--dim); font-weight: 600; }
 
@@ -276,6 +333,7 @@
       font-size: 2rem; font-weight: 900; color: var(--red);
       text-align: center; padding: 10px 0;
       animation: timerPulse .5s infinite;
+      text-shadow: 0 0 20px rgba(255,71,87,.6);
     }
 
     /* ═══════════════════════════════════════
@@ -291,20 +349,24 @@
     ═══════════════════════════════════════ */
     .lb-title {
       font-size: 1.8rem; font-weight: 900; color: var(--gold);
-      text-align: center;
+      text-align: center; text-shadow: 0 0 20px rgba(255,215,0,.4);
     }
     .lb-sub { font-size: 1rem; color: var(--dim); text-align: center; }
 
     .lb-row {
       display: flex; align-items: center; gap: 14px;
-      background: rgba(255,255,255,.04);
-      border: 2px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.05);
+      border: 2px solid rgba(255,255,255,.08);
       border-radius: var(--rad); padding: 16px 20px; width: 100%;
-      transition: .2s;
+      transition: .2s; backdrop-filter: blur(8px);
     }
-    .lb-row.rank1 { border-color: var(--gold); box-shadow: 0 0 20px rgba(255,215,0,.2); }
-    .lb-row.rank2 { border-color: #94a3b8; }
-    .lb-row.rank3 { border-color: #CD7F32; }
+    .lb-row.rank1 {
+      border-color: var(--gold);
+      box-shadow: 0 0 28px rgba(255,215,0,.3);
+      background: rgba(255,215,0,.08);
+    }
+    .lb-row.rank2 { border-color: #94a3b8; background: rgba(148,163,184,.06); }
+    .lb-row.rank3 { border-color: #CD7F32; background: rgba(205,127,50,.06); }
 
     .lb-medal { font-size: 2rem; flex-shrink: 0; }
     .lb-icon  { font-size: 1.8rem; flex-shrink: 0; }
@@ -316,27 +378,36 @@
     ═══════════════════════════════════════ */
     #s-winner { justify-content: center; }
 
-    .win-trophy { font-size: clamp(5rem, 20vw, 8rem); text-align: center; margin-bottom: 10px; }
+    .win-trophy { font-size: clamp(5rem, 20vw, 8rem); text-align: center; margin-bottom: 10px;
+      animation: float 2.5s ease-in-out infinite; }
     .win-label  { font-size: 1.4rem; color: var(--dim); font-weight: 700; text-align: center; }
     .win-icon   { font-size: clamp(4rem, 16vw, 6rem); text-align: center; margin: 8px 0; }
-    .win-name   { font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 900; color: var(--gold); text-align: center; }
-    .win-pts    { font-size: 1.3rem; color: #94a3b8; text-align: center; margin-bottom: 16px; }
+    .win-name   {
+      font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 900; text-align: center;
+      background: linear-gradient(135deg, var(--gold), var(--pink), var(--purp), var(--cyan));
+      background-size: 300% 300%; animation: rainbowShift 3s linear infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .win-pts    { font-size: 1.3rem; color: var(--dim); text-align: center; margin-bottom: 16px; }
 
     /* ═══════════════════════════════════════
        OVERLAYS
     ═══════════════════════════════════════ */
     .overlay {
       display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,.85);
+      background: rgba(13,5,32,.88);
       align-items: center; justify-content: center; flex-direction: column;
+      backdrop-filter: blur(10px);
     }
     .overlay.show { display: flex; }
 
     .ov-box {
-      background: linear-gradient(135deg, #1a0a3e, #0a0a2e);
-      border: 2px solid rgba(255,215,0,.3);
+      background: linear-gradient(135deg,
+        rgba(178,75,255,.28), rgba(13,5,32,.96), rgba(0,212,255,.18));
+      border: 2px solid rgba(178,75,255,.45);
       border-radius: 28px; padding: 40px 32px;
       text-align: center; max-width: 340px; width: 90%;
+      box-shadow: 0 0 70px rgba(178,75,255,.35), 0 0 140px rgba(178,75,255,.12);
     }
 
     @keyframes zoomIn {
@@ -345,8 +416,13 @@
     }
     .ov-box { animation: zoomIn .4s cubic-bezier(.34,1.56,.64,1); }
 
-    .ov-round { font-size: clamp(3rem, 12vw, 5rem); font-weight: 900; color: var(--gold); }
-    .ov-sub   { font-size: 1.3rem; color: #94a3b8; margin-top: 8px; }
+    .ov-round {
+      font-size: clamp(3rem, 12vw, 5rem); font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--pink), var(--purp));
+      background-size: 300% 300%; animation: rainbowShift 3s linear infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .ov-sub   { font-size: 1.3rem; color: var(--dim); margin-top: 8px; }
 
     @keyframes ptsPop {
       0%   { transform: scale(.5); opacity: 0; }
@@ -355,11 +431,17 @@
     }
     .pts-big {
       font-size: clamp(3rem, 14vw, 5.5rem);
-      font-weight: 900; color: var(--gold);
-      animation: ptsPop .5s cubic-bezier(.34,1.56,.64,1);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--gold2), var(--pink));
+      background-size: 300% 300%; animation: ptsPop .5s cubic-bezier(.34,1.56,.64,1), rainbowShift 3s linear infinite .5s;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .pts-sub { font-size: 1.4rem; color: #94a3b8; margin-top: 8px; }
-    .pts-bonus { font-size: 1.2rem; color: var(--gold); margin-top: 6px; font-weight: 700; }
+    .pts-sub { font-size: 1.4rem; color: var(--dim); margin-top: 8px; }
+    .pts-bonus {
+      font-size: 1.2rem; margin-top: 6px; font-weight: 800;
+      background: linear-gradient(90deg, var(--gold), var(--lime));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
 
     /* ═══════════════════════════════════════
        CONFETTI CANVAS
@@ -387,8 +469,8 @@
 <div id="s-setup" class="screen active">
   <div class="inner">
     <div>
-      <div class="logo-sub" id="setup-title" style="color:#94a3b8;font-size:clamp(1rem,3.5vw,1.3rem);margin-bottom:4px;">🏆 המירוץ למיליון</div>
-      <div class="logo-title" id="setup-sub" style="font-size:clamp(2.2rem,9vw,3.6rem);background:linear-gradient(135deg,#FFD700,#ff8c00,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;">🎂 יום הולדת לעמית! 🎉</div>
+      <div class="logo-sub" id="setup-title" style="font-size:clamp(.95rem,3.2vw,1.2rem);letter-spacing:.08em;opacity:.7;margin-bottom:6px;">🏆 המירוץ למיליון</div>
+      <div id="setup-sub" style="font-size:clamp(2.4rem,10vw,4rem);font-weight:900;line-height:1.1;text-align:center;background:linear-gradient(90deg,#ff6b6b,#ffd93d,#00d4ff,#b24bff,#ff6b9d,#ff6b6b);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:rainbowShift 3s linear infinite;filter:drop-shadow(0 0 18px rgba(255,107,157,.4));">🎂 יום הולדת לעמית! 🎉</div>
     </div>
 
     <div class="setup-section">
