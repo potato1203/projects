@@ -60,6 +60,12 @@ const PROJECTS = [
     icon: "🦁"
   },
   {
+    title: "FlagDraw",
+    description: "Learn to draw flags from around the world using the grid method. Covers Europe, Americas, Asia, Africa and Oceania.",
+    url: "./flag-draw/",
+    icon: "🌍"
+  },
+  {
     title: "המירוץ למיליון יום הולדת לעמית",
     description: "משחק תחרות לצוותים! 2–4 צוותים מתחרים באתגרים ביתיים מצחיקים, עם טיימר, שופט, לוח תוצאות וחגיגת ניצחון. בעברית ואנגלית.",
     url: "./hamertaz/",
