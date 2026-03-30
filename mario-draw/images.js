@@ -45,7 +45,7 @@ const IMAGE_URLS = {
   "Ice Flower":       "https://mario.wiki.gallery/images/7/70/MKW_Ice_Flower_Roulette.png",
   "Propeller Mushroom":"https://mario.wiki.gallery/images/thumb/c/ce/NSMBW_Propeller_Mushroom_Artwork.png/300px-NSMBW_Propeller_Mushroom_Artwork.png",
   "Penguin Suit":     "https://mario.wiki.gallery/images/thumb/e/e8/Penguinsuit.png/267px-Penguinsuit.png",
-  "Frog Suit":        "https://mario.wiki.gallery/images/8/8a/SMM2-SMB3-FrogSuit.png",
+  "Frog Suit":        "https://mario.wiki.gallery/images/2/22/Frog_Mario_SMB3_art.png",
   "Cape Feather":     "https://mario.wiki.gallery/images/9/9e/MKW_Feather_Roulette.png",
   "Mini Mushroom":    "https://mario.wiki.gallery/images/thumb/a/a2/NSMBU_Mini_Mushroom_Artwork.png/300px-NSMBU_Mini_Mushroom_Artwork.png",
   // Objects
