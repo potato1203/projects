@@ -7,7 +7,7 @@ const IMAGE_URLS = {
   "Yoshi":            "https://mario.wiki.gallery/images/thumb/5/5f/SMPJ_Yoshi.png/181px-SMPJ_Yoshi.png",
   "Wario":            "https://mario.wiki.gallery/images/thumb/2/29/SMPWario.png/249px-SMPWario.png",
   "Waluigi":          "https://mario.wiki.gallery/images/thumb/2/27/SuperMarioParty_Waluigi.png/210px-SuperMarioParty_Waluigi.png",
-  "Princess Daisy":   "https://mario.wiki.gallery/images/8/85/Princess_Daisy.png",
+  "Princess Daisy":   "https://mario.wiki.gallery/images/b/b5/Daisy_Render_MP6_2.png",
   "Rosalina":         "https://mario.wiki.gallery/images/thumb/f/f3/SMG%2BSMG2_Rosalina.png/223px-SMG%2BSMG2_Rosalina.png",
   "Bowser":           "https://mario.wiki.gallery/images/thumb/c/c7/SMBW_Artwork_Bowser.png/300px-SMBW_Artwork_Bowser.png",
   "Bowser Jr.":       "https://mario.wiki.gallery/images/thumb/f/f5/SMBW_Bowser_Jr_Artwork_1.png/300px-SMBW_Bowser_Jr_Artwork_1.png",
