@@ -134,7 +134,7 @@
         <div class="labels-top"><span>א</span><span>ב</span><span>ג</span><span>ד</span></div>
         <div class="labels-side"><span>1</span><span>2</span><span>3</span><span>4</span></div>
         <div class="image-container">
-            <img id="mainImg" class="mode-pencil" src="" alt="">
+            <img id="mainImg" class="mode-pencil" referrerpolicy="no-referrer" src="" alt="">
             <div id="c0"  class="cell"></div><div id="c1"  class="cell"></div><div id="c2"  class="cell"></div><div id="c3"  class="cell"></div>
             <div id="c4"  class="cell"></div><div id="c5"  class="cell"></div><div id="c6"  class="cell"></div><div id="c7"  class="cell"></div>
             <div id="c8"  class="cell"></div><div id="c9"  class="cell"></div><div id="c10" class="cell"></div><div id="c11" class="cell"></div>
@@ -261,6 +261,7 @@
             const imgEl = document.createElement('img');
             imgEl.alt = item.name;
             imgEl.loading = 'lazy';
+            imgEl.referrerPolicy = 'no-referrer';
             imgEl.src = IMAGE_URLS[item.name] || PLACEHOLDER;
             imgEl.onerror = () => { imgEl.src = PLACEHOLDER; };
             const b = document.createElement('b');
