@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>יוצר המדינות 🌍</title>
+    <style>
+        :root {
+            --blue: #1a3a6b;
+            --red:  #c0392b;
+            --gold: #f0a500;
+            --bg:   #f0f4ff;
+            --green: #27ae60;
+        }
+
+        @media print {
+            body > *:not(#print-wrap) { display: none !important; }
+            #print-wrap { display: block !important; }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: var(--blue);
+            color: white;
+            padding: 20px 25px 26px;
+            border-bottom: 6px solid var(--gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,.3);
+            text-align: center;
+        }
+        h1 { font-size: 2.2rem; margin-bottom: 4px; }
+        h1 span { color: var(--gold); }
+        .subtitle { opacity: .8; font-size: 1rem; }
+
+        /* ── STEP NAV ── */
+        .steps-nav {
+            display: flex;
+            justify-content: center;
+            padding: 18px 16px 0;
+            overflow-x: auto;
+        }
+        .step-btn {
+            padding: 10px 15px;
+            border: 2px solid #ccc;
+            border-right: none;
+            background: white;
+            cursor: pointer;
+            font-size: .85rem;
+            font-weight: bold;
+            color: #666;
+            transition: .2s;
+            white-space: nowrap;
+        }
+        .step-btn:first-child { border-radius: 12px 0 0 12px; }
+        .step-btn:last-child  { border-right: 2px solid #ccc; border-radius: 0 12px 12px 0; }
+        .step-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+        .step-btn.done   { background: #e8f5e9; color: var(--green); border-color: var(--green); }
+
+        /* ── MAIN ── */
+        .main { max-width: 700px; margin: 0 auto; padding: 24px 16px 60px; }
+
+        .step-panel { display: none; }
+        .step-panel.active { display: block; }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--blue);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        /* ── FORM ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        label { font-weight: bold; font-size: .9rem; color: #444; }
+
+        input[type=text], input[type=number], select, textarea {
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            direction: rtl;
+            transition: border-color .2s;
+            background: white;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--blue);
+        }
+
+        /* ── POPULATION SLIDER ── */
+        .pop-wrap {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        input[type=range] { width: 100%; margin: 10px 0; accent-color: var(--blue); }
+        .pop-display { text-align: center; font-weight: bold; color: var(--blue); font-size: 1rem; }
+
+        /* ── OPTION GRIDS ── */
+        .grid-label {
+            font-weight: bold; color: var(--blue);
+            margin: 16px 0 8px; font-size: .95rem;
+        }
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 9px;
+            margin-bottom: 4px;
+        }
+        .opt-btn {
+            padding: 11px 8px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: .88rem;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.35;
+            transition: .2s;
+        }
+        .opt-btn:hover { border-color: var(--blue); background: #eef2ff; }
+        .opt-btn.selected { border-color: var(--blue); background: var(--blue); color: white; }
+
+        /* ── FLAG DESIGNER ── */
+        .flag-designer {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid #ddd;
+        }
+        #flagCanvas {
+            display: block;
+            margin: 0 auto 20px;
+            border: 3px solid #333;
+            border-radius: 4px;
+            box-shadow: 0 4px 14px rgba(0,0,0,.2);
+            max-width: 100%;
+        }
+        .layout-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .layout-btn {
+            aspect-ratio: 3/2;
+            border: 3px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: .2s;
+        }
+        .layout-btn:hover { border-color: var(--blue); transform: scale(1.05); }
+        .layout-btn.selected { border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue); }
+        .layout-btn canvas { width: 100%; height: 100%; display: block; }
+
+        .colors-row { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+        .color-group { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .8rem; font-weight: bold; color: #555; }
+        input[type=color] { width: 50px; height: 50px; border: 2px solid #ddd; border-radius: 10px; cursor: pointer; padding: 3px; }
+
+        .symbol-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 6px;
+        }
+        .sym-btn {
+            aspect-ratio: 1;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 1.4rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: .2s;
+        }
+        .sym-btn:hover { border-color: var(--blue); background: #eef2ff; transform: scale(1.1); }
+        .sym-btn.selected { border-color: var(--gold); background: #fff8e1; box-shadow: 0 0 0 2px var(--gold); }
+
+        /* ── RANDOM BUTTON ── */
+        .random-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 9px 18px;
+            background: #f3e5f5; border: 2px solid #ce93d8;
+            border-radius: 20px; cursor: pointer;
+            font-size: .9rem; font-weight: bold; color: #7b1fa2;
+            margin-bottom: 20px; transition: .2s;
+        }
+        .random-btn:hover { background: #e1bee7; transform: scale(1.02); }
+
+        /* ── NAV BUTTONS ── */
+        .nav-row { display: flex; justify-content: space-between; margin-top: 28px; gap: 12px; }
+        .btn {
+            padding: 13px 30px; border: none; border-radius: 30px;
+            font-weight: bold; font-size: 1rem; cursor: pointer;
+            transition: .2s; box-shadow: 0 4px 8px rgba(0,0,0,.1);
+        }
+        .btn:hover { transform: scale(1.03); }
+        .btn-blue  { background: var(--blue);  color: white; }
+        .btn-red   { background: var(--red);   color: white; }
+        .btn-gold  { background: var(--gold);  color: #333; }
+        .btn-grey  { background: #999;         color: white; }
+        .btn-green { background: var(--green); color: white; }
+
+        /* ── PROFILE ── */
+        #profile {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,.15);
+            border: 3px solid var(--gold);
+        }
+        .profile-header {
+            background: linear-gradient(135deg, var(--blue) 0%, #2c5aa0 100%);
+            color: white; padding: 28px 24px; text-align: center;
+        }
+        .profile-flag-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
+        #profileFlag { border: 4px solid rgba(255,255,255,.4); border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,.35); }
+        .profile-country-name { font-size: 2.2rem; font-weight: bold; letter-spacing: 1px; }
+        .profile-location { opacity: .75; font-size: .9rem; margin-top: 4px; }
+        .profile-motto { font-style: italic; opacity: .85; font-size: 1rem; margin-top: 8px; }
+
+        .profile-body { padding: 24px; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 11px;
+        }
+        .stat-card {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 11px 14px;
+            border: 1px solid #dce8ff;
+        }
+        .stat-label { font-size: .72rem; color: #888; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; }
+        .stat-value { font-size: .95rem; font-weight: bold; color: #222; }
+
+        .profile-footer {
+            background: #f8f9ff;
+            padding: 14px 24px;
+            border-top: 2px solid #eee;
+            text-align: center;
+            color: #888; font-size: .85rem;
+        }
+
+        /* ── PRINT TARGET ── */
+        #print-wrap { display: none; }
+
+        @media (max-width: 520px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .symbol-grid { grid-template-columns: repeat(6, 1fr); }
+            .stats-grid { grid-template-columns: 1fr; }
+            .layout-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* ── TOAST ── */
+        #save-toast {
+            position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+            background: var(--green); color: white;
+            padding: 12px 28px; border-radius: 30px;
+            font-weight: bold; font-size: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,.3);
+            z-index: 9999; opacity: 0; pointer-events: none;
+            transition: opacity .3s; white-space: nowrap;
+        }
+        #save-toast.show { opacity: 1; }
+
+        /* ── SAVES MODAL ── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,.6);
+            z-index: 1000; display: none;
+            align-items: center; justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: white; border-radius: 20px;
+            width: 90%; max-width: 580px; max-height: 80vh;
+            overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,.4);
+            display: flex; flex-direction: column;
+        }
+        .modal-header {
+            background: var(--blue); color: white;
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            flex-shrink: 0;
+        }
+        .modal-header h2 { font-size: 1.15rem; }
+        .modal-close-btn {
+            background: var(--red); color: white; border: none;
+            padding: 7px 14px; border-radius: 8px; cursor: pointer; font-weight: bold;
+        }
+        .modal-body { overflow-y: auto; padding: 16px; flex: 1; }
+        .saves-empty { padding: 30px; text-align: center; color: #aaa; font-size: 1rem; }
+        .save-item {
+            display: flex; align-items: center; gap: 12px;
+            background: var(--bg); border-radius: 14px;
+            padding: 12px; cursor: pointer; border: 2px solid transparent;
+            transition: .2s; margin-bottom: 10px;
+        }
+        .save-item:hover { border-color: var(--blue); background: #eef2ff; }
+        .save-item canvas { border: 2px solid #ccc; border-radius: 4px; flex-shrink: 0; }
+        .save-item-info { flex: 1; min-width: 0; }
+        .save-item-name { font-weight: bold; font-size: 1rem; }
+        .save-item-meta { font-size: .8rem; color: #888; margin-top: 2px; }
+        .save-item-del {
+            background: none; border: none; font-size: 1.2rem; cursor: pointer;
+            color: #bbb; padding: 4px 8px; border-radius: 6px; transition: .2s; flex-shrink: 0;
+        }
+        .save-item-del:hover { color: var(--red); background: #fee; }
+
+        /* ── LOAD BUTTON ── */
+        .load-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 9px 18px;
+            background: #e3f2fd; border: 2px solid #90caf9;
+            border-radius: 20px; cursor: pointer;
+            font-size: .9rem; font-weight: bold; color: #1565c0;
+            transition: .2s;
+        }
+        .load-btn:hover { background: #bbdefb; transform: scale(1.02); }
+        .top-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        .btn-purple { background: #8e44ad; color: white; }
+
+        /* ── USER SYSTEM ── */
+        #user-overlay {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1a3a6b 100%);
+            z-index: 3000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            color: white; font-family: inherit; padding: 20px;
+        }
+        .user-overlay-title { font-size: 2rem; font-weight: bold; margin-bottom: 6px; }
+        .user-overlay-sub   { opacity: .7; font-size: 1rem; margin-bottom: 28px; }
+        .user-cards {
+            display: flex; flex-wrap: wrap; gap: 12px;
+            justify-content: center; max-width: 520px; margin-bottom: 20px;
+        }
+        .user-card {
+            background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.2);
+            border-radius: 18px; padding: 18px 22px; cursor: pointer;
+            text-align: center; transition: .2s; min-width: 100px;
+        }
+        .user-card:hover { background: rgba(255,255,255,.2); border-color: var(--gold); transform: scale(1.05); }
+        .user-card-emoji { font-size: 2.4rem; margin-bottom: 6px; }
+        .user-card-name  { font-weight: bold; font-size: .95rem; }
+        .user-card-del   {
+            display: block; margin-top: 8px; font-size: .72rem; color: rgba(255,120,120,.7);
+            background: none; border: none; cursor: pointer; padding: 2px 6px;
+        }
+        .user-card-del:hover { color: #ff7070; }
+        .user-add-btn {
+            background: rgba(255,255,255,.1); border: 2px dashed rgba(255,255,255,.3);
+            color: white; padding: 14px 26px; border-radius: 18px; cursor: pointer;
+            font-size: 1rem; font-weight: bold; transition: .2s;
+        }
+        .user-add-btn:hover { background: rgba(255,255,255,.2); border-color: var(--gold); }
+        .user-new-form {
+            background: rgba(255,255,255,.08); border-radius: 16px; padding: 20px;
+            max-width: 340px; width: 100%; display: none; flex-direction: column;
+            gap: 12px; margin-top: 16px;
+        }
+        .user-new-form.open { display: flex; }
+        .user-emoji-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .user-emoji-btn {
+            width: 42px; height: 42px; font-size: 1.4rem;
+            border: 2px solid rgba(255,255,255,.2); border-radius: 10px;
+            background: rgba(255,255,255,.05); cursor: pointer; transition: .2s;
+        }
+        .user-emoji-btn:hover  { border-color: var(--gold); transform: scale(1.1); }
+        .user-emoji-btn.selected { border-color: var(--gold); background: rgba(240,165,0,.25); }
+        .user-name-input {
+            padding: 10px 14px; border-radius: 10px; border: 2px solid rgba(255,255,255,.3);
+            background: rgba(255,255,255,.1); color: white;
+            font-size: 1rem; font-family: inherit; direction: rtl; width: 100%;
+        }
+        .user-name-input::placeholder { color: rgba(255,255,255,.45); }
+        .user-name-input:focus { outline: none; border-color: var(--gold); }
+        .user-create-btn {
+            padding: 11px; background: var(--green); color: white; border: none;
+            border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: .2s;
+        }
+        .user-create-btn:hover { background: #219a52; }
+        /* Header user badge */
+        .header-user {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+            border-radius: 20px; padding: 5px 12px 5px 8px;
+            cursor: pointer; transition: .2s; margin-top: 10px;
+            font-size: .88rem; font-weight: bold;
+        }
+        .header-user:hover { background: rgba(255,255,255,.28); }
+
+        /* ── SIMULATION OVERLAY ── */
+        #sim-overlay {
+            position: fixed; inset: 0; background: #0d1b2a;
+            z-index: 2000; overflow-y: auto;
+            color: white; font-family: inherit; display: none;
+        }
+        .sim-header {
+            background: linear-gradient(135deg, #1a3a6b, #1a5276);
+            padding: 16px 20px; display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 10;
+        }
+        #sim-flag { border: 2px solid rgba(255,255,255,.35); border-radius: 4px; flex-shrink: 0; }
+        .sim-title-block { flex: 1; min-width: 0; }
+        .sim-country-name { font-size: 1.25rem; font-weight: bold; }
+        .sim-year-label { color: var(--gold); font-size: .85rem; font-weight: bold; margin-top: 2px; }
+        .sim-close-btn {
+            background: var(--red); color: white; border: none;
+            padding: 8px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; flex-shrink: 0;
+        }
+        .sim-stats-area {
+            background: #132030; padding: 14px 20px;
+            display: flex; flex-direction: column; gap: 9px;
+        }
+        .sim-stat-row { display: flex; align-items: center; gap: 10px; }
+        .sim-stat-icon { font-size: 1.1rem; width: 26px; text-align: center; flex-shrink: 0; }
+        .sim-stat-name { font-size: .82rem; width: 56px; flex-shrink: 0; color: #aac; }
+        .sim-stat-bar-bg {
+            flex: 1; height: 16px; background: rgba(255,255,255,.1);
+            border-radius: 8px; overflow: hidden;
+        }
+        .sim-stat-bar { height: 100%; border-radius: 8px; transition: width .5s ease, background-color .4s; }
+        .sim-stat-num { font-size: .82rem; font-weight: bold; width: 30px; text-align: right; flex-shrink: 0; }
+        .sim-content { padding: 18px 20px; max-width: 620px; margin: 0 auto; }
+        .sim-event-card {
+            background: #1a2e45; border-radius: 16px; padding: 20px;
+            margin-bottom: 14px; border: 2px solid rgba(255,255,255,.08);
+        }
+        .sim-year-badge {
+            display: inline-block; background: var(--gold); color: #333;
+            padding: 3px 12px; border-radius: 20px; font-size: .78rem; font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .sim-event-text { font-size: 1.05rem; line-height: 1.55; }
+        .sim-result-text {
+            margin-top: 10px; padding: 10px 12px; background: rgba(255,255,255,.06);
+            border-radius: 10px; font-size: .9rem; color: #a8c8e8; line-height: 1.5;
+            display: none;
+        }
+        .sim-choices { display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px; }
+        .sim-choice-btn {
+            background: #1e3a5f; border: 2px solid rgba(255,255,255,.12);
+            color: white; padding: 13px 16px; border-radius: 14px;
+            cursor: pointer; font-size: .92rem; font-family: inherit;
+            text-align: right; direction: rtl; transition: .2s;
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+        }
+        .sim-choice-btn:hover:not(:disabled) { background: #2a5080; border-color: var(--gold); }
+        .sim-choice-btn:disabled { opacity: .55; cursor: default; }
+        .sim-choice-btn.chosen { background: #1e4d2e !important; border-color: var(--green) !important; }
+        .sim-effects { font-size: .75rem; direction: ltr; text-align: left; flex-shrink: 0; line-height: 1.8; }
+        .sim-next-btn {
+            width: 100%; padding: 14px; background: var(--green); color: white;
+            border: none; border-radius: 14px; font-weight: bold; font-size: 1.05rem;
+            cursor: pointer; transition: .2s; display: none; margin-bottom: 14px;
+        }
+        .sim-next-btn:hover { background: #219a52; }
+        .sim-end-card {
+            background: #1a2e45; border-radius: 16px; padding: 30px 24px;
+            text-align: center; display: none;
+        }
+        .sim-end-title { font-size: 2rem; font-weight: bold; margin-bottom: 10px; }
+        .sim-end-text { font-size: .95rem; color: #a0c0e0; line-height: 1.6; margin-bottom: 24px; }
+        .sim-restart-btn {
+            padding: 12px 28px; background: var(--blue); color: white; border: none;
+            border-radius: 30px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: .2s;
+        }
+        .sim-restart-btn:hover { transform: scale(1.05); }
+
+        /* ── ANNUAL ACTIONS ── */
+        .sim-action-card {
+            background: #162638; border-radius: 16px; padding: 18px;
+            margin-bottom: 14px; border: 2px solid rgba(240,165,0,.35);
+            display: none;
+        }
+        .sim-action-title {
+            color: var(--gold); font-weight: bold; font-size: .88rem; margin-bottom: 12px;
+        }
+        .sim-action-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+        .sim-action-btn {
+            background: #1a2e45; border: 2px solid rgba(255,255,255,.1);
+            color: white; padding: 10px 12px; border-radius: 12px;
+            cursor: pointer; font-size: .85rem; font-family: inherit;
+            text-align: right; direction: rtl; transition: .2s;
+        }
+        .sim-action-btn:hover:not(:disabled) { background: #243d5c; border-color: var(--gold); }
+        .sim-action-btn:disabled { opacity: .5; cursor: default; }
+        .sim-action-btn.chosen { background: #1e3d2a; border-color: var(--green); }
+        .sim-action-effects { font-size: .72rem; direction: ltr; color: #9ac; margin-top: 3px; }
+        @media (max-width: 420px) { .sim-action-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌍 יוצר <span>המדינות</span></h1>
+    <p class="subtitle">צרו את המדינה הדמיונית שלכם!</p>
+    <button class="header-user" id="header-user" onclick="openUserPicker()">
+        <span class="header-user-emoji">👤</span>
+        <span class="header-user-name">בחר משתמש</span>
+        <span style="opacity:.6;font-size:.8rem;">▼</span>
+    </button>
+</header>
+
+<div class="steps-nav" id="stepsNav">
+    <button class="step-btn active" onclick="goStep(0)">1. יסודות</button>
+    <button class="step-btn"        onclick="goStep(1)">2. עם</button>
+    <button class="step-btn"        onclick="goStep(2)">3. ממשל</button>
+    <button class="step-btn"        onclick="goStep(3)">4. דגל</button>
+    <button class="step-btn"        onclick="goStep(4)">5. פרופיל</button>
+</div>
+
+<div class="main">
+
+    <!-- ══ STEP 0: BASICS ══ -->
+    <div class="step-panel active" id="step0">
+        <div class="section-title">🏙️ שם ויסודות</div>
+        <div class="top-btns">
+            <button class="random-btn" onclick="randomize()">🎲 מלא הכל באקראי!</button>
+            <button class="load-btn" onclick="openSavesModal()">📂 מדינות שמורות</button>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>שם המדינה</label>
+                <input type="text" id="f-name" placeholder="לדוגמה: דרקוניה">
+            </div>
+            <div class="form-group">
+                <label>עיר הבירה</label>
+                <input type="text" id="f-capital" placeholder="לדוגמה: דרקוסיטי">
+            </div>
+        </div>
+
+        <div class="grid-label">יבשת / מיקום</div>
+        <div class="option-grid" id="continent-grid"></div>
+
+        <div class="form-grid" style="margin-top:16px;">
+            <div class="form-group">
+                <label>שנת ייסוד</label>
+                <input type="number" id="f-founded" placeholder="לדוגמה: 2025" min="1" max="9999">
+            </div>
+            <div class="form-group">
+                <label>מוטו לאומי</label>
+                <input type="text" id="f-motto" placeholder="לדוגמה: יחד ננצח!">
+            </div>
+        </div>
+
+        <div class="nav-row">
+            <div></div>
+            <button class="btn btn-blue" onclick="goStep(1)">הבא ➡️</button>
+        </div>
+    </div>
+
+    <!-- ══ STEP 1: PEOPLE ══ -->
+    <div class="step-panel" id="step1">
+        <div class="section-title">👥 עם ותרבות</div>
+
+        <div class="grid-label">אוכלוסייה</div>
+        <div class="pop-wrap">
+            <input type="range" id="f-population" min="0" max="10" value="5" oninput="updatePopDisplay()">
+            <div class="pop-display" id="pop-display"></div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>שפה רשמית</label>
+                <input type="text" id="f-language" placeholder="לדוגמה: דרקונית">
+            </div>
+            <div class="form-group">
+                <label>מטבע</label>
+                <input type="text" id="f-currency" placeholder="לדוגמה: זהוב">
+            </div>
+        </div>
+
+        <div class="grid-label">דת / אמונה</div>
+        <div class="option-grid" id="religion-grid"></div>
+
+        <div class="grid-label">חיה לאומית</div>
+        <div class="option-grid" id="animal-grid"></div>
+
+        <div class="form-grid" style="margin-top:16px;">
+            <div class="form-group">
+                <label>מאכל לאומי</label>
+                <input type="text" id="f-food" placeholder="לדוגמה: עוגת דרקון">
+            </div>
+            <div class="form-group">
+                <label>ספורט לאומי</label>
+                <input type="text" id="f-sport" placeholder="לדוגמה: גלישה בענן">
+            </div>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn btn-grey" onclick="goStep(0)">⬅️ הקודם</button>
+            <button class="btn btn-blue" onclick="goStep(2)">הבא ➡️</button>
+        </div>
+    </div>
+
+    <!-- ══ STEP 2: GOVERNMENT ══ -->
+    <div class="step-panel" id="step2">
+        <div class="section-title">🏛️ ממשל וגאוגרפיה</div>
+
+        <div class="grid-label">סוג שלטון</div>
+        <div class="option-grid" id="gov-grid"></div>
+
+        <div class="form-grid" style="margin-top:16px;">
+            <div class="form-group">
+                <label>תואר המנהיג</label>
+                <input type="text" id="f-leader-title" placeholder="לדוגמה: נשיא">
+            </div>
+            <div class="form-group">
+                <label>שם המנהיג</label>
+                <input type="text" id="f-leader-name" placeholder="לדוגמה: ד״ר אריה בן-נמר">
+            </div>
+        </div>
+
+        <div class="grid-label">גודל המדינה</div>
+        <div class="option-grid" id="size-grid"></div>
+
+        <div class="grid-label">אקלים</div>
+        <div class="option-grid" id="climate-grid"></div>
+
+        <div class="grid-label">נוף וטבע</div>
+        <div class="option-grid" id="terrain-grid"></div>
+
+        <div class="nav-row">
+            <button class="btn btn-grey" onclick="goStep(1)">⬅️ הקודם</button>
+            <button class="btn btn-blue" onclick="goStep(3)">הבא ➡️</button>
+        </div>
+    </div>
+
+    <!-- ══ STEP 3: FLAG ══ -->
+    <div class="step-panel" id="step3">
+        <div class="section-title">🚩 עיצוב הדגל</div>
+
+        <div class="flag-designer">
+            <canvas id="flagCanvas" width="360" height="240"></canvas>
+
+            <div class="grid-label">פריסת הדגל</div>
+            <div class="layout-grid" id="layout-grid"></div>
+
+            <div class="grid-label">צבעים</div>
+            <div class="colors-row">
+                <div class="color-group">
+                    <input type="color" id="c1" value="#cc0000" oninput="drawFlag()">
+                    <span>צבע 1</span>
+                </div>
+                <div class="color-group">
+                    <input type="color" id="c2" value="#ffffff" oninput="drawFlag()">
+                    <span>צבע 2</span>
+                </div>
+                <div class="color-group">
+                    <input type="color" id="c3" value="#006600" oninput="drawFlag()">
+                    <span>צבע 3</span>
+                </div>
+            </div>
+
+            <div class="grid-label">סמל על הדגל</div>
+            <div class="symbol-grid" id="symbol-grid"></div>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn btn-grey" onclick="goStep(2)">⬅️ הקודם</button>
+            <button class="btn btn-green" onclick="goStep(4)">צור פרופיל מדינה 🌍</button>
+        </div>
+    </div>
+
+    <!-- ══ STEP 4: PROFILE ══ -->
+    <div class="step-panel" id="step4">
+        <div class="section-title">📋 פרופיל המדינה</div>
+
+        <div id="profile">
+            <div class="profile-header">
+                <div class="profile-flag-wrap">
+                    <canvas id="profileFlag" width="240" height="160"></canvas>
+                </div>
+                <div class="profile-country-name" id="p-name">—</div>
+                <div class="profile-location" id="p-location"></div>
+                <div class="profile-motto" id="p-motto"></div>
+            </div>
+            <div class="profile-body">
+                <div class="stats-grid" id="stats-grid"></div>
+            </div>
+            <div class="profile-footer" id="p-footer"></div>
+        </div>
+
+        <div class="nav-row" id="profile-nav">
+            <button class="btn btn-grey" onclick="goStep(3)">⬅️ ערוך דגל</button>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
+                <button class="btn btn-green"  onclick="saveCountry()">💾 שמור מדינה</button>
+                <button class="btn btn-purple" onclick="openSimulation()">🎮 ניהול מדינה</button>
+                <button class="btn btn-red"    onclick="printProfile()">🖨️ הדפס</button>
+            </div>
+        </div>
+    </div>
+
+</div><!-- .main -->
+
+<!-- Print-only copy (populated before print) -->
+<div id="print-wrap"></div>
+
+<!-- User picker overlay -->
+<div id="user-overlay" style="display:none;">
+    <div class="user-overlay-title">🌍 מי משחק?</div>
+    <p class="user-overlay-sub">בחר משתמש או צור חדש</p>
+    <button id="user-back-btn" onclick="closeUserPicker()" style="display:none;position:absolute;top:18px;left:18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:white;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:.9rem;font-weight:bold;">← חזור</button>
+    <div class="user-cards" id="user-cards"></div>
+    <button class="user-add-btn" onclick="toggleNewUserForm()">➕ משתמש חדש</button>
+    <div class="user-new-form" id="user-new-form">
+        <div class="user-emoji-grid" id="user-emoji-grid"></div>
+        <input class="user-name-input" id="user-name-input" type="text" placeholder="שם המשתמש..." maxlength="20">
+        <button class="user-create-btn" onclick="createUser()">✅ צור משתמש</button>
+    </div>
+</div>
+
+<!-- Toast notification -->
+<div id="save-toast"></div>
+
+<!-- Saves modal -->
+<div class="modal-overlay" id="saves-modal" onclick="closeSavesModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h2>📂 מדינות שמורות</h2>
+            <button class="modal-close-btn" onclick="closeSavesModal()">✕ סגור</button>
+        </div>
+        <div class="modal-body" id="saves-list"></div>
+    </div>
+</div>
+
+<!-- Simulation overlay -->
+<div id="sim-overlay">
+    <div class="sim-header">
+        <canvas id="sim-flag" width="90" height="60"></canvas>
+        <div class="sim-title-block">
+            <div class="sim-country-name" id="sim-name"></div>
+            <div class="sim-year-label" id="sim-year-label"></div>
+        </div>
+        <button class="sim-close-btn" onclick="closeSimulation()">✕ סגור</button>
+    </div>
+
+    <div class="sim-stats-area" id="sim-stats-area"></div>
+
+    <div class="sim-content">
+        <div class="sim-event-card" id="sim-event-card">
+            <div class="sim-year-badge" id="sim-year-badge"></div>
+            <div class="sim-event-text" id="sim-event-text"></div>
+            <div class="sim-result-text" id="sim-result-text"></div>
+        </div>
+        <div class="sim-choices" id="sim-choices"></div>
+        <div class="sim-action-card" id="sim-action-card">
+            <div class="sim-action-title">📋 מדיניות שנתית — בחר פעולה אחת:</div>
+            <div class="sim-action-grid" id="sim-action-grid"></div>
+        </div>
+        <button class="sim-next-btn" id="sim-next-btn" onclick="simNextYear()">השנה הבאה ➡️</button>
+        <div class="sim-end-card" id="sim-end-card">
+            <div class="sim-end-title" id="sim-end-title"></div>
+            <div class="sim-end-text"  id="sim-end-text"></div>
+            <button class="sim-restart-btn" onclick="openSimulation(true)">שחק שוב 🔄</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════
+//  DATA
+// ═══════════════════════════════
+
+const CONTINENTS = [
+    {v:'europe',   l:'🇪🇺 אירופה'},
+    {v:'asia',     l:'🌏 אסיה'},
+    {v:'africa',   l:'🌍 אפריקה'},
+    {v:'americas', l:'🌎 אמריקה'},
+    {v:'oceania',  l:'🏝️ אוקיאניה'},
+    {v:'arctic',   l:'❄️ ארקטיקה'},
+    {v:'mars',     l:'🚀 מאדים'},
+    {v:'fantasy',  l:'✨ ממד אחר'},
+];
+
+const RELIGIONS = [
+    {v:'none',    l:'🧑 ללא דת'},
+    {v:'sun',     l:'☀️ עובדי שמש'},
+    {v:'dragon',  l:'🐉 פולחן הדרקון'},
+    {v:'science', l:'🔬 מדע הוא אמונה'},
+    {v:'forest',  l:'🌲 רוחות היער'},
+    {v:'sea',     l:'🌊 אלוהי הים'},
+    {v:'stars',   l:'⭐ עובדי כוכבים'},
+    {v:'food',    l:'🍕 פולחן האוכל'},
+];
+
+const ANIMALS = [
+    {v:'lion',     l:'🦁 אריה'},
+    {v:'dragon',   l:'🐉 דרקון'},
+    {v:'eagle',    l:'🦅 נשר'},
+    {v:'unicorn',  l:'🦄 חד-קרן'},
+    {v:'wolf',     l:'🐺 זאב'},
+    {v:'shark',    l:'🦈 כריש'},
+    {v:'owl',      l:'🦉 ינשוף'},
+    {v:'elephant', l:'🐘 פיל'},
+    {v:'fox',      l:'🦊 שועל'},
+    {v:'bear',     l:'🐻 דוב'},
+    {v:'dolphin',  l:'🐬 דולפין'},
+    {v:'cat',      l:'🐱 חתול'},
+];
+
+const GOVERNMENTS = [
+    {v:'democracy',   l:'🗳️ דמוקרטיה'},
+    {v:'monarchy',    l:'👑 מלוכה'},
+    {v:'republic',    l:'🏛️ רפובליקה'},
+    {v:'empire',      l:'🫅 אימפריה'},
+    {v:'theocracy',   l:'🙏 תיאוקרטיה'},
+    {v:'technocracy', l:'🔬 טכנוקרטיה'},
+    {v:'candy',       l:'🍭 ממלכת ממתקים'},
+    {v:'chaos',       l:'🎲 אנרכיה שמחה'},
+];
+
+const SIZES = [
+    {v:'nano',   l:'🔬 ננו-מדינה'},
+    {v:'small',  l:'🏘️ קטנה'},
+    {v:'medium', l:'🏙️ בינונית'},
+    {v:'large',  l:'🌆 גדולה'},
+    {v:'huge',   l:'🌍 ענקית'},
+];
+
+const CLIMATES = [
+    {v:'mediterranean', l:'☀️ ים-תיכוני'},
+    {v:'desert',        l:'🏜️ מדברי'},
+    {v:'frozen',        l:'❄️ קפוא'},
+    {v:'tropical',      l:'🌴 טרופי'},
+    {v:'temperate',     l:'🍂 ממוזג'},
+    {v:'stormy',        l:'🌪️ סוערני'},
+    {v:'spring',        l:'🌸 אביבי לנצח'},
+    {v:'magic',         l:'✨ קסום'},
+];
+
+const TERRAINS = [
+    {v:'mountains', l:'⛰️ הרים'},
+    {v:'island',    l:'🏝️ אי'},
+    {v:'sea',       l:'🌊 ים'},
+    {v:'forest',    l:'🌲 יער'},
+    {v:'volcanic',  l:'🌋 געשי'},
+    {v:'plains',    l:'🌾 מישורים'},
+    {v:'urban',     l:'🏙️ עיר ענק'},
+    {v:'sky',       l:'☁️ ערי ענן'},
+];
+
+const POP_LEVELS = [
+    '👤 אנשים בודדים (פחות מ-100)',
+    '🏡 כפר קסום (~500 איש)',
+    '🏘️ עיירה (~5,000 איש)',
+    '🏙️ עיר קטנה (~50,000 איש)',
+    '🌆 עיר גדולה (~200,000 איש)',
+    '🌍 מדינה קטנה (~1,000,000 איש)',
+    '🌎 מדינה בינונית (~5,000,000 איש)',
+    '🌏 מדינה גדולה (~20,000,000 איש)',
+    '🌐 מדינה ענקית (~100,000,000 איש)',
+    '🌌 ענקית מאוד (~500,000,000 איש)',
+    '🪐 כוכב לכת (מיליארד+)',
+];
+
+const FLAG_LAYOUTS = ['h2','h3','v2','v3','cross','diag','solid','canton'];
+const FLAG_LAYOUT_LABELS = {
+    h2:'2 פסים\nאופקיים', h3:'3 פסים\nאופקיים',
+    v2:'2 פסים\nאנכיים',  v3:'3 פסים\nאנכיים',
+    cross:'צלב', diag:'אלכסון', solid:'אחיד', canton:'קנטון',
+};
+const FLAG_SYMBOLS = ['','⭐','🌙','☀️','❄️','🔥','⚡','🌊','🌲','⛰️','🦁','🐉','👑','⚔️','🛡️','🕊️','🌹','🦅','💎','🔱','☮️','✝️','☪️','✡️'];
+
+// ═══════════════════════════════
+//  STATE
+// ═══════════════════════════════
+const state = {
+    continent: '', religion: '', animal: '',
+    government: '', size: '', climate: '', terrain: '',
+    flagLayout: 'h3', flagSymbol: '⭐',
+};
+
+// ═══════════════════════════════
+//  OPTION GRIDS
+// ═══════════════════════════════
+function makeOptionGrid(containerId, items, stateKey) {
+    const container = document.getElementById(containerId);
+    items.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.textContent = item.l;
+        btn.dataset.val = item.v;
+        btn.onclick = () => {
+            state[stateKey] = item.v;
+            container.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        };
+        container.appendChild(btn);
+    });
+}
+
+function selectOption(containerId, items, val) {
+    const container = document.getElementById(containerId);
+    container.querySelectorAll('.opt-btn').forEach((btn, i) => {
+        btn.classList.toggle('selected', items[i]?.v === val);
+    });
+}
+
+// ═══════════════════════════════
+//  FLAG DRAWING
+// ═══════════════════════════════
+function drawFlagOnCanvas(canvas, layout, colors, symbol) {
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    const [c1, c2, c3] = colors;
+
+    switch (layout) {
+        case 'h2':
+            ctx.fillStyle = c1; ctx.fillRect(0, 0, W, H / 2);
+            ctx.fillStyle = c2; ctx.fillRect(0, H / 2, W, H / 2);
+            break;
+        case 'h3':
+            ctx.fillStyle = c1; ctx.fillRect(0, 0, W, H / 3);
+            ctx.fillStyle = c2; ctx.fillRect(0, H / 3, W, H / 3);
+            ctx.fillStyle = c3; ctx.fillRect(0, H * 2 / 3, W, H / 3 + 1);
+            break;
+        case 'v2':
+            ctx.fillStyle = c1; ctx.fillRect(0, 0, W / 2, H);
+            ctx.fillStyle = c2; ctx.fillRect(W / 2, 0, W / 2, H);
+            break;
+        case 'v3':
+            ctx.fillStyle = c1; ctx.fillRect(0, 0, W / 3, H);
+            ctx.fillStyle = c2; ctx.fillRect(W / 3, 0, W / 3, H);
+            ctx.fillStyle = c3; ctx.fillRect(W * 2 / 3, 0, W / 3 + 1, H);
+            break;
+        case 'cross':
+            ctx.fillStyle = c1; ctx.fillRect(0, 0, W, H);
+            ctx.fillStyle = c2;
+            ctx.fillRect(0, H * 0.35, W, H * 0.3);
+            ctx.fillRect(W * 0.3, 0, W * 0.2, H);
+            break;
+        case 'diag':
+            ctx.fillStyle = c1;
+            ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+            ctx.fillStyle = c2;
+            ctx.beginPath(); ctx.moveTo(W, 0); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+            break;
+        case 'solid':
+            ctx.fillStyle = c1; ctx.fillRect(0, 0, W, H);
+            break;
+        case 'canton':
+            ctx.fillStyle = c1; ctx.fillRect(0, 0, W, H / 3);
+            ctx.fillStyle = c2; ctx.fillRect(0, H / 3, W, H / 3);
+            ctx.fillStyle = c1; ctx.fillRect(0, H * 2 / 3, W, H / 3 + 1);
+            ctx.fillStyle = c3; ctx.fillRect(0, 0, W * 0.38, H * 0.5);
+            break;
+    }
+
+    if (symbol) {
+        const size = Math.min(W, H) * 0.5;
+        ctx.font = `${size}px serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(symbol, W / 2, H / 2);
+    }
+}
+
+function getColors() {
+    return [
+        document.getElementById('c1').value,
+        document.getElementById('c2').value,
+        document.getElementById('c3').value,
+    ];
+}
+
+function drawFlag() {
+    drawFlagOnCanvas(
+        document.getElementById('flagCanvas'),
+        state.flagLayout, getColors(), state.flagSymbol
+    );
+    // Update layout preview thumbnails
+    document.querySelectorAll('.layout-btn canvas').forEach((cvs, i) => {
+        drawFlagOnCanvas(cvs, FLAG_LAYOUTS[i], getColors(), '');
+    });
+}
+
+function initLayoutGrid() {
+    const grid = document.getElementById('layout-grid');
+    FLAG_LAYOUTS.forEach(layout => {
+        const wrap = document.createElement('div');
+        wrap.className = 'layout-btn' + (layout === state.flagLayout ? ' selected' : '');
+        wrap.title = FLAG_LAYOUT_LABELS[layout].replace('\n', ' ');
+        const cvs = document.createElement('canvas');
+        cvs.width = 90; cvs.height = 60;
+        drawFlagOnCanvas(cvs, layout, ['#cc0000', '#ffffff', '#006600'], '');
+        wrap.appendChild(cvs);
+        wrap.onclick = () => {
+            state.flagLayout = layout;
+            document.querySelectorAll('.layout-btn').forEach(b => b.classList.remove('selected'));
+            wrap.classList.add('selected');
+            drawFlag();
+        };
+        grid.appendChild(wrap);
+    });
+}
+
+function initSymbolGrid() {
+    const grid = document.getElementById('symbol-grid');
+    FLAG_SYMBOLS.forEach(sym => {
+        const btn = document.createElement('button');
+        btn.className = 'sym-btn' + (sym === state.flagSymbol ? ' selected' : '');
+        btn.textContent = sym || '✕';
+        btn.title = sym || 'ללא סמל';
+        btn.onclick = () => {
+            state.flagSymbol = sym;
+            document.querySelectorAll('.sym-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            drawFlag();
+        };
+        grid.appendChild(btn);
+    });
+}
+
+// ═══════════════════════════════
+//  POPULATION
+// ═══════════════════════════════
+function updatePopDisplay() {
+    const v = parseInt(document.getElementById('f-population').value);
+    document.getElementById('pop-display').textContent = POP_LEVELS[v];
+}
+
+// ═══════════════════════════════
+//  STEPS
+// ═══════════════════════════════
+function goStep(n) {
+    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+
+    document.querySelectorAll('.step-btn').forEach((b, i) => {
+        b.classList.remove('active', 'done');
+        if (i === n)     b.classList.add('active');
+        else if (i < n)  b.classList.add('done');
+    });
+
+    if (n === 3) setTimeout(drawFlag, 50);
+    if (n === 4) generateProfile();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════
+//  PROFILE
+// ═══════════════════════════════
+function getVal(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+}
+
+function getLabelFor(arr, v) {
+    const item = arr.find(x => x.v === v);
+    return item ? item.l : '—';
+}
+
+function generateProfile() {
+    const colors = getColors();
+    drawFlagOnCanvas(document.getElementById('profileFlag'), state.flagLayout, colors, state.flagSymbol);
+
+    const name         = getVal('f-name')         || 'מדינה ללא שם';
+    const capital      = getVal('f-capital')      || '—';
+    const founded      = getVal('f-founded')      || '';
+    const motto        = getVal('f-motto');
+    const language     = getVal('f-language')     || '—';
+    const currency     = getVal('f-currency')     || '—';
+    const leaderTitle  = getVal('f-leader-title') || '';
+    const leaderName   = getVal('f-leader-name')  || '';
+    const food         = getVal('f-food')         || '—';
+    const sport        = getVal('f-sport')        || '—';
+    const popLevel     = parseInt(document.getElementById('f-population').value);
+
+    document.getElementById('p-name').textContent = name;
+    document.getElementById('p-location').textContent = getLabelFor(CONTINENTS, state.continent);
+    document.getElementById('p-motto').textContent = motto ? `"${motto}"` : '';
+
+    const leaderFull = [leaderTitle, leaderName].filter(Boolean).join(' ') || '—';
+
+    const stats = [
+        { icon: '🏙️', label: 'בירה',           val: capital },
+        { icon: '👥', label: 'אוכלוסייה',       val: POP_LEVELS[popLevel] },
+        { icon: '🗣️', label: 'שפה רשמית',       val: language },
+        { icon: '💰', label: 'מטבע',             val: currency },
+        { icon: '🏛️', label: 'שלטון',           val: getLabelFor(GOVERNMENTS, state.government) },
+        { icon: '🙏', label: 'דת',               val: getLabelFor(RELIGIONS,   state.religion)   },
+        { icon: '🌡️', label: 'אקלים',           val: getLabelFor(CLIMATES,    state.climate)    },
+        { icon: '🗺️', label: 'נוף',             val: getLabelFor(TERRAINS,    state.terrain)    },
+        { icon: '📐', label: 'גודל',             val: getLabelFor(SIZES,       state.size)       },
+        { icon: '🐾', label: 'חיה לאומית',       val: getLabelFor(ANIMALS,     state.animal)     },
+        { icon: '🍽️', label: 'מאכל לאומי',      val: food  },
+        { icon: '⚽', label: 'ספורט לאומי',      val: sport },
+        { icon: '👤', label: 'מנהיג',            val: leaderFull },
+    ];
+
+    const grid = document.getElementById('stats-grid');
+    grid.innerHTML = '';
+    stats.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'stat-card';
+        card.innerHTML = `<div class="stat-label">${s.label}</div><div class="stat-value">${s.icon} ${s.val || '—'}</div>`;
+        grid.appendChild(card);
+    });
+
+    document.getElementById('p-footer').textContent =
+        founded ? `נוסדה בשנת ${founded} • ${name}` : name;
+}
+
+// ═══════════════════════════════
+//  PRINT
+// ═══════════════════════════════
+function printProfile() {
+    const pw = document.getElementById('print-wrap');
+    pw.innerHTML = document.getElementById('profile').outerHTML;
+    // Replace canvas in print copy with data-url images
+    const srcCanvas = document.getElementById('profileFlag');
+    const imgSrc = srcCanvas.toDataURL();
+    const printCanvas = pw.querySelector('canvas');
+    if (printCanvas) {
+        const img = document.createElement('img');
+        img.src = imgSrc;
+        img.width  = printCanvas.width;
+        img.height = printCanvas.height;
+        img.style.cssText = printCanvas.style.cssText + '; border:4px solid rgba(255,255,255,.4); border-radius:6px; box-shadow:0 4px 16px rgba(0,0,0,.35);';
+        printCanvas.replaceWith(img);
+    }
+    window.print();
+}
+
+// ═══════════════════════════════
+//  RANDOMIZE
+// ═══════════════════════════════
+const R_NAMES   = ['דרקוניה','לונאריה','סטארלנד','קריסטליה','ונדרלנד','אקווריה','פיניקסיה','גאלקסיה','טמפוריה','מיסטיקה','ארגנוביה','זאפוריה'];
+const R_CAPS    = ['דרקוסיטי','לונהבן','סטארבורג','קריסטלפול','פורטוס','נובה ציטה','פיניקסבורג','גאלקספריים','טמפוס','מיסטיקהבן'];
+const R_MOTTOS  = ['חזק ואמיץ!','יחד ננצח!','שמיים אין גבול!','כוח ויופי!','חכמה מעל הכל!','חיים חופשיים!','קדימה לאינסוף!','ממחר לאחר מחר!'];
+const R_LANGS   = ['דרקונית','לונרית','קריסטלית','גלקטית','אקווית','פיניקסית','קוסמית','ארגנובית'];
+const R_CURR    = ['זהוב','כסף בוהק','דרקון','סטאר','קריסטל','מאנה','פיניקס','גלקסית'];
+const R_LTITLES = ['נשיא','מלך','מלכה','קיסר','קיסרית','שר-עליון','אורקל','גנרל ראשי','פרופ׳ הכבוד'];
+const R_LNAMES  = ['אריה בן-נמר','מרים הגדולה','ד״ר רמבו מקסן','לורד ז\'ינגו','פרופ׳ אסתר זיו','מרשל פרדו','אמה הנכבדת'];
+const R_FOODS   = ['מרק דרקון','עוגת כוכבים','פיתה מוזהבת','ג\'לי קסמים','ביצי פיניקס','סושי ירח','פיצה ממוזגת','בורגר כוכב'];
+const R_SPORTS  = ['גלישה בענן','ציד דרקונים','כדורגל חשמלי','שחייה בלבה','טניס בין-גלקטי','מרוץ חד-קרנים'];
+
+function randomize() {
+    const ri = arr => arr[Math.floor(Math.random() * arr.length)];
+
+    document.getElementById('f-name').value         = ri(R_NAMES);
+    document.getElementById('f-capital').value      = ri(R_CAPS);
+    document.getElementById('f-motto').value        = ri(R_MOTTOS);
+    document.getElementById('f-founded').value      = Math.floor(Math.random() * 3000) + 1;
+    document.getElementById('f-language').value     = ri(R_LANGS);
+    document.getElementById('f-currency').value     = ri(R_CURR);
+    document.getElementById('f-leader-title').value = ri(R_LTITLES);
+    document.getElementById('f-leader-name').value  = ri(R_LNAMES);
+    document.getElementById('f-food').value         = ri(R_FOODS);
+    document.getElementById('f-sport').value        = ri(R_SPORTS);
+    document.getElementById('f-population').value   = Math.floor(Math.random() * 11);
+    updatePopDisplay();
+
+    const pickRandom = (arr, stateKey, gridId) => {
+        const item = ri(arr);
+        state[stateKey] = item.v;
+        selectOption(gridId, arr, item.v);
+    };
+    pickRandom(CONTINENTS, 'continent', 'continent-grid');
+    pickRandom(RELIGIONS,  'religion',  'religion-grid');
+    pickRandom(ANIMALS,    'animal',    'animal-grid');
+    pickRandom(GOVERNMENTS,'government','gov-grid');
+    pickRandom(SIZES,      'size',      'size-grid');
+    pickRandom(CLIMATES,   'climate',   'climate-grid');
+    pickRandom(TERRAINS,   'terrain',   'terrain-grid');
+
+    state.flagLayout = FLAG_LAYOUTS[Math.floor(Math.random() * FLAG_LAYOUTS.length)];
+    state.flagSymbol = FLAG_SYMBOLS[Math.floor(Math.random() * FLAG_SYMBOLS.length)];
+
+    document.querySelectorAll('.layout-btn').forEach((b, i) => {
+        b.classList.toggle('selected', FLAG_LAYOUTS[i] === state.flagLayout);
+    });
+    document.querySelectorAll('.sym-btn').forEach((b, i) => {
+        b.classList.toggle('selected', FLAG_SYMBOLS[i] === state.flagSymbol);
+    });
+
+    const rc = () => '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0');
+    document.getElementById('c1').value = rc();
+    document.getElementById('c2').value = rc();
+    document.getElementById('c3').value = rc();
+    drawFlag();
+}
+
+// ═══════════════════════════════
+//  SAVE / LOAD
+// ═══════════════════════════════
+// ═══════════════════════════════
+//  USER SYSTEM
+// ═══════════════════════════════
+const USER_LIST_KEY   = 'country-creator-users';
+const USER_ACTIVE_KEY = 'country-creator-active';
+const USER_EMOJIS     = ['👑','🦁','🐉','🧙','🏛️','🚀','🌍','⚔️','🎮','🎭','🦅','🌟','🔮','🏆','🐺','🦄'];
+let selectedEmoji = USER_EMOJIS[0];
+
+function getUsers()         { return JSON.parse(localStorage.getItem(USER_LIST_KEY) || '[]'); }
+function saveUsers(u)       { localStorage.setItem(USER_LIST_KEY, JSON.stringify(u)); }
+function getActiveUserId()  { return localStorage.getItem(USER_ACTIVE_KEY); }
+function getActiveUser()    { const id = getActiveUserId(); return id ? getUsers().find(u => u.id === id) || null : null; }
+function getSavesKey()      { return 'country-creator-saves-' + (getActiveUserId() || 'default'); }
+function getSimKey()        { return 'country-creator-sim-'   + (getActiveUserId() || 'default'); }
+
+function updateHeaderUser() {
+    const user = getActiveUser();
+    if (user) {
+        document.querySelector('#header-user .header-user-emoji').textContent = user.emoji;
+        document.querySelector('#header-user .header-user-name').textContent  = user.name;
+    }
+}
+
+function openUserPicker() {
+    renderUserPicker();
+    document.getElementById('user-back-btn').style.display = getActiveUserId() ? 'block' : 'none';
+    document.getElementById('user-overlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeUserPicker() {
+    document.getElementById('user-new-form').classList.remove('open');
+    document.getElementById('user-overlay').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function renderUserPicker() {
+    const users = getUsers();
+    const cards = document.getElementById('user-cards');
+    cards.innerHTML = '';
+    users.forEach(user => {
+        const card = document.createElement('div');
+        card.className = 'user-card';
+        card.innerHTML = `
+            <div class="user-card-emoji">${user.emoji}</div>
+            <div class="user-card-name">${user.name}</div>
+            <button class="user-card-del" onclick="deleteUser('${user.id}', event)">🗑️ מחק</button>
+        `;
+        card.addEventListener('click', e => { if (!e.target.closest('.user-card-del')) switchToUser(user.id); });
+        cards.appendChild(card);
+    });
+}
+
+function switchToUser(id) {
+    localStorage.setItem(USER_ACTIVE_KEY, id);
+    updateHeaderUser();
+    closeUserPicker();
+}
+
+function deleteUser(id, e) {
+    e.stopPropagation();
+    saveUsers(getUsers().filter(u => u.id !== id));
+    localStorage.removeItem('country-creator-saves-' + id);
+    localStorage.removeItem('country-creator-sim-'   + id);
+    if (getActiveUserId() === id) localStorage.removeItem(USER_ACTIVE_KEY);
+    renderUserPicker();
+}
+
+function toggleNewUserForm() {
+    document.getElementById('user-new-form').classList.toggle('open');
+}
+
+function createUser() {
+    const input = document.getElementById('user-name-input');
+    const name  = input.value.trim();
+    if (!name) { input.focus(); return; }
+    const user = { id: Date.now().toString(), name, emoji: selectedEmoji };
+    const users = getUsers();
+    users.push(user);
+    saveUsers(users);
+    input.value = '';
+    switchToUser(user.id);
+}
+
+function selectEmoji(emoji) {
+    selectedEmoji = emoji;
+    document.querySelectorAll('.user-emoji-btn').forEach(b => b.classList.toggle('selected', b.dataset.emoji === emoji));
+}
+
+function initUserEmojiGrid() {
+    const grid = document.getElementById('user-emoji-grid');
+    USER_EMOJIS.forEach(emoji => {
+        const btn = document.createElement('button');
+        btn.className   = 'user-emoji-btn' + (emoji === selectedEmoji ? ' selected' : '');
+        btn.textContent = emoji;
+        btn.dataset.emoji = emoji;
+        btn.onclick = () => selectEmoji(emoji);
+        grid.appendChild(btn);
+    });
+}
+
+function collectSaveData() {
+    return {
+        id: Date.now(),
+        savedAt: new Date().toLocaleDateString('he-IL'),
+        name: getVal('f-name') || 'מדינה ללא שם',
+        formData: {
+            name:        getVal('f-name'),
+            capital:     getVal('f-capital'),
+            motto:       getVal('f-motto'),
+            founded:     getVal('f-founded'),
+            language:    getVal('f-language'),
+            currency:    getVal('f-currency'),
+            leaderTitle: getVal('f-leader-title'),
+            leaderName:  getVal('f-leader-name'),
+            food:        getVal('f-food'),
+            sport:       getVal('f-sport'),
+            population:  document.getElementById('f-population').value,
+        },
+        stateData: {
+            continent:  state.continent,  religion:   state.religion,
+            animal:     state.animal,     government: state.government,
+            size:       state.size,       climate:    state.climate,
+            terrain:    state.terrain,    flagLayout: state.flagLayout,
+            flagSymbol: state.flagSymbol,
+        },
+        flagColors: getColors(),
+    };
+}
+
+function saveCountry() {
+    const saves = JSON.parse(localStorage.getItem(getSavesKey()) || '[]');
+    saves.unshift(collectSaveData());
+    if (saves.length > 20) saves.length = 20;
+    localStorage.setItem(getSavesKey(), JSON.stringify(saves));
+    showToast('✅ המדינה נשמרה!');
+}
+
+function showToast(msg) {
+    const t = document.getElementById('save-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function openSavesModal() {
+    const saves = JSON.parse(localStorage.getItem(getSavesKey()) || '[]');
+    const list  = document.getElementById('saves-list');
+    list.innerHTML = '';
+
+    if (saves.length === 0) {
+        list.innerHTML = '<div class="saves-empty">אין מדינות שמורות עדיין.<br>שמרו מדינה מהפרופיל!</div>';
+    } else {
+        saves.forEach((save, idx) => {
+            const item = document.createElement('div');
+            item.className = 'save-item';
+
+            const cvs = document.createElement('canvas');
+            cvs.width = 66; cvs.height = 44;
+            drawFlagOnCanvas(cvs, save.stateData.flagLayout, save.flagColors, save.stateData.flagSymbol);
+
+            const info = document.createElement('div');
+            info.className = 'save-item-info';
+            info.innerHTML = `<div class="save-item-name">${save.name}</div><div class="save-item-meta">${save.savedAt}</div>`;
+
+            const del = document.createElement('button');
+            del.className = 'save-item-del';
+            del.textContent = '🗑️';
+            del.title = 'מחק';
+            del.onclick = e => { e.stopPropagation(); deleteSave(idx); };
+
+            item.appendChild(cvs);
+            item.appendChild(info);
+            item.appendChild(del);
+            item.addEventListener('click', () => applySave(save));
+            list.appendChild(item);
+        });
+    }
+    document.getElementById('saves-modal').classList.add('open');
+}
+
+function closeSavesModal() {
+    document.getElementById('saves-modal').classList.remove('open');
+}
+
+function deleteSave(idx) {
+    const saves = JSON.parse(localStorage.getItem(getSavesKey()) || '[]');
+    saves.splice(idx, 1);
+    localStorage.setItem(getSavesKey(), JSON.stringify(saves));
+    openSavesModal();
+}
+
+function applySave(save) {
+    const f = save.formData;
+    document.getElementById('f-name').value         = f.name        || '';
+    document.getElementById('f-capital').value      = f.capital     || '';
+    document.getElementById('f-motto').value        = f.motto       || '';
+    document.getElementById('f-founded').value      = f.founded     || '';
+    document.getElementById('f-language').value     = f.language    || '';
+    document.getElementById('f-currency').value     = f.currency    || '';
+    document.getElementById('f-leader-title').value = f.leaderTitle || '';
+    document.getElementById('f-leader-name').value  = f.leaderName  || '';
+    document.getElementById('f-food').value         = f.food        || '';
+    document.getElementById('f-sport').value        = f.sport       || '';
+    document.getElementById('f-population').value   = f.population  || 5;
+    updatePopDisplay();
+
+    const s = save.stateData;
+    Object.assign(state, s);
+    selectOption('continent-grid', CONTINENTS,  s.continent);
+    selectOption('religion-grid',  RELIGIONS,   s.religion);
+    selectOption('animal-grid',    ANIMALS,     s.animal);
+    selectOption('gov-grid',       GOVERNMENTS, s.government);
+    selectOption('size-grid',      SIZES,       s.size);
+    selectOption('climate-grid',   CLIMATES,    s.climate);
+    selectOption('terrain-grid',   TERRAINS,    s.terrain);
+
+    document.getElementById('c1').value = save.flagColors[0];
+    document.getElementById('c2').value = save.flagColors[1];
+    document.getElementById('c3').value = save.flagColors[2];
+    document.querySelectorAll('.layout-btn').forEach((b, i) => b.classList.toggle('selected', FLAG_LAYOUTS[i] === s.flagLayout));
+    document.querySelectorAll('.sym-btn').forEach((b, i) => b.classList.toggle('selected', FLAG_SYMBOLS[i] === s.flagSymbol));
+    drawFlag();
+
+    closeSavesModal();
+    goStep(0);
+    showToast('📂 המדינה נטענה!');
+}
+
+// ═══════════════════════════════
+//  SIMULATION
+// ═══════════════════════════════
+const SIM_STAT_META = [
+    { key: 'happiness', icon: '😊', label: 'אושר'  },
+    { key: 'economy',   icon: '💰', label: 'כלכלה' },
+    { key: 'military',  icon: '🛡️', label: 'צבא'   },
+    { key: 'science',   icon: '🔬', label: 'מדע'   },
+    { key: 'culture',   icon: '🎭', label: 'תרבות' },
+];
+
+const SIM_EVENTS = [
+    {
+        title: 'בצורת קשה',
+        text: 'יבולים כשלו ומחסור במזון מאיים על {name}!',
+        choices: [
+            { text: 'השקעה חירומית בחקלאות',    e: { economy:-12, happiness:+8  }, r: 'המשבר נפתר. הממשלה השקיעה בחקלאות חדשה.' },
+            { text: 'יבוא מזון מיידי',           e: { economy:-18, happiness:+5  }, r: 'מזון הגיע מהר. האוצר קטן קצת.' },
+            { text: 'להתעלם מהבעיה',            e: { economy:-5,  happiness:-22 }, r: 'האזרחים סבלו. האמון בממשלה ירד דרמטית.' },
+        ]
+    },
+    {
+        title: 'גילוי מחצבים',
+        text: 'מאגרי זהב ענקיים התגלו בשטחי {name}!',
+        choices: [
+            { text: 'כרייה מסיבית מיידית',       e: { economy:+28, culture:-8   }, r: 'הכנסות עצומות זרמו. הנוף נפגע קצת.' },
+            { text: 'ניצול מדוד עם הגנת טבע',    e: { economy:+15, culture:+12  }, r: 'כסף וטבע יחד — פתרון מאוזן!' },
+            { text: 'חלוקת עושר לכל אזרח',       e: { happiness:+25, economy:+8 }, r: 'כל משפחה קיבלה בונוס! האושר קפץ!' },
+        ]
+    },
+    {
+        title: 'מגפה',
+        text: 'מחלה מסתורית מתפשטת בערי {name}!',
+        choices: [
+            { text: 'סגר מיידי ומחמיר',          e: { economy:-15, happiness:-8, science:+12 }, r: 'המגפה נעצרה. המדענים למדו הרבה.' },
+            { text: 'מסע חיסון מואץ',            e: { science:-10, happiness:+12             }, r: 'החיסון נפוץ מהר — המחלה נסוגה!' },
+            { text: 'להמשיך כרגיל',              e: { happiness:-28, economy:+5              }, r: 'אנשים חלו בהמוניהם. ביקורת קשה על הממשלה!' },
+        ]
+    },
+    {
+        title: 'מפגש עם חייזרים',
+        text: 'חללית לא מזוהה נחתה ב{name}. מה עושים?',
+        choices: [
+            { text: 'פגישת שלום וחילופי ידע',    e: { science:+32, culture:+10, military:-8  }, r: 'הטכנולוגיה החייזרית שינתה הכל!' },
+            { text: 'כוננות צבאית מלאה',         e: { military:+22, happiness:-10            }, r: 'הצבא גוייס. החייזרים עזבו בזהירות.' },
+            { text: 'הסתרה מוחלטת מהציבור',      e: { happiness:-20, science:+10             }, r: 'הסוד הודלף אחרי חודש. כאוס ציבורי!' },
+        ]
+    },
+    {
+        title: 'איום מלחמתי',
+        text: 'מדינה שכנה מנייד כוחות לגבול {name}!',
+        choices: [
+            { text: 'גיוס צבאי מלא',             e: { military:+22, economy:-15, happiness:-8 }, r: 'הצבא גוייס. השכן נסוג בפני הכוח.' },
+            { text: 'שולחן משא ומתן',            e: { culture:+12, happiness:+8, military:-5  }, r: 'הסכם נחתם. שלום יקר — אבל שלום.' },
+            { text: 'ברית כלכלית חדשה',          e: { economy:+18, military:+8               }, r: 'עסקים חדשים פתרו את המתח.' },
+        ]
+    },
+    {
+        title: 'פסטיבל בינלאומי',
+        text: 'פסטיבל תרבות ענק מציע לאכסן את אירועיו ב{name}!',
+        choices: [
+            { text: 'תמיכה ממשלתית מלאה',        e: { culture:+28, happiness:+18, economy:-10 }, r: 'הפסטיבל היה עצום! {name} על המפה התרבותית!' },
+            { text: 'שיתוף מגזר פרטי',           e: { culture:+15, economy:+8                }, r: 'שיתוף פעולה מוצלח — תרבות וכסף!' },
+            { text: 'דחייה לשנה הבאה',           e: { happiness:-12                          }, r: 'ההזדמנות פוספסה. הציבור אכזב.' },
+        ]
+    },
+    {
+        title: 'חברת ענק טכנולוגי',
+        text: 'חברת טכנולוגיה ענקית מציעה להקים מטה ב{name}!',
+        choices: [
+            { text: 'קבלה ללא תנאים',            e: { economy:+32, science:+18, culture:-10 }, r: 'עשרות אלפי מקומות עבודה! שכר הדירה קפץ.' },
+            { text: 'קבלה עם תנאי מיסוי',        e: { economy:+18, science:+12, happiness:+8}, r: 'הסכם הוגן — כולם מרוצים.' },
+            { text: 'דחייה — עצמאות כלכלית',    e: { economy:-5,  happiness:+15, culture:+12}, r: 'הציבור גאה. הכלכלה מפסידה קצת בינתיים.' },
+        ]
+    },
+    {
+        title: 'רעידת אדמה',
+        text: 'רעידת אדמה 7.2 ריכטר ניחתת על {name}!',
+        choices: [
+            { text: 'שיקום מיידי על חשבון האוצר', e: { economy:-22, happiness:+12            }, r: 'השיקום היה מהיר. האוצר שילם מחיר כבד.' },
+            { text: 'קריאה לסיוע בינלאומי',      e: { happiness:+5, culture:+8, military:-5  }, r: 'ידידים סייעו. {name} חבה טובות.' },
+            { text: 'לבנות מחדש בצורה חכמה',    e: { economy:-28, science:+22, culture:+15, happiness:-10 }, r: 'הערים נבנו כמופת עולמי — בטווח הארוך!' },
+        ]
+    },
+    {
+        title: 'בחירות כלליות',
+        text: 'הבחירות הגדולות של {name} מגיעות!',
+        choices: [
+            { text: 'מצע חינוך ומדע',            e: { science:+18, culture:+10, economy:-5   }, r: 'מדיניות החינוך מנצחת. דור חדש גדל!' },
+            { text: 'מצע ביטחון כלכלי',          e: { economy:+22, happiness:+12             }, r: 'הכלכלה גדלה. המצביעים מרוצים.' },
+            { text: 'מצע הגנה וצבא',             e: { military:+20, happiness:+8, culture:-8 }, r: 'הצבא חוזק. הגבולות בטוחים יותר.' },
+        ]
+    },
+    {
+        title: 'ניצחון ספורטאי',
+        text: 'נבחרת {name} ניצחה באליפות העולם!',
+        choices: [
+            { text: 'חגיגות ענק ממומנות',        e: { happiness:+32, economy:-10             }, r: 'ריקודים ברחובות! שנה לא תישכח.' },
+            { text: 'השקעה בתשתיות ספורט',       e: { happiness:+15, economy:-5, science:+5  }, r: 'הדור הבא כבר מתאמן!' },
+            { text: 'להמשיך כרגיל',              e: { happiness:+10                          }, r: 'ניצחון קטן, שמחה קצרה.' },
+        ]
+    },
+    {
+        title: 'גל פליטים',
+        text: 'עשרות אלפי פליטים מגיעים לשערי {name}!',
+        choices: [
+            { text: 'קבלה פתוחה עם תמיכה',      e: { culture:+22, economy:-12, happiness:+5  }, r: 'הפליטים קיבלו בית. הגיוון העשיר את המדינה.' },
+            { text: 'קליטה מדורגת ומבוקרת',     e: { culture:+10, economy:+5,  happiness:+5  }, r: 'איזון בין חמלה ליכולת — פתרון בר-קיימא.' },
+            { text: 'סגירת גבולות',              e: { happiness:-18, economy:+12, culture:-15 }, r: 'הפליטים נדחו. העולם מותח ביקורת קשה.' },
+        ]
+    },
+    {
+        title: 'תגלית מדעית',
+        text: 'מדעני {name} גילו תרופה המרפאת מחלה קשה!',
+        choices: [
+            { text: 'שיתוף חופשי עם העולם',     e: { culture:+28, happiness:+22, science:+10 }, r: 'מיליוני חיים ניצלו. {name} — אגדה עולמית!' },
+            { text: 'פטנט ומכירה רווחית',        e: { economy:+32, science:+10               }, r: 'הכנסות ענקיות. קצת ביקורת מוסרית.' },
+            { text: 'שיתוף עם בעלי ברית בלבד',  e: { economy:+15, military:+12, happiness:+10}, r: 'בריתות התחזקו. תגמול אסטרטגי.' },
+        ]
+    },
+    {
+        title: 'שחיתות ממשלתית',
+        text: 'שחיתות ענקית התגלתה בממשלת {name}!',
+        choices: [
+            { text: 'חקירה שקופה ועצמאית',      e: { happiness:+12, economy:-15, culture:+8  }, r: 'השחיתות נחשפה. האמון השתקם לאט.' },
+            { text: 'טיוח ושתיקה',              e: { economy:-5,   happiness:-25, military:-5}, r: 'הטיוח נחשף לאחר חודש. כמעט מהפכה!' },
+            { text: 'פיטורי כל הממשלה',         e: { happiness:+22, economy:-20, military:-10}, r: 'ניקיון שלטוני מלא. כאוס זמני אבל האמון חזר.' },
+        ]
+    },
+    {
+        title: 'תוכנית חלל',
+        text: 'הזדמנות לשגר את לוויין {name} הראשון לחלל!',
+        choices: [
+            { text: 'השקעה מלאה בתוכנית חלל',   e: { science:+32, economy:-25, happiness:+12 }, r: 'הלוויין בחלל! {name} — מדינת חלל!' },
+            { text: 'שותפות עם סוכנות חלל',     e: { science:+20, economy:-10, culture:+8   }, r: 'שיתוף פעולה מוצלח — ידע וחסכון.' },
+            { text: 'ביטול — עדיפויות פנימיות', e: { economy:+10, happiness:-8              }, r: 'הכסף נשמר. חלומות הנשרו...' },
+        ]
+    },
+    {
+        title: 'גלי חום קיצוניים',
+        text: 'גלי חום שוברי שיאים שורפים את {name}!',
+        choices: [
+            { text: 'מהפכת אנרגיה ירוקה',        e: { economy:-20, science:+20, culture:+10  }, r: 'מהפכה ירוקה התחילה! {name} מובילה בעולם.' },
+            { text: 'מיזוג אוויר ממלכתי לכולם',  e: { economy:-15, happiness:+15             }, r: 'הציבור קר — כרגע. הבעיה לא נפתרה.' },
+            { text: 'הכחשה ועסקים כרגיל',        e: { economy:-5,  happiness:-15, science:-10}, r: 'השנה הבאה יהיה גרוע הרבה יותר...' },
+        ]
+    },
+];
+
+const sim = {
+    year: 1,
+    maxYears: 12,
+    stats: {},
+    chosen: false,
+    usedEvents: new Set(),
+    currentEvent: null,
+};
+
+function simStatColor(v) {
+    return v > 60 ? '#27ae60' : v > 30 ? '#f39c12' : '#e74c3c';
+}
+function clamp(v) { return Math.max(0, Math.min(100, v)); }
+
+function renderSimStats() {
+    const area = document.getElementById('sim-stats-area');
+    area.innerHTML = '';
+    SIM_STAT_META.forEach(m => {
+        const v = sim.stats[m.key];
+        const row = document.createElement('div');
+        row.className = 'sim-stat-row';
+        row.innerHTML = `
+            <div class="sim-stat-icon">${m.icon}</div>
+            <div class="sim-stat-name">${m.label}</div>
+            <div class="sim-stat-bar-bg">
+                <div class="sim-stat-bar" id="sbar-${m.key}" style="width:${v}%;background:${simStatColor(v)};"></div>
+            </div>
+            <div class="sim-stat-num" id="snum-${m.key}">${v}</div>
+        `;
+        area.appendChild(row);
+    });
+}
+
+function applySimEffects(effects) {
+    Object.entries(effects).forEach(([key, delta]) => {
+        sim.stats[key] = clamp((sim.stats[key] || 50) + delta);
+        const bar = document.getElementById('sbar-' + key);
+        const num = document.getElementById('snum-' + key);
+        if (bar) { bar.style.width = sim.stats[key] + '%'; bar.style.backgroundColor = simStatColor(sim.stats[key]); }
+        if (num) num.textContent = sim.stats[key];
+    });
+}
+
+function fmtEffects(e) {
+    return Object.entries(e).map(([k, v]) => {
+        const m = SIM_STAT_META.find(s => s.key === k);
+        const color = v > 0 ? '#7dcea0' : '#f1948a';
+        return `<span style="color:${color}">${m?.icon || k}${v > 0 ? '+' : ''}${v}</span>`;
+    }).join(' ');
+}
+
+function simReplace(text) {
+    return text.replace(/\{name\}/g, getVal('f-name') || 'המדינה');
+}
+
+function pickSimEvent() {
+    const available = SIM_EVENTS.filter((_, i) => !sim.usedEvents.has(i));
+    const pool = available.length > 0 ? available : SIM_EVENTS;
+    if (available.length === 0) sim.usedEvents.clear();
+    const picked = pool[Math.floor(Math.random() * pool.length)];
+    sim.usedEvents.add(SIM_EVENTS.indexOf(picked));
+    return picked;
+}
+
+function showSimEvent() {
+    const ev = pickSimEvent();
+    sim.currentEvent = ev;
+    sim.chosen = false;
+
+    document.getElementById('sim-year-badge').textContent = `שנה ${sim.year}`;
+    document.getElementById('sim-event-text').textContent = simReplace(ev.text);
+    document.getElementById('sim-result-text').style.display = 'none';
+    document.getElementById('sim-event-card').style.display  = 'block';
+    document.getElementById('sim-action-card').style.display = 'none';
+    document.getElementById('sim-next-btn').style.display    = 'none';
+    document.getElementById('sim-end-card').style.display    = 'none';
+
+    const choicesDiv = document.getElementById('sim-choices');
+    choicesDiv.innerHTML = '';
+    ev.choices.forEach((ch, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'sim-choice-btn';
+        btn.innerHTML = `<span>${ch.text}</span><span class="sim-effects">${fmtEffects(ch.e)}</span>`;
+        btn.onclick = () => simChoose(i);
+        choicesDiv.appendChild(btn);
+    });
+}
+
+function simChoose(idx) {
+    if (sim.chosen) return;
+    sim.chosen = true;
+    const ch = sim.currentEvent.choices[idx];
+    applySimEffects(ch.e);
+
+    document.querySelectorAll('.sim-choice-btn').forEach((b, i) => {
+        b.disabled = true;
+        if (i === idx) b.classList.add('chosen');
+    });
+
+    const resultEl = document.getElementById('sim-result-text');
+    resultEl.textContent = simReplace(ch.r);
+    resultEl.style.display = 'block';
+
+    const dead = SIM_STAT_META.find(m => sim.stats[m.key] <= 0);
+    if (dead) { setTimeout(() => showSimEnd(false, dead), 900); return; }
+
+    setTimeout(showActionPanel, 400);
+}
+
+const SIM_ACTIONS = [
+    { icon: '⚖️', text: 'הגבר סדר ציבורי',    e: { happiness:+10, military:-5, economy:-5  } },
+    { icon: '💹', text: 'הצמח את הכלכלה',      e: { economy:+15,  happiness:-5              } },
+    { icon: '🎓', text: 'קדם חינוך ומדע',      e: { science:+12,  economy:-8               } },
+    { icon: '🎭', text: 'תמוך בתרבות ואמנות',  e: { culture:+12,  happiness:+5, economy:-8  } },
+    { icon: '🏥', text: 'שפר בריאות ורווחה',   e: { happiness:+14, economy:-10              } },
+    { icon: '🛡️', text: 'חזק את הצבא',        e: { military:+14, economy:-10, happiness:-5 } },
+    { icon: '😤', text: 'אל תעשה כלום',        e: {}                                         },
+];
+
+function showActionPanel() {
+    const grid = document.getElementById('sim-action-grid');
+    grid.innerHTML = '';
+    SIM_ACTIONS.forEach((action, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'sim-action-btn';
+        const effectsHtml = Object.keys(action.e).length
+            ? `<div class="sim-action-effects">${fmtEffects(action.e)}</div>` : '';
+        btn.innerHTML = `<div>${action.icon} ${action.text}${effectsHtml}</div>`;
+        btn.onclick = () => simTakeAction(i);
+        grid.appendChild(btn);
+    });
+    document.getElementById('sim-action-card').style.display = 'block';
+}
+
+function simTakeAction(idx) {
+    document.querySelectorAll('.sim-action-btn').forEach((b, i) => {
+        b.disabled = true;
+        if (i === idx) b.classList.add('chosen');
+    });
+    applySimEffects(SIM_ACTIONS[idx].e);
+    const dead = SIM_STAT_META.find(m => sim.stats[m.key] <= 0);
+    if (dead) { setTimeout(() => showSimEnd(false, dead), 700); return; }
+    document.getElementById('sim-next-btn').style.display = 'block';
+}
+
+function simNextYear() {
+    sim.year++;
+    document.getElementById('sim-year-label').textContent = `שנה ${sim.year}`;
+    showSimEvent();
+}
+
+function saveSimState() {
+    localStorage.setItem(getSimKey(), JSON.stringify({
+        name:  getVal('f-name') || 'המדינה',
+        year:  sim.year,
+        stats: { ...sim.stats },
+    }));
+}
+
+function clearSimState() {
+    localStorage.removeItem(getSimKey());
+}
+
+function showSimEnd(won, deadStat) {
+    clearSimState();
+    const name = getVal('f-name') || 'המדינה';
+    document.getElementById('sim-choices').innerHTML = '';
+    document.getElementById('sim-event-card').style.display  = 'none';
+    document.getElementById('sim-action-card').style.display = 'none';
+    document.getElementById('sim-next-btn').style.display    = 'none';
+    document.getElementById('sim-end-card').style.display    = 'block';
+    if (won) {
+        document.getElementById('sim-end-title').textContent = '🏆 ניצחת!';
+        document.getElementById('sim-end-text').textContent  =
+            `${name} שרדה ${sim.maxYears} שנות אתגרים ועלתה בגדולה! אתה מנהיג מבריק.`;
+    } else {
+        document.getElementById('sim-end-title').textContent = '💀 המדינה קרסה...';
+        document.getElementById('sim-end-text').textContent  =
+            `${name} קרסה בגלל ${deadStat.icon} ${deadStat.label} שצנח לאפס. היסטוריה עצובה.`;
+    }
+}
+
+function openSimulation(fresh) {
+    const name  = getVal('f-name') || 'המדינה';
+    const saved = !fresh && JSON.parse(localStorage.getItem(getSimKey()) || 'null');
+
+    if (saved && saved.name === name) {
+        sim.year  = saved.year;
+        sim.stats = { ...saved.stats };
+    } else {
+        clearSimState();
+        sim.year  = 1;
+        sim.stats = { happiness: 50, economy: 50, military: 50, science: 50, culture: 50 };
+    }
+    sim.usedEvents = new Set();
+    sim.chosen = false;
+
+    document.getElementById('sim-name').textContent       = name;
+    document.getElementById('sim-year-label').textContent = `שנה ${sim.year}`;
+    drawFlagOnCanvas(document.getElementById('sim-flag'), state.flagLayout, getColors(), state.flagSymbol);
+
+    renderSimStats();
+    showSimEvent();
+    document.getElementById('sim-overlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSimulation() {
+    const gameOver = document.getElementById('sim-end-card').style.display !== 'none';
+    if (!gameOver) saveSimState();
+    document.getElementById('sim-overlay').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// ═══════════════════════════════
+//  INIT
+// ═══════════════════════════════
+function init() {
+    makeOptionGrid('continent-grid', CONTINENTS, 'continent');
+    makeOptionGrid('religion-grid',  RELIGIONS,  'religion');
+    makeOptionGrid('animal-grid',    ANIMALS,    'animal');
+    makeOptionGrid('gov-grid',       GOVERNMENTS,'government');
+    makeOptionGrid('size-grid',      SIZES,      'size');
+    makeOptionGrid('climate-grid',   CLIMATES,   'climate');
+    makeOptionGrid('terrain-grid',   TERRAINS,   'terrain');
+    initLayoutGrid();
+    initSymbolGrid();
+    initUserEmojiGrid();
+    updatePopDisplay();
+    drawFlag();
+
+    updateHeaderUser();
+    openUserPicker();
+}
+
+init();
+</script>
+</body>
+</html>
