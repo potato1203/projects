@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>חיים מאפס 🌱</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#0d0d1a;--card:#141428;--card2:#1a1a35;--border:#252545;
+      --accent:#7c3aed;--accent2:#a855f7;--text:#e2e2f0;--dim:#7070a0;
+      --green:#4ade80;--red:#f87171;--yellow:#fbbf24;--blue:#60a5fa;
+    }
+    body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;direction:rtl}
+    .wrap{max-width:800px;margin:0 auto;padding:14px}
+    .title{text-align:center;font-size:1.7em;color:var(--accent2);font-weight:bold;margin-bottom:2px}
+    .subtitle{text-align:center;color:var(--dim);font-size:.82em;margin-bottom:12px}
+
+    /* Info row */
+    .info-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:8px}
+    .icard{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px;text-align:center}
+    .icard .lbl{font-size:.68em;color:var(--dim);margin-bottom:2px}
+    .icard .val{font-size:1.15em;font-weight:bold}
+    .val.money{color:var(--green)}.val.invest{color:var(--yellow)}.val.age{color:var(--accent2)}.val.date{color:var(--blue);font-size:.92em}
+
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+    .scard{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px}
+    .shdr{display:flex;justify-content:space-between;margin-bottom:5px;font-size:.82em}
+    .slbl{color:var(--dim)}.snum{font-weight:bold}
+    .bar{height:7px;background:#1f1f3a;border-radius:4px;overflow:hidden}
+    .fill{height:100%;border-radius:4px;transition:width .4s}
+    .hfill{background:linear-gradient(90deg,#f87171,#4ade80)}
+    .pfill{background:linear-gradient(90deg,#f87171,#fbbf24)}
+    .efill{background:linear-gradient(90deg,#60a5fa,#a855f7)}
+
+    /* Status */
+    .status{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px 13px;margin-bottom:8px;display:flex;justify-content:space-around;flex-wrap:wrap;gap:4px}
+    .si{text-align:center}.si .sl{font-size:.68em;color:var(--dim)}.si .sv{font-size:.88em;font-weight:bold}
+
+    /* Actions */
+    .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:8px}
+    .abtn{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:11px 5px;cursor:pointer;text-align:center;transition:all .2s;font-family:inherit;direction:rtl}
+    .abtn:hover:not([disabled]){background:var(--card2);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px rgba(124,58,237,.2)}
+    .abtn[disabled]{opacity:.35;cursor:not-allowed}
+    .abtn .ai{font-size:1.5em;display:block;margin-bottom:3px}
+    .abtn .an{font-size:.82em;font-weight:bold;display:block}
+    .abtn .ad{font-size:.68em;color:var(--dim);display:block;margin-top:2px}
+
+    /* Log */
+    .log{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:11px}
+    .ltitle{font-size:.78em;color:var(--dim);margin-bottom:7px;border-bottom:1px solid var(--border);padding-bottom:4px}
+    .llist{max-height:155px;overflow-y:auto}
+    .lentry{font-size:.8em;padding:3px 0;display:flex;gap:7px;border-bottom:1px solid #1a1a30;animation:fin .3s ease}
+    .lentry:last-child{border-bottom:none}
+    .ltime{color:var(--dim);font-size:.82em;white-space:nowrap;min-width:55px}
+    .good{color:var(--green)}.bad{color:var(--red)}.evt{color:var(--yellow)}.neutral{color:var(--text)}
+    @keyframes fin{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+
+    /* Modal */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;z-index:1000}
+    .modal{background:var(--card);border:1px solid var(--accent);border-radius:14px;padding:19px;max-width:420px;width:93%;direction:rtl;max-height:85vh;overflow-y:auto}
+    .modal h2{color:var(--accent2);margin-bottom:11px;font-size:1.15em}
+    .modal p{color:var(--dim);font-size:.83em;margin-bottom:10px}
+    .olist{display:flex;flex-direction:column;gap:7px}
+    .obtn{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:11px;border-radius:8px;cursor:pointer;text-align:right;transition:all .2s;font-family:inherit;direction:rtl;width:100%}
+    .obtn:hover:not([disabled]){border-color:var(--accent);background:#1f1f40}
+    .obtn[disabled]{opacity:.38;cursor:not-allowed}
+    .obtn .on{font-weight:bold;font-size:.92em}
+    .obtn .od{font-size:.75em;color:var(--dim);margin-top:2px}
+    .obtn .oc{font-size:.72em;color:var(--green);margin-top:2px}
+    .cur-badge{border-color:var(--green)!important;background:rgba(74,222,128,.04)!important}
+    .inv-info{background:var(--card2);border-radius:7px;padding:9px;margin-bottom:10px;font-size:.83em}
+    .irow{display:flex;justify-content:space-between;margin-bottom:3px}
+    .modal input[type=number]{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);padding:9px;border-radius:7px;font-size:.95em;font-family:inherit;direction:rtl;margin-bottom:9px}
+    .modal input[type=number]:focus{outline:none;border-color:var(--accent)}
+    .brow{display:flex;gap:7px;justify-content:flex-end;margin-top:4px}
+    .bconf{background:var(--accent);border:none;color:#fff;padding:9px 18px;border-radius:7px;cursor:pointer;font-family:inherit;font-size:.88em}
+    .bcanc{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:7px;cursor:pointer;font-family:inherit;font-size:.88em}
+    .bok{background:var(--accent);border:none;color:#fff;padding:10px 24px;border-radius:7px;cursor:pointer;font-family:inherit;font-size:.9em;margin-top:11px;width:100%}
+    .evtemoji{font-size:2.5em;text-align:center;margin-bottom:9px}
+
+    /* End screen */
+    .endscr{text-align:center;padding:10px}
+    .endscr .big{font-size:3.5em;margin-bottom:9px}
+    .endscr h2{font-size:1.5em;margin-bottom:7px}
+    .endscr .ep{color:var(--dim);margin-bottom:10px;font-size:.9em}
+    .endstats{background:var(--card2);border-radius:9px;padding:13px;margin:12px 0;text-align:right}
+    .erow{display:flex;justify-content:space-between;margin-bottom:5px;font-size:.88em}
+    .score{font-size:2em;font-weight:bold;color:var(--accent2);margin:8px 0}
+    .brestart{background:var(--accent);border:none;color:#fff;padding:11px 28px;border-radius:8px;cursor:pointer;font-size:.95em;font-family:inherit;transition:background .2s}
+    .brestart:hover{background:var(--accent2)}
+
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+    @media(max-width:500px){.info-bar{grid-template-columns:repeat(2,1fr)}.actions{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title">🌱 חיים מאפס</div>
+  <div class="subtitle">בנה את חייך מהבסיס — גיל 18, כסף אפס, בלי קורה</div>
+
+  <div class="info-bar">
+    <div class="icard"><div class="lbl">גיל</div><div class="val age" id="dAge">18</div></div>
+    <div class="icard"><div class="lbl">תאריך</div><div class="val date" id="dDate">ינואר 2008</div></div>
+    <div class="icard"><div class="lbl">💰 מזומן</div><div class="val money" id="dMoney">₪0</div></div>
+    <div class="icard"><div class="lbl">📈 השקעות</div><div class="val invest" id="dInvest">₪0</div></div>
+  </div>
+
+  <div class="stats">
+    <div class="scard">
+      <div class="shdr"><span class="slbl">❤️ בריאות</span><span class="snum" id="dHN">80</span></div>
+      <div class="bar"><div class="fill hfill" id="dHB" style="width:80%"></div></div>
+    </div>
+    <div class="scard">
+      <div class="shdr"><span class="slbl">😊 אושר</span><span class="snum" id="dPN">40</span></div>
+      <div class="bar"><div class="fill pfill" id="dPB" style="width:40%"></div></div>
+    </div>
+    <div class="scard">
+      <div class="shdr"><span class="slbl">🎓 השכלה</span><span class="snum" id="dEN">12.0</span></div>
+      <div class="bar"><div class="fill efill" id="dEB" style="width:60%"></div></div>
+    </div>
+  </div>
+
+  <div class="status">
+    <div class="si"><div class="sl">💼 עבודה</div><div class="sv" id="dJob">מובטל</div></div>
+    <div class="si"><div class="sl">🏠 מגורים</div><div class="sv" id="dHousing">חסר בית</div></div>
+    <div class="si"><div class="sl">💸 הכנסה</div><div class="sv" id="dIncome" style="color:var(--green)">₪0/חודש</div></div>
+    <div class="si"><div class="sl">🏦 הוצאות</div><div class="sv" id="dExpense" style="color:var(--red)">₪0/חודש</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="abtn" id="btnWork" onclick="doAction('work')"><span class="ai">💼</span><span class="an">עבוד</span><span class="ad">שעות נוספות</span></button>
+    <button class="abtn" onclick="doAction('study')"><span class="ai">📚</span><span class="an">למד</span><span class="ad">שפר השכלה</span></button>
+    <button class="abtn" onclick="doAction('rest')"><span class="ai">😴</span><span class="an">נוח</span><span class="ad">+בריאות +אושר</span></button>
+    <button class="abtn" onclick="doAction('exercise')"><span class="ai">🏃</span><span class="an">התאמן</span><span class="ad">+בריאות</span></button>
+    <button class="abtn" onclick="doAction('socialize')"><span class="ai">👥</span><span class="an">חברים</span><span class="ad">+אושר</span></button>
+    <button class="abtn" onclick="openJobModal()"><span class="ai">🔍</span><span class="an">חפש עבודה</span><span class="ad">החלף תפקיד</span></button>
+    <button class="abtn" onclick="openHousingModal()"><span class="ai">🏠</span><span class="an">שפר דיור</span><span class="ad">מצא דיור</span></button>
+    <button class="abtn" onclick="openInvestModal()"><span class="ai">📈</span><span class="an">השקע</span><span class="ad">שוק ההון</span></button>
+  </div>
+
+  <div class="log">
+    <div class="ltitle">📋 יומן חיים</div>
+    <div class="llist" id="logList"></div>
+  </div>
+</div>
+<div id="mc"></div>
+
+<script>
+const MO=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+
+const JOBS={
+  none:       {name:'מובטל',      salary:0,    minEdu:0,  hap:-10,hp:0,  icon:'❌'},
+  beggar:     {name:'קבצן',       salary:200,  minEdu:0,  hap:-25,hp:-3, icon:'🫳'},
+  dishwasher: {name:'שוטף כלים', salary:1500, minEdu:0,  hap:-12,hp:-2, icon:'🍽️'},
+  cashier:    {name:'קופאי',      salary:2800, minEdu:12, hap:-5, hp:0,  icon:'🏪'},
+  waiter:     {name:'מלצר',       salary:3200, minEdu:12, hap:0,  hp:-2, icon:'🥗'},
+  construction:{name:'פועל בנין', salary:4200, minEdu:12, hap:-8, hp:-5, icon:'🏗️'},
+  secretary:  {name:'מזכיר/ה',   salary:5000, minEdu:14, hap:0,  hp:0,  icon:'🗂️'},
+  technician: {name:'טכנאי',      salary:6200, minEdu:14, hap:5,  hp:0,  icon:'🔧'},
+  teacher:    {name:'מורה',       salary:7000, minEdu:16, hap:15, hp:0,  icon:'👩‍🏫'},
+  manager:    {name:'מנהל',       salary:9000, minEdu:16, hap:5,  hp:-3, icon:'💼'},
+  programmer: {name:'מתכנת',      salary:13000,minEdu:16, hap:10, hp:-2, icon:'💻'},
+  lawyer:     {name:'עורך דין',  salary:20000,minEdu:18, hap:0,  hp:-5, icon:'⚖️'},
+  doctor:     {name:'רופא',       salary:28000,minEdu:18, hap:20, hp:0,  icon:'🩺'},
+  professor:  {name:'פרופסור',   salary:15000,minEdu:20, hap:25, hp:0,  icon:'🎓'},
+};
+
+const HOUSING={
+  homeless: {name:'חסר בית',    cost:0,    hap:-30,hp:-10,dep:0,    icon:'🚶'},
+  shelter:  {name:'מקלט',        cost:0,    hap:-15,hp:-2, dep:0,    icon:'🏚️'},
+  shared:   {name:'חדר משותף', cost:1500, hap:-5, hp:0,  dep:3000, icon:'🛏️'},
+  small:    {name:'דירה קטנה', cost:2800, hap:10, hp:5,  dep:5600, icon:'🏠'},
+  apt:      {name:'דירה',        cost:5000, hap:20, hp:10, dep:10000,icon:'🏢'},
+  house:    {name:'בית',         cost:9000, hap:30, hp:15, dep:18000,icon:'🏡'},
+  villa:    {name:'וילה',        cost:20000,hap:45, hp:20, dep:40000,icon:'🏰'},
+};
+
+const EVENTS=[
+  {id:'bonus',  chance:.10,needJob:true,
+   title:'בונוס בעבודה!',emoji:'🎉',type:'good',
+   prep:(s)=>{s._amt=Math.floor(s.salary*.5)},
+   text:(s)=>`קיבלת בונוס של ₪${fmt(s._amt)}!`,
+   apply:(s)=>{s.money+=s._amt}},
+  {id:'raise',  chance:.06,needJob:true,
+   title:'העלאה בשכר!',emoji:'📈',type:'good',
+   prep:(s)=>{s._amt=Math.floor(s.salary*.15)},
+   text:(s)=>`קיבלת העלאה של ₪${fmt(s._amt)} לחודש!`,
+   apply:(s)=>{s.salary+=s._amt}},
+  {id:'fired',  chance:.05,needJob:true,
+   title:'פוטרת מהעבודה!',emoji:'😱',type:'bad',
+   prep:(s)=>{s._jname=JOBS[s.job].name},
+   text:(s)=>`קיבלת מכתב פיטורין מ${s._jname}.`,
+   apply:(s)=>{s.job='none';s.salary=0;s.hap=clamp(s.hap-20,0,100)}},
+  {id:'medical',chance:.07,
+   title:'בעיה רפואית',emoji:'🏥',type:'bad',
+   prep:(s)=>{},
+   text:(s)=>`אושפזת. עלות: ₪2,000. -20 בריאות.`,
+   apply:(s)=>{s.money=Math.max(0,s.money-2000);s.hp=clamp(s.hp-20,0,100)}},
+  {id:'theft',  chance:.05,needMoney:500,
+   title:'נגנבת!',emoji:'🦹',type:'bad',
+   prep:(s)=>{s._amt=Math.min(Math.floor(s.money*.12),3000)},
+   text:(s)=>`נגנבו ממך ₪${fmt(s._amt)}.`,
+   apply:(s)=>{s.money=Math.max(0,s.money-s._amt);s.hap=clamp(s.hap-8,0,100)}},
+  {id:'findmoney',chance:.06,
+   title:'מצאת כסף!',emoji:'💰',type:'good',
+   prep:(s)=>{s._amt=200+Math.floor(Math.random()*300)},
+   text:(s)=>`מצאת ₪${fmt(s._amt)} ברחוב!`,
+   apply:(s)=>{s.money+=s._amt}},
+  {id:'lottery', chance:.03,
+   title:'זכית בלוטו!',emoji:'🎰',type:'good',
+   prep:(s)=>{},
+   text:(s)=>`זכית ב-₪5,000 בלוטו!`,
+   apply:(s)=>{s.money+=5000;s.hap=clamp(s.hap+15,0,100)}},
+  {id:'sick',   chance:.08,
+   title:'חלית',emoji:'🤒',type:'bad',
+   prep:(s)=>{},
+   text:(s)=>`חלית החודש. -15 בריאות, -8 אושר.`,
+   apply:(s)=>{s.hp=clamp(s.hp-15,0,100);s.hap=clamp(s.hap-8,0,100)}},
+  {id:'goodnews',chance:.09,
+   title:'חדשות טובות!',emoji:'✨',type:'good',
+   prep:(s)=>{},
+   text:(s)=>`קיבלת חדשות מעולות. +18 אושר!`,
+   apply:(s)=>{s.hap=clamp(s.hap+18,0,100)}},
+  {id:'crash',  chance:.07,needInvest:true,
+   title:'קריסת שוק!',emoji:'📉',type:'bad',
+   prep:(s)=>{s._amt=Math.floor(s.investments*.22)},
+   text:(s)=>`שוק ההון קרס! ירדת ₪${fmt(s._amt)} בהשקעות.`,
+   apply:(s)=>{s.investments=Math.floor(s.investments*.78)}},
+  {id:'boom',   chance:.07,needInvest:true,
+   title:'פריחה בשוק!',emoji:'🚀',type:'good',
+   prep:(s)=>{s._amt=Math.floor(s.investments*.28)},
+   text:(s)=>`שוק ההון פרח! +₪${fmt(s._amt)} בהשקעות.`,
+   apply:(s)=>{s.investments=Math.floor(s.investments*1.28)}},
+];
+
+let S={}, dead=false;
+
+function initGame(){
+  S={age:18,month:0,year:2008,money:0,hp:80,hap:40,edu:12.0,
+     job:'none',salary:0,housing:'homeless',investments:0,
+     log:[{time:'ינואר 2008',text:'התחלת את חייך עם ₪0 ובלי קורה מעל הראש. הגיע הזמן לבנות את עצמך!',type:'neutral'}],
+     pending:null};
+  dead=false;
+  render();
+}
+
+function fmt(n){
+  if(n>=1000000)return(n/1000000).toFixed(1)+"מ'";
+  if(n>=10000)return Math.floor(n/1000)+'K';
+  return n.toLocaleString('he-IL');
+}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function log(text,type='neutral'){
+  const t=MO[S.month]+' '+S.year;
+  S.log.unshift({time:t,text,type});
+  if(S.log.length>60)S.log.pop();
+}
+function timeStr(){return MO[S.month]+' '+S.year}
+
+function advanceMonth(){
+  const h=HOUSING[S.housing];
+  // Can't pay rent?
+  if(h.cost>0&&S.money<h.cost){
+    log('לא יכולת לשלם שכר דירה! ירדת לרחוב.','bad');
+    S.housing='homeless';S.hap=clamp(S.hap-25,0,100);
+  }
+  const h2=HOUSING[S.housing];
+  // Income & expenses
+  S.money+=S.salary;
+  S.money=Math.max(0,S.money-h2.cost);
+  // Stat effects
+  S.hp=clamp(S.hp+h2.hp*.25,0,100);
+  S.hap=clamp(S.hap+h2.hap*.15,0,100);
+  const j=JOBS[S.job];
+  S.hp=clamp(S.hp+j.hp*.25,0,100);
+  S.hap=clamp(S.hap+j.hap*.15,0,100);
+  // Natural decay
+  S.hp=clamp(S.hp-0.3,0,100);
+  S.hap=clamp(S.hap-0.7,0,100);
+  if(S.age>50)S.hp=clamp(S.hp-(S.age-50)*.04,0,100);
+  // Investments passive
+  if(S.investments>0){
+    const r=Math.random();
+    if(r<.62)S.investments=Math.floor(S.investments*(1+.003+Math.random()*.007));
+    else if(r>.85)S.investments=Math.floor(S.investments*(.997-Math.random()*.013));
+  }
+  // Time
+  S.month++;if(S.month>=12){S.month=0;S.year++;S.age++;}
+  tryEvent();
+  checkEnd();
+}
+
+function tryEvent(){
+  const ok=EVENTS.filter(e=>{
+    if(e.needJob&&S.job==='none')return false;
+    if(e.needMoney&&S.money<e.needMoney)return false;
+    if(e.needInvest&&S.investments<=0)return false;
+    return Math.random()<e.chance;
+  });
+  if(ok.length){
+    const e=ok[Math.floor(Math.random()*ok.length)];
+    e.prep(S);
+    const txt=e.text(S);
+    S.pending={e,txt};
+  }
+}
+
+function checkEnd(){
+  if(S.hp<=0){showDeath();return;}
+  if(S.age>=90){showRetire();return;}
+}
+
+// ── ACTIONS ──
+function doAction(a){
+  if(dead)return;
+  switch(a){
+    case 'work':
+      if(S.job==='none'){log('אין לך עבודה! חפש קודם עבודה.','bad');render();return;}
+      const b=Math.floor(S.salary*.3);
+      S.money+=b;
+      log(`עבדת שעות נוספות: +₪${fmt(b)}!`,'good');
+      break;
+    case 'study':
+      const free=S.money<500;
+      if(free){S.edu+=.08;log('למדת בספריה (חינם, איטי). +0.08 שנות לימוד.','neutral');}
+      else{S.money-=500;S.edu+=.2;log(`שילמת ₪500 על לימודים. +0.2 שנות השכלה.`,'neutral');}
+      checkEduMilestone();
+      break;
+    case 'rest':
+      S.hp=clamp(S.hp+18,0,100);S.hap=clamp(S.hap+12,0,100);
+      log('נחת טוב. הבריאות והאושר השתפרו.','good');
+      break;
+    case 'exercise':
+      S.hp=clamp(S.hp+25,0,100);S.hap=clamp(S.hap+7,0,100);
+      log('התאמנת קשה! הבריאות השתפרה משמעותית.','good');
+      break;
+    case 'socialize':
+      if(S.money>=150){S.money-=150;S.hap=clamp(S.hap+25,0,100);log('יצאת עם חברים (₪150). האושר עלה!','good');}
+      else{S.hap=clamp(S.hap+12,0,100);log('פגשת חברים בפארק. קצת יותר מאושר.','good');}
+      break;
+  }
+  advanceMonth();render();
+  if(S.pending){
+    const {e,txt}=S.pending;S.pending=null;
+    e.apply(S);
+    log(`⚡ ${e.title} — ${txt}`,e.type==='good'?'good':'bad');
+    showEventModal(e,txt);
+  }
+}
+
+function checkEduMilestone(){
+  const ms=[{v:14,n:'תעודת מכללה (שנתיים)'},{v:16,n:'תואר ראשון'},{v:18,n:'תואר שני'},{v:20,n:'דוקטורט'}];
+  ms.forEach(m=>{if(S.edu>=m.v&&S.edu<m.v+.21)log(`🎓 השגת ${m.n}! עבודות חדשות נפתחו.`,'good');});
+}
+
+// ── MODALS ──
+function mc(){return document.getElementById('mc')}
+function closeModal(){mc().innerHTML=''}
+function showModal(html){mc().innerHTML=`<div class="overlay"><div class="modal">${html}</div></div>`}
+
+function openJobModal(){
+  const avail=Object.entries(JOBS).filter(([id,j])=>id!=='none'&&S.edu>=j.minEdu);
+  const rows=avail.map(([id,j])=>{
+    const cur=id===S.job;
+    const hs=j.hap>=0?'+':'';const hs2=j.hp>=0?'+':'';
+    return `<button class="obtn ${cur?'cur-badge':''}" onclick="selectJob('${id}')">
+      <div class="on">${j.icon} ${j.name}</div>
+      <div class="od">שכר: ₪${fmt(j.salary)}/חודש | אושר: ${hs}${j.hap} | בריאות: ${hs2}${j.hp} | השכלה: ${j.minEdu}+</div>
+      ${cur?'<div class="oc">✓ עבודה נוכחית</div>':''}
+    </button>`;}).join('');
+  showModal(`<h2>🔍 חיפוש עבודה</h2>
+    <p>השכלה שלך: ${S.edu.toFixed(1)} שנים</p>
+    <div class="olist">${rows}</div>
+    <div class="brow"><button class="bcanc" onclick="closeModal()">סגור</button></div>`);
+}
+
+function selectJob(id){
+  if(id!==S.job){
+    S.job=id;S.salary=JOBS[id].salary;
+    log(`${JOBS[id].icon} התחלת לעבוד כ${JOBS[id].name} — ₪${fmt(S.salary)}/חודש`,'good');
+  }
+  closeModal();render();
+}
+
+function openHousingModal(){
+  const rows=Object.entries(HOUSING).map(([id,h])=>{
+    const cur=id===S.housing;
+    const canAfford=S.money>=h.dep||cur;
+    const hs=h.hap>=0?'+':'';const hs2=h.hp>=0?'+':'';
+    return `<button class="obtn ${cur?'cur-badge':''}" onclick="selectHousing('${id}')" ${!canAfford?'disabled':''}>
+      <div class="on">${h.icon} ${h.name}</div>
+      <div class="od">שכ"ד: ₪${fmt(h.cost)}/חודש | אושר: ${hs}${h.hap} | בריאות: ${hs2}${h.hp}${!canAfford?' | 💸 נדרש ₪'+fmt(h.dep):''}</div>
+      ${cur?'<div class="oc">✓ מגורים נוכחיים</div>':''}
+    </button>`;}).join('');
+  showModal(`<h2>🏠 בחירת דיור</h2>
+    <p>מזומן: ₪${fmt(S.money)} | פיקדון = 2 חודשי שכ"ד</p>
+    <div class="olist">${rows}</div>
+    <div class="brow"><button class="bcanc" onclick="closeModal()">סגור</button></div>`);
+}
+
+function selectHousing(id){
+  const h=HOUSING[id];
+  if(S.money<h.dep&&id!==S.housing)return;
+  if(id!==S.housing){
+    const dep=h.dep;
+    if(dep>0){S.money-=dep;log(`${h.icon} עברת ל${h.name}. שילמת פיקדון ₪${fmt(dep)}.`,'neutral');}
+    else log(`${h.icon} עברת ל${h.name}.`,'neutral');
+    S.housing=id;
+  }
+  closeModal();render();
+}
+
+function openInvestModal(){
+  showModal(`<h2>📈 שוק ההון</h2>
+    <div class="inv-info">
+      <div class="irow"><span>מזומן זמין:</span><span style="color:var(--green)">₪${fmt(S.money)}</span></div>
+      <div class="irow"><span>כסף מושקע:</span><span style="color:var(--yellow)">₪${fmt(S.investments)}</span></div>
+      <div class="irow" style="font-size:.78em;color:var(--dim)"><span>תשואה ממוצעת ~6%/שנה (תנודתי)</span></div>
+    </div>
+    <p>כמה להשקיע?</p>
+    <input type="number" id="iamt" placeholder="סכום להשקעה" min="100">
+    <div class="brow">
+      ${S.investments>0?`<button class="bcanc" onclick="withdraw()">משוך הכל (₪${fmt(S.investments)})</button>`:''}
+      <button class="bcanc" onclick="closeModal()">ביטול</button>
+      <button class="bconf" onclick="invest()">השקע</button>
+    </div>`);
+}
+
+function invest(){
+  const n=parseInt(document.getElementById('iamt').value)||0;
+  if(n<=0||n>S.money){alert('סכום לא תקין');return;}
+  S.money-=n;S.investments+=n;
+  log(`השקעת ₪${fmt(n)} בשוק.`,'neutral');
+  closeModal();render();
+}
+
+function withdraw(){
+  const n=S.investments;S.money+=n;S.investments=0;
+  log(`משכת ₪${fmt(n)} מהשקעות.`,'neutral');
+  closeModal();render();
+}
+
+function showEventModal(e,txt){
+  const col=e.type==='good'?'var(--green)':'var(--red)';
+  showModal(`<div style="text-align:center">
+    <div class="evtemoji">${e.emoji}</div>
+    <h2>${e.title}</h2>
+    <p style="font-size:1em;color:${col};margin:10px 0">${txt}</p>
+    <button class="bok" onclick="closeModal();render()">המשך</button>
+  </div>`);
+  render();
+}
+
+// ── END SCREENS ──
+function grade(w){
+  if(w>=2000000)return'👑 אגדי!';if(w>=1000000)return'🏆 מיליונר!';
+  if(w>=500000)return'⭐ נוח מאוד';if(w>=200000)return'👍 בסדר גמור';
+  if(w>=50000)return'🙂 סביר';return'😔 קשה';
+}
+
+function showDeath(){
+  dead=true;
+  const sc=Math.floor((S.money+S.investments)/500+S.edu*40);
+  showModal(`<div class="endscr">
+    <div class="big">💀</div>
+    <h2 style="color:var(--red)">הבריאות שלך הגיעה לאפס</h2>
+    <p class="ep">חיית ${S.age-18} שנים במשחק | גיל ${S.age}</p>
+    <div class="endstats">
+      <div class="erow"><span>כסף מזומן:</span><span style="color:var(--green)">₪${fmt(S.money)}</span></div>
+      <div class="erow"><span>השקעות:</span><span style="color:var(--yellow)">₪${fmt(S.investments)}</span></div>
+      <div class="erow"><span>השכלה:</span><span>${S.edu.toFixed(1)} שנים</span></div>
+      <div class="erow"><span>עבודה אחרונה:</span><span>${JOBS[S.job].icon} ${JOBS[S.job].name}</span></div>
+    </div>
+    <div class="score">ניקוד: ${sc.toLocaleString()}</div>
+    <button class="brestart" onclick="closeModal();initGame()">🔄 שחק שוב</button>
+  </div>`);
+}
+
+function showRetire(){
+  dead=true;
+  const w=S.money+S.investments;
+  const sc=Math.floor(w/500+S.hp+S.hap+S.edu*50);
+  showModal(`<div class="endscr">
+    <div class="big">🎉</div>
+    <h2 style="color:var(--accent2)">פרשת לגמלאות בגיל ${S.age}!</h2>
+    <p class="ep">${grade(w)}</p>
+    <div class="endstats">
+      <div class="erow"><span>סך הון:</span><span style="color:var(--green)">₪${fmt(w)}</span></div>
+      <div class="erow"><span>מזומן:</span><span style="color:var(--green)">₪${fmt(S.money)}</span></div>
+      <div class="erow"><span>השקעות:</span><span style="color:var(--yellow)">₪${fmt(S.investments)}</span></div>
+      <div class="erow"><span>בריאות:</span><span>${Math.round(S.hp)}/100</span></div>
+      <div class="erow"><span>אושר:</span><span>${Math.round(S.hap)}/100</span></div>
+      <div class="erow"><span>השכלה:</span><span>${S.edu.toFixed(1)} שנים</span></div>
+      <div class="erow"><span>עבודה אחרונה:</span><span>${JOBS[S.job].icon} ${JOBS[S.job].name}</span></div>
+    </div>
+    <div class="score">ניקוד: ${sc.toLocaleString()}</div>
+    <button class="brestart" onclick="closeModal();initGame()">🔄 שחק שוב</button>
+  </div>`);
+}
+
+// ── RENDER ──
+function render(){
+  document.getElementById('dAge').textContent=S.age;
+  document.getElementById('dDate').textContent=MO[S.month]+' '+S.year;
+  document.getElementById('dMoney').textContent='₪'+fmt(S.money);
+  document.getElementById('dInvest').textContent='₪'+fmt(S.investments);
+  const h=Math.round(S.hp),p=Math.round(S.hap);
+  document.getElementById('dHN').textContent=h;
+  document.getElementById('dHB').style.width=h+'%';
+  document.getElementById('dPN').textContent=p;
+  document.getElementById('dPB').style.width=p+'%';
+  document.getElementById('dEN').textContent=S.edu.toFixed(1)+' שנ\'';
+  document.getElementById('dEB').style.width=(S.edu/20*100)+'%';
+  const j=JOBS[S.job],ho=HOUSING[S.housing];
+  document.getElementById('dJob').textContent=j.icon+' '+j.name;
+  document.getElementById('dHousing').textContent=ho.icon+' '+ho.name;
+  document.getElementById('dIncome').textContent='₪'+fmt(S.salary)+'/חודש';
+  document.getElementById('dExpense').textContent='₪'+fmt(ho.cost)+'/חודש';
+  document.getElementById('btnWork').disabled=S.job==='none';
+  const ll=document.getElementById('logList');
+  ll.innerHTML=S.log.map(e=>`<div class="lentry"><span class="ltime">${e.time}</span><span class="${e.type}">${e.text}</span></div>`).join('');
+}
+
+initGame();
+</script>
+</body>
+</html>

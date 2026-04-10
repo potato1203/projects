@@ -24,6 +24,12 @@
 
 const PROJECTS = [
   {
+    title: "גחלת ואלון",
+    description: "אתר למסעדת רוקנרול דמיונית — המבורגרים, ממתקים וויב בלי פשרות. כולל תפריט מלא, מבצעי שבוע ואנימציות כיפיות.",
+    url: "./restaurant/",
+    icon: "🔥"
+  },
+  {
     title: "GoalDraw",
     description: "Learn to draw football club logos step-by-step using the grid method. Covers Premier League, La Liga, Bundesliga, Serie A, Ligue 1 and more.",
     url: "./goal-draw/",

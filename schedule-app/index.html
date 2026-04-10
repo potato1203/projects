@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="logo">&#9776; Schedule</span>
+        <button class="btn-new" id="btnNew">+ New</button>
+      </div>
+      <nav class="mini-cal" id="miniCal"></nav>
+      <div class="category-list">
+        <p class="section-label">Categories</p>
+        <ul id="categoryList"></ul>
+        <button class="btn-add-cat" id="btnAddCategory">+ Add category</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <div class="nav-group">
+          <button class="icon-btn" id="btnPrev">&#8249;</button>
+          <button class="icon-btn" id="btnNext">&#8250;</button>
+          <button class="btn-today" id="btnToday">Today</button>
+          <h2 class="current-label" id="currentLabel"></h2>
+        </div>
+        <div class="view-switcher">
+          <button class="view-btn active" data-view="month">Month</button>
+          <button class="view-btn" data-view="week">Week</button>
+          <button class="view-btn" data-view="day">Day</button>
+          <button class="view-btn" data-view="agenda">Agenda</button>
+        </div>
+        <div class="search-wrap">
+          <input type="text" class="search-input" id="searchInput" placeholder="Search events…" />
+        </div>
+      </header>
+      <section class="calendar-area" id="calendarArea"></section>
+    </main>
+  </div>
+
+  <!-- Event Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="eventModal">
+      <div class="modal-header">
+        <h3 id="modalTitle">New Event</h3>
+        <button class="close-btn" id="btnCloseModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="field" id="evtTitle" placeholder="Event title" />
+        <div class="row-2">
+          <div class="field-group">
+            <label>Start</label>
+            <input type="datetime-local" class="field" id="evtStart" />
+          </div>
+          <div class="field-group">
+            <label>End</label>
+            <input type="datetime-local" class="field" id="evtEnd" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field-group">
+            <label>Category</label>
+            <select class="field" id="evtCategory"></select>
+          </div>
+          <div class="field-group">
+            <label>Repeat</label>
+            <select class="field" id="evtRepeat">
+              <option value="none">None</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+        </div>
+        <textarea class="field" id="evtNotes" placeholder="Notes (optional)" rows="3"></textarea>
+        <label class="checkbox-row">
+          <input type="checkbox" id="evtAllDay" /> All day
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-danger" id="btnDeleteEvt" style="display:none">Delete</button>
+        <div style="flex:1"></div>
+        <button class="btn-secondary" id="btnCancelEvt">Cancel</button>
+        <button class="btn-primary" id="btnSaveEvt">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Modal -->
+  <div class="modal-overlay" id="catModalOverlay">
+    <div class="modal modal-sm" id="catModal">
+      <div class="modal-header">
+        <h3>Category</h3>
+        <button class="close-btn" id="btnCloseCatModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="field" id="catName" placeholder="Category name" />
+        <div class="color-row" id="colorRow"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-danger" id="btnDeleteCat" style="display:none">Delete</button>
+        <div style="flex:1"></div>
+        <button class="btn-secondary" id="btnCancelCat">Cancel</button>
+        <button class="btn-primary" id="btnSaveCat">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Detail Popover -->
+  <div class="popover" id="eventPopover">
+    <div class="popover-header">
+      <span class="popover-dot" id="popoverDot"></span>
+      <strong id="popoverTitle"></strong>
+      <button class="close-btn" id="btnClosePopover">&times;</button>
+    </div>
+    <div class="popover-body">
+      <p id="popoverTime"></p>
+      <p id="popoverCategory"></p>
+      <p id="popoverNotes"></p>
+    </div>
+    <div class="popover-footer">
+      <button class="btn-sm" id="btnEditPopover">Edit</button>
+      <button class="btn-sm btn-danger-sm" id="btnDeletePopover">Delete</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

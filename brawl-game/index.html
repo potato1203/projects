@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brawl Game</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Three.js CDN (sets global THREE) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+  <!-- Visual utilities (must load before everything else) -->
+  <script src="js/utils.js"></script>
+
+  <!-- Core systems -->
+  <script src="js/renderer.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/physics.js"></script>
+  <script src="js/projectile.js"></script>
+  <script src="js/hud.js"></script>
+
+  <!-- Brawlers -->
+  <script src="js/brawlers/Brawler.js"></script>
+  <script src="js/brawlers/Bull.js"></script>
+  <script src="js/brawlers/Colt.js"></script>
+  <script src="js/brawlers/Brock.js"></script>
+  <script src="js/brawlers/Barley.js"></script>
+  <script src="js/brawlers/Poco.js"></script>
+  <script src="js/brawlers/Leon.js"></script>
+
+  <!-- AI -->
+  <script src="js/ai/BotAI.js"></script>
+
+  <!-- Game modes -->
+  <script src="js/modes/GameMode.js"></script>
+  <script src="js/modes/Showdown.js"></script>
+  <script src="js/modes/GemGrab.js"></script>
+  <script src="js/modes/BrawlBall.js"></script>
+
+  <!-- Game logic -->
+  <script src="js/game.js"></script>
+
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD (shown while playing) -->
+  <div id="hud" class="hidden">
+    <div id="hud-left">
+      <div id="hud-brawler-name"></div>
+      <div id="hud-health-wrap">
+        <div id="hud-health-bar"></div>
+      </div>
+      <div id="hud-super-wrap">
+        <div id="hud-super-bar"></div>
+        <span id="hud-super-label">SUPER</span>
+      </div>
+    </div>
+    <div id="hud-center">
+      <div id="hud-mode-info"></div>
+    </div>
+    <div id="hud-right">
+      <div id="hud-controls">
+        <div>WASD — Move</div>
+        <div>Mouse — Aim</div>
+        <div>Click — Attack</div>
+        <div>Space — Super</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Countdown overlay -->
+  <div id="countdown-overlay" class="hidden">
+    <div id="countdown-number">3</div>
+  </div>
+
+  <!-- Main Menu Screen -->
+  <div id="screen-menu" class="screen">
+    <h1 class="game-title">BRAWL<span>GAME</span></h1>
+
+    <div class="section-label">Choose Your Brawler</div>
+    <div id="brawler-select" class="brawler-grid"></div>
+
+    <div class="section-label">Choose Mode</div>
+    <div id="mode-select" class="mode-grid">
+      <button class="mode-btn active" data-mode="showdown">
+        <span class="mode-icon">💀</span>
+        <span class="mode-name">Showdown</span>
+        <span class="mode-desc">Battle Royale · 1 vs 9</span>
+      </button>
+      <button class="mode-btn" data-mode="gemgrab">
+        <span class="mode-icon">💎</span>
+        <span class="mode-name">Gem Grab</span>
+        <span class="mode-desc">3v3 · Hold 10 gems</span>
+      </button>
+      <button class="mode-btn" data-mode="brawlball">
+        <span class="mode-icon">⚽</span>
+        <span class="mode-name">Brawl Ball</span>
+        <span class="mode-desc">3v3 · Score 2 goals</span>
+      </button>
+    </div>
+
+    <button id="btn-play" class="btn-primary">PLAY!</button>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="screen-gameover" class="screen hidden">
+    <div id="gameover-icon"></div>
+    <div id="gameover-title"></div>
+    <div id="gameover-sub"></div>
+    <button id="btn-restart" class="btn-primary">PLAY AGAIN</button>
+    <button id="btn-menu" class="btn-secondary">MAIN MENU</button>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

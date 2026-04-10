@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>עולם פתוח – RPG</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b0b16;--c1:#131325;--c2:#1a1a35;--c3:#222244;--border:#2a2a55;
+--p:#8b5cf6;--p2:#a78bfa;--p3:#c4b5fd;--text:#ddd8f0;--dim:#7070a0;
+--g:#4ade80;--r:#f87171;--y:#fbbf24;--b:#60a5fa;--o:#fb923c}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;direction:rtl}
+/* ─── CREATION ─── */
+#creation{max-width:680px;margin:0 auto;padding:20px}
+.ctitle{text-align:center;font-size:2em;color:var(--p2);font-weight:900;margin-bottom:4px}
+.csub{text-align:center;color:var(--dim);margin-bottom:20px}
+.section{background:var(--c1);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+.section h3{color:var(--p3);margin-bottom:12px;font-size:.95em;text-transform:uppercase;letter-spacing:1px}
+.name-inp{width:100%;background:var(--c2);border:1px solid var(--border);color:var(--text);padding:11px;border-radius:8px;font-size:1.1em;font-family:inherit;direction:rtl}
+.name-inp:focus{outline:none;border-color:var(--p)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.card{background:var(--c2);border:2px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;text-align:center}
+.card:hover{border-color:var(--p);background:var(--c3)}
+.card.sel{border-color:var(--p);background:var(--c3);box-shadow:0 0 14px rgba(139,92,246,.3)}
+.card .ci{font-size:2em;display:block;margin-bottom:5px}
+.card .cn{font-weight:bold;font-size:.9em}
+.card .cd{font-size:.72em;color:var(--dim);margin-top:3px}
+.card .cst{font-size:.68em;color:var(--p3);margin-top:5px}
+/* Stat alloc */
+.statrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.stlbl{width:80px;font-size:.85em;color:var(--p3)}
+.stbtns{display:flex;align-items:center;gap:8px}
+.stval{width:30px;text-align:center;font-weight:bold;font-size:1.05em}
+.stbtn{background:var(--c3);border:1px solid var(--border);color:var(--text);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:1em;transition:background .15s}
+.stbtn:hover:not([disabled]){background:var(--p)}
+.stbtn[disabled]{opacity:.3;cursor:not-allowed}
+.pts{text-align:right;color:var(--y);font-size:.85em;margin-bottom:10px}
+.startbtn{width:100%;background:linear-gradient(135deg,var(--p),#6d28d9);border:none;color:#fff;padding:14px;border-radius:10px;font-size:1.1em;font-weight:bold;cursor:pointer;font-family:inherit;transition:opacity .2s;margin-top:4px}
+.startbtn:hover{opacity:.88}
+
+/* ─── GAME ─── */
+#game{display:none;height:100vh;display:none;grid-template-rows:auto 1fr auto;grid-template-columns:230px 1fr 230px}
+#game.active{display:grid}
+/* Top bar */
+.topbar{grid-column:1/-1;background:var(--c1);border-bottom:1px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.charname{font-weight:bold;font-size:1.05em;color:var(--p2)}
+.classTag{background:var(--c3);border:1px solid var(--border);padding:2px 8px;border-radius:20px;font-size:.75em;color:var(--p3)}
+.tbar-stat{display:flex;flex-direction:column;min-width:90px}
+.tbar-stat .tbl{font-size:.65em;color:var(--dim);margin-bottom:2px}
+.barwrap{height:10px;background:#1a1a35;border-radius:5px;overflow:hidden;width:90px}
+.barfill{height:100%;border-radius:5px;transition:width .3s}
+.hpbar{background:linear-gradient(90deg,#ef4444,#4ade80)}
+.mpbar{background:linear-gradient(90deg,#3b82f6,#8b5cf6)}
+.xpbar{background:linear-gradient(90deg,#fbbf24,#f59e0b)}
+.tgold{margin-right:auto;color:var(--y);font-weight:bold;font-size:.95em}
+.tday{color:var(--dim);font-size:.82em}
+.tlvl{background:var(--p);color:#fff;border-radius:20px;padding:2px 10px;font-size:.82em;font-weight:bold}
+
+/* Left panel */
+.leftpanel{background:var(--c1);border-left:1px solid var(--border);padding:12px;overflow-y:auto}
+.lpanel-sec{margin-bottom:14px}
+.lpanel-sec h4{color:var(--dim);font-size:.72em;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.statitem{display:flex;justify-content:space-between;margin-bottom:5px;font-size:.84em}
+.statitem .sv{color:var(--p3);font-weight:bold}
+/* Equipment */
+.equip-slot{background:var(--c2);border:1px solid var(--border);border-radius:7px;padding:7px;margin-bottom:5px;display:flex;gap:7px;align-items:center;font-size:.8em}
+.eslot-name{color:var(--dim);font-size:.75em}
+.eslot-item{font-weight:bold}
+/* Skills */
+.skill-btn{background:var(--c2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:7px;font-size:.8em;cursor:pointer;margin-bottom:5px;width:100%;text-align:right;font-family:inherit;transition:background .15s;display:flex;justify-content:space-between}
+.skill-btn:hover:not([disabled]){background:var(--c3);border-color:var(--p)}
+.skill-btn[disabled]{opacity:.3;cursor:not-allowed}
+.skill-cost{color:var(--b);font-size:.75em}
+
+/* Center */
+.centerpanel{background:var(--bg);overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.location-card{background:var(--c1);border:1px solid var(--border);border-radius:12px;padding:16px}
+.loc-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.loc-icon{font-size:2.2em}
+.loc-name{font-size:1.3em;font-weight:bold;color:var(--p2)}
+.loc-sub{font-size:.8em;color:var(--dim)}
+.loc-desc{font-size:.88em;line-height:1.6;color:var(--text);margin-bottom:12px;background:var(--c2);padding:10px;border-radius:8px}
+.actions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.action-btn{background:var(--c2);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:10px 7px;cursor:pointer;text-align:center;transition:all .18s;font-family:inherit}
+.action-btn:hover:not([disabled]){background:var(--c3);border-color:var(--p);transform:translateY(-1px)}
+.action-btn[disabled]{opacity:.3;cursor:not-allowed}
+.action-btn .ai{font-size:1.4em;display:block;margin-bottom:3px}
+.action-btn .an{font-size:.78em;font-weight:bold;display:block}
+.action-btn .ad{font-size:.65em;color:var(--dim);margin-top:1px}
+
+/* Travel */
+.travel-sec{background:var(--c1);border:1px solid var(--border);border-radius:12px;padding:14px}
+.travel-sec h3{font-size:.82em;color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+.travel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.travel-btn{background:var(--c2);border:1px solid var(--border);border-radius:9px;padding:10px;cursor:pointer;color:var(--text);text-align:center;font-family:inherit;transition:all .18s}
+.travel-btn:hover{background:var(--c3);border-color:var(--p)}
+.travel-btn.locked{opacity:.3;cursor:not-allowed}
+.travel-btn .ti{font-size:1.5em;display:block}
+.travel-btn .tn{font-size:.78em;font-weight:bold}
+.travel-btn .td{font-size:.65em;color:var(--dim)}
+
+/* Log */
+.logpanel{background:var(--c1);border:1px solid var(--border);border-radius:10px;padding:10px}
+.logpanel h4{color:var(--dim);font-size:.72em;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+.log-entry{font-size:.8em;padding:3px 0;border-bottom:1px solid #15152a;display:flex;gap:6px;animation:lin .25s}
+@keyframes lin{from{opacity:0;transform:translateX(6px)}to{opacity:1}}
+.log-entry:last-child{border-bottom:none}
+.lt{color:var(--dim);font-size:.75em;min-width:40px}
+.good{color:var(--g)}.bad{color:var(--r)}.evt{color:var(--y)}.info{color:var(--b)}.neutral{color:var(--text)}
+
+/* Right panel */
+.rightpanel{background:var(--c1);border-right:1px solid var(--border);padding:12px;overflow-y:auto}
+.inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.inv-item{background:var(--c2);border:1px solid var(--border);border-radius:7px;padding:7px;cursor:pointer;transition:background .15s;font-size:.78em;text-align:center}
+.inv-item:hover{background:var(--c3);border-color:var(--p)}
+.inv-item .ii{font-size:1.3em;display:block}
+.inv-item .in{font-weight:bold;margin-top:2px;display:block}
+.inv-item .iq{color:var(--dim);font-size:.72em}
+/* Quest */
+.quest-item{background:var(--c2);border:1px solid var(--border);border-radius:8px;padding:9px;margin-bottom:7px;font-size:.8em}
+.quest-item .qn{font-weight:bold;color:var(--y);margin-bottom:3px}
+.quest-item .qd{color:var(--dim);line-height:1.4}
+.quest-item .qprog{margin-top:5px;color:var(--p3)}
+
+/* ─── MODAL ─── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:999}
+.modal{background:var(--c1);border:1px solid var(--p);border-radius:14px;padding:20px;max-width:460px;width:94%;direction:rtl;max-height:88vh;overflow-y:auto}
+.modal h2{color:var(--p2);margin-bottom:12px;font-size:1.1em}
+/* Combat */
+.combatants{display:flex;justify-content:space-around;margin:14px 0;text-align:center}
+.combatant{background:var(--c2);border:1px solid var(--border);border-radius:10px;padding:12px;min-width:130px}
+.combatant .cname{font-weight:bold;font-size:.92em;margin-bottom:5px}
+.combatant .chp{color:var(--g);font-size:.85em;margin-bottom:5px}
+.combatant .bigico{font-size:2.8em}
+.vs{font-size:1.5em;color:var(--r);align-self:center;font-weight:bold}
+.combat-log{background:var(--c2);border-radius:7px;padding:9px;max-height:120px;overflow-y:auto;font-size:.8em;margin:10px 0}
+.combat-acts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.cbtn{background:var(--c2);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.85em;transition:all .15s}
+.cbtn:hover:not([disabled]){background:var(--c3);border-color:var(--p)}
+.cbtn[disabled]{opacity:.3;cursor:not-allowed}
+/* Shop */
+.shop-item{background:var(--c2);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
+.shop-item .sii{font-size:.85em}
+.shop-item .sii .sin{font-weight:bold}
+.shop-item .sii .sid{font-size:.75em;color:var(--dim)}
+.buy-btn{background:var(--p);border:none;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:.8em}
+.buy-btn:hover{background:var(--p2)}
+.buy-btn[disabled]{background:var(--c3);color:var(--dim);cursor:not-allowed}
+/* Dialogue */
+.npc-bubble{background:var(--c2);border-radius:10px;padding:12px;margin-bottom:12px;font-size:.88em;line-height:1.6;border-right:3px solid var(--p)}
+.dlg-opts{display:flex;flex-direction:column;gap:7px}
+.dlg-opt{background:var(--c2);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.84em;text-align:right;transition:all .15s}
+.dlg-opt:hover{background:var(--c3);border-color:var(--p)}
+/* Level up */
+.lvlup-screen{text-align:center;padding:8px}
+.lvlup-screen .big{font-size:3.5em}
+.lvlup-screen h2{font-size:1.4em;color:var(--y);margin:8px 0}
+.stat-gain{background:var(--c2);border-radius:8px;padding:10px;margin:10px 0;text-align:right;font-size:.85em}
+.stat-gain .sg{display:flex;justify-content:space-between;margin-bottom:4px}
+/* Misc */
+.mclose{background:var(--c2);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:7px;cursor:pointer;font-family:inherit;float:left;margin-top:8px}
+.mclose:hover{background:var(--c3)}
+.mprimary{background:var(--p);border:none;color:#fff;padding:9px 20px;border-radius:7px;cursor:pointer;font-family:inherit;font-size:.9em}
+.mprimary:hover{background:var(--p2)}
+.mrow{display:flex;gap:7px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}
+.alert-box{text-align:center;padding:6px}
+.alert-box .aico{font-size:3em;margin-bottom:8px}
+.alert-box p{color:var(--dim);font-size:.88em;margin-bottom:12px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--p);border-radius:2px}
+@media(max-width:650px){
+  #game.active{grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto auto}
+  .leftpanel,.rightpanel{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ CHARACTER CREATION ══════════════ -->
+<div id="creation">
+  <div class="ctitle">⚔️ עולם פתוח</div>
+  <div class="csub">צור את הדמות שלך והתחל את הרפתקאה</div>
+
+  <div class="section">
+    <h3>שם הדמות</h3>
+    <input class="name-inp" id="cname" placeholder="הכנס שם..." maxlength="20">
+  </div>
+
+  <div class="section">
+    <h3>מחלקה</h3>
+    <div class="grid2" id="classGrid"></div>
+  </div>
+
+  <div class="section">
+    <h3>מוצא</h3>
+    <div class="grid3" id="originGrid"></div>
+  </div>
+
+  <div class="section">
+    <h3>הקצאת נקודות <span style="color:var(--dim);font-size:.9em">(יש לך <span id="ptsLeft">10</span> נקודות)</span></h3>
+    <div id="statAlloc"></div>
+  </div>
+
+  <div class="section">
+    <h3>מראה</h3>
+    <div class="grid3" id="appearGrid"></div>
+  </div>
+
+  <button class="startbtn" onclick="startGame()">⚔️ התחל הרפתקאה</button>
+</div>
+
+<!-- ══════════════ MAIN GAME ══════════════ -->
+<div id="game">
+  <div class="topbar">
+    <div>
+      <div class="charname" id="gName">—</div>
+      <div class="classTag" id="gClass">—</div>
+    </div>
+    <div class="tbar-stat">
+      <div class="tbl">❤️ <span id="gHPtxt">—</span></div>
+      <div class="barwrap"><div class="barfill hpbar" id="gHPbar" style="width:100%"></div></div>
+    </div>
+    <div class="tbar-stat">
+      <div class="tbl">💙 <span id="gMPtxt">—</span></div>
+      <div class="barwrap"><div class="barfill mpbar" id="gMPbar" style="width:100%"></div></div>
+    </div>
+    <div class="tbar-stat">
+      <div class="tbl">✨ ניסיון</div>
+      <div class="barwrap"><div class="barfill xpbar" id="gXPbar" style="width:0%"></div></div>
+    </div>
+    <div class="tgold">🪙 <span id="gGold">0</span></div>
+    <div class="tlvl">רמה <span id="gLvl">1</span></div>
+    <div class="tday">יום <span id="gDay">1</span></div>
+  </div>
+
+  <!-- Left: Stats + Skills -->
+  <div class="leftpanel">
+    <div class="lpanel-sec">
+      <h4>מאפיינים</h4>
+      <div class="statitem"><span>💪 כוח</span><span class="sv" id="sSTR">—</span></div>
+      <div class="statitem"><span>🧠 אינטלקט</span><span class="sv" id="sINT">—</span></div>
+      <div class="statitem"><span>🌪️ זריזות</span><span class="sv" id="sAGI">—</span></div>
+      <div class="statitem"><span>🗣️ כריזמה</span><span class="sv" id="sCHA">—</span></div>
+      <div class="statitem"><span>🍀 מזל</span><span class="sv" id="sLCK">—</span></div>
+      <div class="statitem"><span>🛡️ הגנה</span><span class="sv" id="sDEF">—</span></div>
+    </div>
+    <div class="lpanel-sec">
+      <h4>ציוד</h4>
+      <div class="equip-slot"><span>⚔️</span><div><div class="eslot-name">נשק</div><div class="eslot-item" id="eqWeapon">ידיים ריקות</div></div></div>
+      <div class="equip-slot"><span>🛡️</span><div><div class="eslot-name">שריון</div><div class="eslot-item" id="eqArmor">בגדים רגילים</div></div></div>
+      <div class="equip-slot"><span>💍</span><div><div class="eslot-name">טבעת</div><div class="eslot-item" id="eqRing">ריק</div></div></div>
+    </div>
+    <div class="lpanel-sec">
+      <h4>כישורים</h4>
+      <div id="skillList"></div>
+    </div>
+  </div>
+
+  <!-- Center: Location + Actions + Travel + Log -->
+  <div class="centerpanel">
+    <div class="location-card" id="locCard">
+      <div class="loc-header">
+        <div class="loc-icon" id="locIcon">🏰</div>
+        <div><div class="loc-name" id="locName">—</div><div class="loc-sub" id="locSub">—</div></div>
+      </div>
+      <div class="loc-desc" id="locDesc">—</div>
+      <div class="actions-grid" id="locActions"></div>
+    </div>
+    <div class="travel-sec">
+      <h3>🗺️ נסיעה — לאן תלך?</h3>
+      <div class="travel-grid" id="travelGrid"></div>
+    </div>
+    <div class="logpanel">
+      <h4>📋 יומן הרפתקאות</h4>
+      <div id="gameLog" style="max-height:170px;overflow-y:auto"></div>
+    </div>
+  </div>
+
+  <!-- Right: Inventory + Quests -->
+  <div class="rightpanel">
+    <div class="lpanel-sec">
+      <h4>תיק (🪙 <span id="rGold">0</span>)</h4>
+      <div class="inv-grid" id="invGrid"></div>
+    </div>
+    <div class="lpanel-sec">
+      <h4>משימות</h4>
+      <div id="questList"></div>
+    </div>
+  </div>
+</div>
+
+<div id="mc"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+const CLASSES={
+  warrior:{name:'לוחם',icon:'⚔️',desc:'חזק ועמיד, שולט בכל נשק',
+    hp:120,mp:30,def:4,stats:{str:5,int:1,agi:3,cha:2,lck:2},
+    skills:[{id:'slash',name:'מכת חרב',icon:'⚔️',cost:0,type:'atk',pow:1.5,desc:'מכה חזקה +50% נזק'},
+            {id:'defend',name:'הגנה',icon:'🛡️',cost:0,type:'def',pow:1.4,desc:'מגדיל הגנה לסיבוב'},
+            {id:'berserk',name:'בסרק',icon:'💢',cost:10,type:'atk',pow:2.5,desc:'נזק כפול, מחיר 10MP'}]},
+  mage:{name:'קוסם',icon:'🧙',desc:'כוח קסום עצום, חלש פיזית',
+    hp:70,mp:130,def:1,stats:{str:1,int:6,agi:3,cha:3,lck:2},
+    skills:[{id:'fireball',name:'כדור אש',icon:'🔥',cost:15,type:'spell',pow:2.5,desc:'נזק קסמי גבוה'},
+            {id:'ice',name:'חץ קרח',icon:'❄️',cost:10,type:'spell',pow:1.8,desc:'מאט אויב'},
+            {id:'manashot',name:'ירי מנה',icon:'✨',cost:5,type:'spell',pow:1.4,desc:'קסם חסכוני'}]},
+  rogue:{name:'גנב',icon:'🗡️',desc:'מהיר, מכה ראשון, גונב',
+    hp:90,mp:50,def:2,stats:{str:3,int:2,agi:6,cha:2,lck:5},
+    skills:[{id:'backstab',name:'דקירת גב',icon:'🗡️',cost:0,type:'atk',pow:2.0,desc:'נזק כפול בהפתעה'},
+            {id:'steal',name:'גניבה',icon:'💰',cost:0,type:'steal',pow:1.0,desc:'נסה לגנוב זהב'},
+            {id:'evade',name:'התחמקות',icon:'💨',cost:5,type:'evade',pow:1.0,desc:'דלג על סיבוב, מנע נזק'}]},
+  cleric:{name:'כהן',icon:'✨',desc:'מרפא עצמו ותוקף עם אור',
+    hp:100,mp:80,def:3,stats:{str:2,int:4,agi:2,cha:5,lck:2},
+    skills:[{id:'heal',name:'ריפוי',icon:'💊',cost:15,type:'heal',pow:2.0,desc:'מרפא 25HP'},
+            {id:'smite',name:'מכת אור',icon:'☀️',cost:12,type:'spell',pow:2.0,desc:'נזק אור לרשעים'},
+            {id:'bless',name:'ברכה',icon:'🙏',cost:8,type:'buff',pow:1.3,desc:'+20% נזק לסיבוב הבא'}]}
+};
+
+const ORIGINS={
+  noble:{name:'אצולה',icon:'👑',gold:200,desc:'זהב ומגע חברתי +2',bonus:{cha:2}},
+  street:{name:'ילד רחוב',icon:'🏚️',gold:50,desc:'זריזות ומזל +1+1',bonus:{agi:1,lck:1}},
+  farmer:{name:'איכר',icon:'🌾',gold:80,desc:'כוח +2',bonus:{str:2}},
+  scholar:{name:'חוקר',icon:'📚',gold:120,desc:'אינטלקט +2',bonus:{int:2}},
+  merchant:{name:'סוחר',icon:'💼',gold:350,desc:'זהב ומזל +1',bonus:{lck:1}},
+  soldier:{name:'חייל לשעבר',icon:'🪖',gold:100,desc:'כוח והגנה +1+1',bonus:{str:1,def:1}},
+};
+
+const APPEARANCES=['🧑','👩','🧔','👱','🧑‍🦱','👩‍🦰','🧑‍🦳','👨‍🦲','🧝','🧙‍♂️','🧙‍♀️','🧛'];
+
+const STAT_NAMES={str:'💪 כוח',int:'🧠 אינטלקט',agi:'🌪️ זריזות',cha:'🗣️ כריזמה',lck:'🍀 מזל'};
+
+const ITEMS={
+  // Weapons
+  sword:{name:'חרב ברזל',icon:'⚔️',type:'weapon',atk:8,price:120,desc:'חרב סטנדרטית'},
+  dagger:{name:'פגיון',icon:'🗡️',type:'weapon',atk:5,price:70,desc:'מהיר ומדויק'},
+  staff:{name:'שרביט קוסם',icon:'🪄',type:'weapon',atk:4,mp:20,price:150,desc:'מגדיל MP'},
+  bow:{name:'קשת',icon:'🏹',type:'weapon',atk:7,price:110,desc:'תוקף מרחוק'},
+  axe:{name:'גרזן',icon:'🪓',type:'weapon',atk:11,price:200,desc:'נזק גבוה'},
+  msword:{name:'חרב קסומה',icon:'⚔️✨',type:'weapon',atk:16,price:500,desc:'נשק נדיר'},
+  // Armor
+  leather:{name:'שריון עור',icon:'🥋',type:'armor',def:4,price:90,desc:'קל ונוח'},
+  chain:{name:'שריון שרשרות',icon:'🛡️',type:'armor',def:8,price:180,desc:'הגנה טובה'},
+  plate:{name:'שריון פלטות',icon:'🪖',type:'armor',def:14,price:380,desc:'הגנה מקסימלית'},
+  robe:{name:'גלימת קוסם',icon:'🧥',type:'armor',def:2,mp:30,price:130,desc:'מגדיל MP'},
+  // Consumables
+  hpot:{name:'כדור חיים',icon:'🧪',type:'potion',hp:30,price:40,desc:'מחזיר 30HP'},
+  mpot:{name:'כדור מנה',icon:'💙',type:'potion',mp:25,price:50,desc:'מחזיר 25MP'},
+  bigpot:{name:'שיקוי גדול',icon:'🫙',type:'potion',hp:80,price:120,desc:'מחזיר 80HP'},
+  antidote:{name:'נוגד רעל',icon:'💚',type:'potion',cure:'poison',price:35,desc:'מרפא הרעלה'},
+  bread:{name:'לחם',icon:'🍞',type:'food',hp:10,price:10,desc:'אוכל פשוט'},
+  meat:{name:'בשר',icon:'🥩',type:'food',hp:25,price:25,desc:'אוכל משביע'},
+  // Misc
+  key:{name:'מפתח מסתורי',icon:'🗝️',type:'misc',price:0,desc:'...למה?'},
+  amulet:{name:'קמע מזל',icon:'📿',type:'accessory',lck:3,price:220,desc:'+3 מזל'},
+  ring:{name:'טבעת כוח',icon:'💍',type:'accessory',str:2,price:180,desc:'+2 כוח'},
+};
+
+const ENEMIES={
+  rat:{name:'חולדה ענקית',icon:'🐀',hp:20,atk:5,def:1,xp:8,gold:[2,8],loot:['bread']},
+  bandit:{name:'שודד',icon:'🦹',hp:45,atk:12,def:3,xp:22,gold:[10,30],loot:['hpot','dagger']},
+  wolf:{name:'זאב אפור',icon:'🐺',hp:55,atk:14,def:4,xp:28,gold:[0,5],loot:['meat']},
+  goblin:{name:'גובלין',icon:'👺',hp:40,atk:10,def:2,xp:18,gold:[5,15],loot:['hpot','bread']},
+  orc:{name:'אורק',icon:'👹',hp:90,atk:18,def:6,xp:50,gold:[20,50],loot:['axe','chain']},
+  troll:{name:'טרול',icon:'🧌',hp:130,atk:22,def:9,xp:80,gold:[30,70],loot:['bigpot','msword']},
+  skeleton:{name:'שלד',icon:'💀',hp:60,atk:15,def:5,xp:35,gold:[5,20],loot:['key','hpot']},
+  dragon:{name:'דרקון שחור',icon:'🐉',hp:200,atk:35,def:12,xp:200,gold:[100,300],loot:['msword','amulet']},
+  guard:{name:'שומר מושחת',icon:'💂',hp:70,atk:16,def:8,xp:40,gold:[25,60],loot:['sword','chain']},
+  spider:{name:'עכביש ארסי',icon:'🕷️',hp:35,atk:9,def:2,xp:15,gold:[0,4],loot:['antidote']},
+};
+
+const LOCATIONS={
+  town:{name:'עיר השחר',icon:'🏙️',sub:'עיר מרכזית, בטוח יחסית',
+    desc:'עיר שוקקת חיים. אנשים שטים ברחובות הצרים. ריח לחם טרי מגיע מהאפייה. ישנם בכאן תושבים רבים, ועם כולם אפשר לשוחח.',
+    actions:[
+      {id:'rest',icon:'🛏️',name:'מנוחה',desc:'שב בחדר (+HP)',cost:'10 זהב'},
+      {id:'guard_quest',icon:'📜',name:'גילדת לוחמים',desc:'קבל משימות'},
+      {id:'explore_town',icon:'🔍',name:'חקור עיר',desc:'אולי תמצא משהו'},
+      {id:'train',icon:'🏋️',name:'אימון',desc:'+1 לכוח (50זהב)'},
+    ],
+    enemies:[],travel:['market','fields','inn','harbor'],locked:false},
+  market:{name:'שוק הגדול',icon:'🏪',sub:'קנה ומכור',
+    desc:'שוק צבעוני ורועש. סוחרים צועקים את מרכולתם. ניתן למצוא כאן כמעט כל דבר — אם יש לך כסף.',
+    actions:[
+      {id:'shop_weapons',icon:'⚔️',name:'נשקים',desc:'קנה נשק'},
+      {id:'shop_armor',icon:'🛡️',name:'שריון',desc:'קנה שריון'},
+      {id:'shop_potions',icon:'🧪',name:'שיקויים',desc:'קנה שיקויים'},
+      {id:'sell',icon:'💰',name:'מכור',desc:'מכור פריטים'},
+    ],
+    enemies:[],travel:['town','inn'],locked:false},
+  inn:{name:'טברנה של מוטי',icon:'🍺',sub:'שתייה, אוכל, שמועות',
+    desc:'הטברנה חמה ורועשת. הברמן מוטי מגיח מאחורי הדלפק ומחייך. בפינה יושבים כמה הרפתקנים שנראים קשוחים. ריח עשן ובירה ממלא את האוויר.',
+    actions:[
+      {id:'drink',icon:'🍺',name:'שתה',desc:'שמועות (+XP) 5זהב'},
+      {id:'gamble',icon:'🎲',name:'הימור',desc:'הגרל זהב'},
+      {id:'talk_innkeeper',icon:'🗣️',name:'שוחח עם מוטי',desc:'מידע חופשי'},
+      {id:'eat',icon:'🥩',name:'אכול',desc:'ארוחה (+HP) 15זהב'},
+    ],
+    enemies:[],travel:['town','market'],locked:false},
+  fields:{name:'שדות הפרבר',icon:'🌾',sub:'שדות חקלאיים עם שודדים',
+    desc:'שדות ירוקים משתרעים עד האופק, אך בינות הקמה מסתתרים שודדים וחיות בר. הכפריים מפחדים לחרוש בשעות האחרונות.',
+    actions:[
+      {id:'hunt',icon:'🗡️',name:'צוד',desc:'קרב אקראי'},
+      {id:'gather',icon:'🌿',name:'אסוף צמחים',desc:'כולי מזל מצא משהו'},
+      {id:'help_farmer',icon:'🧑‍🌾',name:'עזור לאיכר',desc:'משימה קטנה'},
+    ],
+    enemies:['rat','bandit','wolf','goblin'],travel:['town','forest'],locked:false},
+  forest:{name:'יער האלון',icon:'🌲',sub:'יער כהה ומסוכן',
+    desc:'הצמרות חוסמות את אור השמש. קולות מוזרים בוקעים מבין העצים. הם אומרים שמישהו פגש טרול כאן לפני שבוע. ולא חזר.',
+    actions:[
+      {id:'hunt',icon:'🗡️',name:'צוד',desc:'קרב אקראי'},
+      {id:'explore_forest',icon:'🔍',name:'חקור',desc:'גלה סודות'},
+      {id:'gather',icon:'🌿',name:'אסוף עשבים',desc:'בשביל רפואה'},
+    ],
+    enemies:['wolf','goblin','skeleton','spider'],travel:['fields','mountains'],locked:false},
+  harbor:{name:'נמל דיגים',icon:'⚓',sub:'נמל שקט עם דייגים',
+    desc:'גלי הים עולים ויורדים על הרציף העתיק. הדייגים מתקנים רשתות ושרים שירי ים. אחד מהם נראה יודע יותר ממה שהוא מגלה.',
+    actions:[
+      {id:'fish',icon:'🎣',name:'דוג',desc:'אולי תמצא פנינה'},
+      {id:'talk_sailor',icon:'⛵',name:'דבר עם מלח',desc:'שמועות מעניינות'},
+      {id:'hunt',icon:'🗡️',name:'סייר',desc:'אויבים בסביבה'},
+    ],
+    enemies:['rat','spider','bandit'],travel:['town'],locked:false},
+  mountains:{name:'הרי האפלה',icon:'⛰️',sub:'מסוכן מאוד — הכן ציוד!',
+    desc:'הרים חדים וכהים. כאן גרים אורקים וטרולים. רק לוחמים מנוסים שורדים כאן. שמועות מדברות על כלא עתיק בפסגה.',
+    actions:[
+      {id:'hunt',icon:'🗡️',name:'צוד',desc:'אויבים קשים'},
+      {id:'explore_cave',icon:'⛏️',name:'חקור מערה',desc:'אוצרות ומסוכנויות'},
+    ],
+    enemies:['orc','troll','skeleton'],travel:['forest','dungeon'],locked:false},
+  dungeon:{name:'כלא העתיק',icon:'🏚️',sub:'בוס אזור — דרקון',
+    desc:'חומות שחורות ורטובות. גרוטאות ישנות ושאריות של לוחמים שנפלו כאן. בתוך הכלא שוכן — לפי השמועות — דרקון שחור.',
+    actions:[
+      {id:'boss_fight',icon:'🐉',name:'לחם בדרקון!',desc:'קרב בוס'},
+      {id:'loot_dungeon',icon:'💎',name:'חפש אוצרות',desc:'מסוכן'},
+    ],
+    enemies:['skeleton','troll','dragon'],travel:['mountains'],locked:false},
+};
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let C={}; // character creation
+let G={}; // game state
+let combatState=null;
+
+// creation selections
+let selClass='warrior',selOrigin='noble',selAppear='🧑';
+let freePoints=10;
+let allocStats={str:0,int:0,agi:0,cha:0,lck:0};
+
+// ══════════════════════════════════════════════
+//  CREATION SCREEN
+// ══════════════════════════════════════════════
+function buildCreation(){
+  // Class grid
+  const cg=document.getElementById('classGrid');
+  cg.innerHTML=Object.entries(CLASSES).map(([id,c])=>
+    `<div class="card${id===selClass?' sel':''}" onclick="selectClass('${id}')">
+      <span class="ci">${c.icon}</span><span class="cn">${c.name}</span>
+      <span class="cd">${c.desc}</span>
+      <span class="cst">HP:${c.hp} MP:${c.mp}</span>
+    </div>`).join('');
+  // Origin grid
+  const og=document.getElementById('originGrid');
+  og.innerHTML=Object.entries(ORIGINS).map(([id,o])=>
+    `<div class="card${id===selOrigin?' sel':''}" onclick="selectOrigin('${id}')">
+      <span class="ci">${o.icon}</span><span class="cn">${o.name}</span>
+      <span class="cd">${o.desc}</span>
+      <span class="cst">🪙${o.gold}</span>
+    </div>`).join('');
+  // Stat alloc
+  buildStatAlloc();
+  // Appearance
+  const ap=document.getElementById('appearGrid');
+  ap.innerHTML=APPEARANCES.map(a=>
+    `<div class="card${a===selAppear?' sel':''}" onclick="selectAppear('${a}')">
+      <span class="ci">${a}</span>
+    </div>`).join('');
+}
+
+function buildStatAlloc(){
+  const d=document.getElementById('statAlloc');
+  document.getElementById('ptsLeft').textContent=freePoints;
+  d.innerHTML=Object.entries(STAT_NAMES).map(([k,lbl])=>{
+    const base=CLASSES[selClass].stats[k]||0;
+    const extra=allocStats[k]||0;
+    return `<div class="statrow">
+      <span class="stlbl">${lbl}</span>
+      <div class="stbtns">
+        <button class="stbtn" onclick="allocStat('${k}',-1)" ${extra<=0?'disabled':''}>−</button>
+        <span class="stval">${base+extra}</span>
+        <button class="stbtn" onclick="allocStat('${k}',1)" ${freePoints<=0?'disabled':''}>+</button>
+      </div>
+      <span style="color:var(--dim);font-size:.78em;margin-right:8px">(база:${base})</span>
+    </div>`;
+  }).join('');
+}
+
+function selectClass(id){selClass=id;buildCreation();}
+function selectOrigin(id){selOrigin=id;buildCreation();}
+function selectAppear(a){selAppear=a;buildCreation();}
+function allocStat(stat,d){
+  if(d>0&&freePoints<=0)return;
+  if(d<0&&allocStats[stat]<=0)return;
+  allocStats[stat]+=d;freePoints-=d;buildStatAlloc();
+}
+
+function startGame(){
+  const name=document.getElementById('cname').value.trim()||'גיבור';
+  const cls=CLASSES[selClass];
+  const orig=ORIGINS[selOrigin];
+  const stats={};
+  ['str','int','agi','cha','lck'].forEach(k=>stats[k]=(cls.stats[k]||0)+(allocStats[k]||0)+(orig.bonus&&orig.bonus[k]||0));
+  stats.def=(cls.def||2)+(orig.bonus&&orig.bonus.def||0);
+  G={
+    name,cls:selClass,appear:selAppear,origin:selOrigin,
+    hp:cls.hp,maxHp:cls.hp,mp:cls.mp,maxMp:cls.mp,
+    stats,level:1,xp:0,xpNext:100,
+    gold:orig.gold,day:1,location:'town',
+    inventory:[],equipment:{weapon:null,armor:null,ring:null},
+    quests:[],flags:{},log:[],
+    buffAtk:0,buffDef:false,buffEvade:false
+  };
+  // Starting items
+  if(selClass==='warrior')addItem('sword');
+  if(selClass==='mage'){addItem('staff');addItem('mpot');}
+  if(selClass==='rogue'){addItem('dagger');addItem('hpot');}
+  if(selClass==='cleric'){addItem('hpot');addItem('mpot');}
+  addItem('bread');
+  // First quest
+  G.quests.push({id:'first_blood',name:'קרב ראשון',desc:'הכה אויב אחד לפחות',goal:1,progress:0,done:false,reward:{gold:30,xp:50}});
+  addLog(`ברוך הבא, ${name}! הרפתקאתך מתחילה.`,'evt');
+  document.getElementById('creation').style.display='none';
+  document.getElementById('game').classList.add('active');
+  renderGame();
+}
+
+// ══════════════════════════════════════════════
+//  GAME RENDER
+// ══════════════════════════════════════════════
+function renderGame(){
+  const cls=CLASSES[G.cls];
+  document.getElementById('gName').textContent=G.appear+' '+G.name;
+  document.getElementById('gClass').textContent=cls.icon+' '+cls.name;
+  document.getElementById('gHPtxt').textContent=`${Math.round(G.hp)}/${G.maxHp}`;
+  document.getElementById('gHPbar').style.width=(G.hp/G.maxHp*100)+'%';
+  document.getElementById('gMPtxt').textContent=`${Math.round(G.mp)}/${G.maxMp}`;
+  document.getElementById('gMPbar').style.width=(G.mp/G.maxMp*100)+'%';
+  document.getElementById('gXPbar').style.width=(G.xp/G.xpNext*100)+'%';
+  document.getElementById('gGold').textContent=G.gold;
+  document.getElementById('rGold').textContent=G.gold;
+  document.getElementById('gLvl').textContent=G.level;
+  document.getElementById('gDay').textContent=G.day;
+  document.getElementById('sSTR').textContent=G.stats.str;
+  document.getElementById('sINT').textContent=G.stats.int;
+  document.getElementById('sAGI').textContent=G.stats.agi;
+  document.getElementById('sCHA').textContent=G.stats.cha;
+  document.getElementById('sLCK').textContent=G.stats.lck;
+  document.getElementById('sDEF').textContent=G.stats.def;
+  // Equipment display
+  const eqn=id=>id&&ITEMS[id]?ITEMS[id].icon+' '+ITEMS[id].name:'ריק';
+  document.getElementById('eqWeapon').textContent=eqn(G.equipment.weapon);
+  document.getElementById('eqArmor').textContent=eqn(G.equipment.armor);
+  document.getElementById('eqRing').textContent=eqn(G.equipment.ring);
+  // Skills
+  const sl=document.getElementById('skillList');
+  sl.innerHTML=cls.skills.map(s=>`<button class="skill-btn" onclick="useSkillField('${s.id}')" ${G.mp<s.cost?'disabled':''}>
+    <span>${s.icon} ${s.name}</span><span class="skill-cost">${s.cost}MP</span>
+  </button>`).join('');
+  // Location
+  renderLocation();
+  // Inventory
+  renderInventory();
+  // Quests
+  renderQuests();
+  // Log
+  renderLog();
+}
+
+function renderLocation(){
+  const loc=LOCATIONS[G.location];
+  document.getElementById('locIcon').textContent=loc.icon;
+  document.getElementById('locName').textContent=loc.name;
+  document.getElementById('locSub').textContent=loc.sub;
+  document.getElementById('locDesc').textContent=loc.desc;
+  const ag=document.getElementById('locActions');
+  ag.innerHTML=loc.actions.map(a=>
+    `<button class="action-btn" onclick="doLocAction('${a.id}')">
+      <span class="ai">${a.icon}</span><span class="an">${a.name}</span><span class="ad">${a.desc}</span>
+    </button>`).join('');
+  // Travel
+  const tg=document.getElementById('travelGrid');
+  tg.innerHTML=loc.travel.map(tid=>{
+    const t=LOCATIONS[tid];
+    return `<button class="travel-btn" onclick="travel('${tid}')">
+      <span class="ti">${t.icon}</span><span class="tn">${t.name}</span><span class="td">${t.sub}</span>
+    </button>`;}).join('');
+}
+
+function renderInventory(){
+  const ig=document.getElementById('invGrid');
+  if(!G.inventory.length){ig.innerHTML='<div style="color:var(--dim);font-size:.8em;grid-column:1/-1;text-align:center;padding:8px">ריק</div>';return;}
+  // group
+  const counts={};
+  G.inventory.forEach(id=>counts[id]=(counts[id]||0)+1);
+  ig.innerHTML=Object.entries(counts).map(([id,q])=>{
+    const it=ITEMS[id];
+    return `<div class="inv-item" onclick="useItem('${id}')">
+      <span class="ii">${it.icon}</span><span class="in">${it.name}</span><span class="iq">x${q}</span>
+    </div>`;}).join('');
+}
+
+function renderQuests(){
+  const ql=document.getElementById('questList');
+  if(!G.quests.length){ql.innerHTML='<div style="color:var(--dim);font-size:.8em">אין משימות</div>';return;}
+  ql.innerHTML=G.quests.filter(q=>!q.done).map(q=>
+    `<div class="quest-item"><div class="qn">📜 ${q.name}</div><div class="qd">${q.desc}</div>
+    <div class="qprog">↳ ${q.progress}/${q.goal} ${q.progress>=q.goal?'✅ מוכן לאיסוף':''}</div></div>`).join('');
+}
+
+function renderLog(){
+  const gl=document.getElementById('gameLog');
+  gl.innerHTML=G.log.slice(0,40).map(e=>`<div class="log-entry"><span class="lt">י${e.day}</span><span class="${e.type}">${e.text}</span></div>`).join('');
+}
+
+// ══════════════════════════════════════════════
+//  ACTIONS
+// ══════════════════════════════════════════════
+function doLocAction(id){
+  const day=G.day;
+  switch(id){
+    case 'rest':
+      if(G.gold<10){showAlert('אין כסף!','אין לך מספיק זהב לחדר.');return;}
+      G.gold-=10;G.hp=Math.min(G.maxHp,G.hp+40);G.day++;
+      addLog(`נחת בפונדק. +40HP. עלה ₪10.`,'good');break;
+    case 'guard_quest': guildModal();return;
+    case 'explore_town':
+      const r=Math.random();
+      if(r<.2){addItem('hpot');addLog('מצאת כדור חיים בסמטה!','good');}
+      else if(r<.4){G.gold+=Math.floor(10+Math.random()*20);addLog(`מצאת ₪${G.gold} מטבעות ישנות.`,'good');}
+      else{addLog('חקרת את העיר. לא מצאת כלום מיוחד.','info');}
+      G.day++;break;
+    case 'train':
+      if(G.gold<50){showAlert('אין כסף!','אימון עולה ₪50.');return;}
+      G.gold-=50;G.stats.str++;addLog('התאמנת קשה. +1 כוח!','good');G.day++;break;
+    case 'drink':
+      if(G.gold<5)return;
+      G.gold-=5;gainXP(15);addLog('שמעת שמועות בטברנה. +15XP.','good');G.day++;break;
+    case 'gamble':{
+      const bet=30;
+      if(G.gold<bet){showAlert('אין כסף!',`הימור עולה ₪${bet}.`);return;}
+      G.gold-=bet;
+      const win=Math.random()<0.4+G.stats.lck*.03;
+      if(win){const w=bet*2;G.gold+=w;addLog(`🎲 ניצחת! +₪${w}!`,'good');}
+      else{addLog(`🎲 הפסדת ₪${bet}.`,'bad');}
+      G.day++;break;}
+    case 'talk_innkeeper': motiModal();return;
+    case 'eat':
+      if(G.gold<15)return;
+      G.gold-=15;G.hp=Math.min(G.maxHp,G.hp+25);addLog('אכלת ארוחה טובה. +25HP.','good');G.day++;break;
+    case 'fish':{
+      const r2=Math.random();
+      if(r2<.15){addItem('amulet');addLog('🎣 מדהים! מצאת קמע מזל דגה מהים!','evt');}
+      else if(r2<.4){const g=5+Math.floor(Math.random()*15);G.gold+=g;addLog(`🎣 מכרת דגים ב₪${g}.`,'good');}
+      else{addLog('🎣 ניסית לדוג. לא נגסו.','neutral');}
+      G.day++;break;}
+    case 'talk_sailor':
+      showAlert('⛵ ישראל המלח','"שמעתי שהדרקון שבכלא העתיק יושב על אוצר עצום. אבל... אף אחד לא חזר משם."');
+      G.day++;return;
+    case 'gather':{
+      const r3=Math.random();
+      if(r3<.35){addItem('hpot');addLog('מצאת עשבי מרפא ועשית כדור חיים!','good');}
+      else if(r3<.5){addItem('antidote');addLog('מצאת עשבים מיוחדים.','good');}
+      else{addLog('חיפשת עשבים. לא מצאת כלום.','neutral');}
+      G.day++;break;}
+    case 'help_farmer':
+      if(G.flags.farmer_helped){addLog('כבר עזרת לאיכר הזה.','neutral');G.day++;break;}
+      G.gold+=60;gainXP(40);G.flags.farmer_helped=true;
+      addLog('עזרת לאיכר להדוף שודדים. +₪60 +40XP!','good');G.day++;
+      break;
+    case 'explore_forest':{
+      const r4=Math.random();
+      if(r4<.2){if(!G.flags.forest_shrine){G.flags.forest_shrine=true;gainXP(80);addLog('🌟 מצאת מקדש עתיק ביער! +80XP!','evt');}else addLog('חזרת למקדש. שקט.','neutral');}
+      else if(r4<.45)startCombat(randomEnemy(['wolf','goblin','skeleton']));
+      else addLog('חקרת את היער. שמעת קולות אבל לא מצאת כלום.','neutral');
+      G.day++;break;}
+    case 'explore_cave':{
+      const r5=Math.random();
+      if(r5<.3)startCombat(randomEnemy(['orc','troll']));
+      else if(r5<.5){const g=40+Math.floor(Math.random()*80);G.gold+=g;addLog(`⛏️ מצאת ₪${g} בקופסת אוצרות!`,'evt');}
+      else addLog('חקרת מערה. מצאת ציורי קיר עתיקים.','info');
+      G.day++;break;}
+    case 'hunt':{
+      const loc=LOCATIONS[G.location];
+      if(!loc.enemies.length){addLog('אין אויבים כאן.','neutral');break;}
+      startCombat(randomEnemy(loc.enemies));
+      return;}
+    case 'boss_fight':
+      if(G.level<5){showAlert('⚠️ מסוכן מדי!','תצטרך להיות לפחות רמה 5 לפני שתתמודד עם הדרקון.');return;}
+      startCombat({...ENEMIES.dragon,isBoss:true});return;
+    case 'loot_dungeon':{
+      if(Math.random()<.5)startCombat(randomEnemy(['skeleton','troll']));
+      else{addItem('key');addLog('מצאת מפתח מסתורי!','evt');}
+      G.day++;break;}
+    case 'shop_weapons': shopModal('weapon');return;
+    case 'shop_armor': shopModal('armor');return;
+    case 'shop_potions': shopModal('potion');return;
+    case 'sell': sellModal();return;
+  }
+  renderGame();
+}
+
+function travel(locId){
+  G.location=locId;
+  G.day++;
+  addLog(`נסעת אל ${LOCATIONS[locId].name}.`,'info');
+  // random encounter on travel
+  if(Math.random()<0.2&&LOCATIONS[locId].enemies.length){
+    addLog('נתקלת באויב בדרך!','bad');
+    setTimeout(()=>startCombat(randomEnemy(LOCATIONS[locId].enemies)),300);
+  }else renderGame();
+}
+
+// ══════════════════════════════════════════════
+//  COMBAT
+// ══════════════════════════════════════════════
+function startCombat(enemyTpl){
+  combatState={
+    enemy:{...enemyTpl,maxHp:enemyTpl.hp,curHp:enemyTpl.hp},
+    playerHp:G.hp,turn:0,log:[],over:false,evade:false,buffAtk:0,buffDef:false
+  };
+  renderCombat();
+}
+
+function randomEnemy(pool){
+  return {...ENEMIES[pool[Math.floor(Math.random()*pool.length)]]};
+}
+
+function renderCombat(){
+  const cs=combatState;
+  const en=cs.enemy;
+  const php=Math.max(0,cs.playerHp);
+  mc().innerHTML=`<div class="overlay"><div class="modal">
+    <h2>⚔️ קרב! ${en.icon} ${en.name}${en.isBoss?' 👑 בוס':''}</h2>
+    <div class="combatants">
+      <div class="combatant">
+        <div class="bigico">${G.appear}</div>
+        <div class="cname">${G.name}</div>
+        <div class="chp">❤️ ${php}/${G.maxHp}</div>
+        ${cs.buffAtk>0?'<div style="color:var(--y);font-size:.75em">⚡ מוגבר</div>':''}
+        ${cs.buffDef?'<div style="color:var(--b);font-size:.75em">🛡️ מוגן</div>':''}
+      </div>
+      <div class="vs">VS</div>
+      <div class="combatant">
+        <div class="bigico">${en.icon}</div>
+        <div class="cname">${en.name}</div>
+        <div class="chp">❤️ ${en.curHp}/${en.maxHp}</div>
+      </div>
+    </div>
+    <div class="combat-log" id="clog">${cs.log.slice(-6).map(l=>`<div class="${l.type}">${l.text}</div>`).join('')}</div>
+    <div class="combat-acts">
+      <button class="cbtn" onclick="combatAct('attack')" ${cs.over?'disabled':''}>⚔️ תקוף</button>
+      <button class="cbtn" onclick="combatAct('skill')" ${cs.over?'disabled':''}>✨ כישור</button>
+      <button class="cbtn" onclick="combatAct('item')" ${cs.over?'disabled':''}>🧪 שיקוי</button>
+      <button class="cbtn" onclick="combatAct('run')" ${cs.over?'disabled':''}>🏃 ברח</button>
+    </div>
+    ${cs.over?`<div class="mrow"><button class="mprimary" onclick="endCombat()">המשך</button></div>`:''}
+  </div></div>`;
+}
+
+function combatAct(act){
+  const cs=combatState;
+  if(cs.over)return;
+  cs.evade=false;
+  let dmg=0;
+  if(act==='attack'){
+    dmg=playerDmg();
+    cs.enemy.curHp=Math.max(0,cs.enemy.curHp-dmg);
+    cs.log.push({text:`⚔️ תקפת! נזק: ${dmg}`,type:'good'});
+  }else if(act==='skill'){
+    openSkillCombatModal();return;
+  }else if(act==='item'){
+    const pots=G.inventory.filter(id=>ITEMS[id].type==='potion'||ITEMS[id].type==='food');
+    if(!pots.length){cs.log.push({text:'אין שיקויים!',type:'bad'});renderCombat();return;}
+    openCombatItemModal(pots);return;
+  }else if(act==='run'){
+    const chance=0.4+G.stats.agi*.04+G.stats.lck*.02;
+    if(Math.random()<chance){
+      cs.log.push({text:'🏃 ברחת!',type:'neutral'});
+      cs.over=true;cs.result='run';
+    }else{
+      cs.log.push({text:'לא הצלחת לברוח!',type:'bad'});
+    }
+  }
+  if(!cs.over&&cs.enemy.curHp<=0){cs.over=true;cs.result='win';}
+  if(!cs.over&&act!=='run'){enemyTurn();}
+  if(!cs.over&&cs.playerHp<=0){cs.over=true;cs.result='lose';}
+  cs.buffAtk=Math.max(0,cs.buffAtk-1);
+  if(cs.result==='win')cs.log.push({text:`🎉 ניצחת את ${cs.enemy.name}!`,type:'evt'});
+  if(cs.result==='lose')cs.log.push({text:`💀 נפלת בקרב...`,type:'bad'});
+  renderCombat();
+}
+
+function playerDmg(){
+  const cs=combatState;
+  const eq=G.equipment.weapon;
+  const wAtk=eq&&ITEMS[eq]?ITEMS[eq].atk||0:0;
+  const base=3+G.stats.str*2+wAtk;
+  const mult=1+(cs.buffAtk||0)*.3;
+  const crit=Math.random()<G.stats.lck*.05?1.5:1;
+  return Math.floor(base*mult*crit*(0.85+Math.random()*.3));
+}
+
+function enemyTurn(){
+  const cs=combatState;
+  const en=cs.enemy;
+  if(cs.evade){cs.log.push({text:'✨ התחמקת ממכת האויב!',type:'good'});return;}
+  const def=G.stats.def+(G.equipment.armor&&ITEMS[G.equipment.armor]?ITEMS[G.equipment.armor].def||0:0)+(cs.buffDef?5:0);
+  const dmg=Math.max(1,Math.floor((en.atk-def*.6)*(0.8+Math.random()*.4)));
+  cs.playerHp-=dmg;
+  G.hp=cs.playerHp;
+  cs.log.push({text:`${en.icon} ${en.name} תקף! נזק: ${dmg}`,type:'bad'});
+}
+
+function openSkillCombatModal(){
+  const cs=combatState;
+  const skills=CLASSES[G.cls].skills;
+  mc().innerHTML=`<div class="overlay"><div class="modal">
+    <h2>✨ בחר כישור</h2>
+    <div class="olist">${skills.map(s=>`<button class="obtn ${G.mp<s.cost?'disabled':''}" onclick="useCombatSkill('${s.id}')" ${G.mp<s.cost?'disabled':''}>
+      <div style="font-weight:bold">${s.icon} ${s.name} <span style="color:var(--b)">(${s.cost}MP)</span></div>
+      <div style="font-size:.75em;color:var(--dim)">${s.desc}</div>
+    </button>`).join('')}</div>
+    <div class="mrow"><button class="mclose" onclick="renderCombat()">ביטול</button></div>
+  </div></div>`;
+}
+
+function useCombatSkill(id){
+  const cs=combatState;
+  const skill=CLASSES[G.cls].skills.find(s=>s.id===id);
+  if(!skill||G.mp<skill.cost)return;
+  G.mp-=skill.cost;
+  if(skill.type==='atk'||skill.type==='spell'){
+    const base=skill.type==='spell'?(3+G.stats.int*2.5):playerDmg();
+    const dmg=Math.floor(base*skill.pow);
+    cs.enemy.curHp=Math.max(0,cs.enemy.curHp-dmg);
+    cs.log.push({text:`${skill.icon} ${skill.name}! נזק: ${dmg}`,type:'good'});
+  }else if(skill.type==='heal'){
+    const h=25+G.stats.int*3;G.hp=Math.min(G.maxHp,G.hp+h);cs.playerHp=G.hp;
+    cs.log.push({text:`${skill.icon} ריפאת עצמך! +${h}HP`,type:'good'});
+  }else if(skill.type==='def'){
+    cs.buffDef=true;cs.log.push({text:`${skill.icon} עלית במגן!`,type:'info'});
+  }else if(skill.type==='evade'){
+    cs.evade=true;cs.log.push({text:`${skill.icon} הכנת עצמך להתחמק!`,type:'info'});
+  }else if(skill.type==='steal'){
+    if(Math.random()<.4+G.stats.lck*.05){const g=Math.floor(5+Math.random()*20);G.gold+=g;cs.log.push({text:`💰 גנבת ₪${g}!`,type:'evt'});}
+    else cs.log.push({text:'גניבה נכשלה...',type:'bad'});
+  }else if(skill.type==='buff'){
+    cs.buffAtk=2;cs.log.push({text:`${skill.icon} ברכת את עצמך! +מתקפה`,type:'good'});
+  }
+  if(cs.enemy.curHp<=0){cs.over=true;cs.result='win';cs.log.push({text:`🎉 ניצחת!`,type:'evt'});}
+  else{enemyTurn();}
+  if(cs.playerHp<=0){cs.over=true;cs.result='lose';}
+  renderCombat();
+}
+
+function openCombatItemModal(pots){
+  const uniq=[...new Set(pots)];
+  mc().innerHTML=`<div class="overlay"><div class="modal">
+    <h2>🧪 השתמש בפריט</h2>
+    ${uniq.map(id=>{const it=ITEMS[id];return `<button class="shop-item" style="cursor:pointer;width:100%" onclick="useCombatItem('${id}')">
+      <div class="sii"><div class="sin">${it.icon} ${it.name}</div><div class="sid">${it.desc}</div></div>
+    </button>`}).join('')}
+    <div class="mrow"><button class="mclose" onclick="renderCombat()">ביטול</button></div>
+  </div></div>`;
+}
+
+function useCombatItem(id){
+  const it=ITEMS[id];
+  const idx=G.inventory.indexOf(id);if(idx<0)return;
+  G.inventory.splice(idx,1);
+  if(it.hp){G.hp=Math.min(G.maxHp,G.hp+it.hp);combatState.playerHp=G.hp;combatState.log.push({text:`${it.icon} +${it.hp}HP!`,type:'good'});}
+  if(it.mp){G.mp=Math.min(G.maxMp,G.mp+it.mp);combatState.log.push({text:`${it.icon} +${it.mp}MP!`,type:'good'});}
+  enemyTurn();
+  if(combatState.playerHp<=0){combatState.over=true;combatState.result='lose';}
+  renderCombat();
+}
+
+function endCombat(){
+  const cs=combatState;
+  if(cs.result==='win'){
+    const en=cs.enemy;
+    const xp=en.xp+(en.isBoss?200:0);
+    const gold=en.gold[0]+Math.floor(Math.random()*(en.gold[1]-en.gold[0]));
+    gainXP(xp);G.gold+=gold;
+    // Loot
+    if(Math.random()<0.4&&en.loot&&en.loot.length){
+      const drop=en.loot[Math.floor(Math.random()*en.loot.length)];
+      addItem(drop);addLog(`לקחת: ${ITEMS[drop].icon} ${ITEMS[drop].name}`,'evt');
+    }
+    addLog(`ניצחת את ${en.icon} ${en.name}! +${xp}XP +₪${gold}`,'good');
+    // Quest progress
+    G.quests.forEach(q=>{if(q.id==='first_blood'&&!q.done)q.progress=Math.min(q.goal,q.progress+1);});
+    if(en.isBoss)G.flags.dragonKilled=true;
+  }else if(cs.result==='lose'){
+    G.hp=Math.max(1,Math.floor(G.maxHp*.2));
+    G.gold=Math.max(0,G.gold-Math.floor(G.gold*.2));
+    addLog(`נפלת בקרב! הגעת לעיר פצועה. איבדת זהב.`,'bad');
+    G.location='town';
+  }else if(cs.result==='run'){
+    addLog('ברחת מהקרב.','neutral');
+  }
+  combatState=null;
+  mc().innerHTML='';
+  renderGame();
+}
+
+// ══════════════════════════════════════════════
+//  SHOPS + SELL
+// ══════════════════════════════════════════════
+function shopModal(type){
+  const typeLabel={weapon:'נשק',armor:'שריון',potion:'שיקויים',misc:'שונות'};
+  const items=Object.entries(ITEMS).filter(([id,it])=>it.type===type||(type==='potion'&&it.type==='food'));
+  mc().innerHTML=`<div class="overlay"><div class="modal">
+    <h2>🏪 חנות ${typeLabel[type]||''} | 🪙 ${G.gold}</h2>
+    ${items.map(([id,it])=>{
+      const canBuy=G.gold>=it.price;
+      return `<div class="shop-item">
+        <div class="sii">
+          <div class="sin">${it.icon} ${it.name}</div>
+          <div class="sid">${it.desc}${it.atk?' | ⚔️+'+it.atk:''}${it.def?' | 🛡️+'+it.def:''}${it.hp?' | ❤️+'+it.hp:''}${it.mp?' | 💙+'+it.mp:''}</div>
+        </div>
+        <button class="buy-btn" onclick="buyItem('${id}')" ${!canBuy?'disabled':''}>₪${it.price}</button>
+      </div>`;}).join('')}
+    <div class="mrow"><button class="mclose" onclick="closeModal()">סגור</button></div>
+  </div></div>`;
+}
+
+function buyItem(id){
+  const it=ITEMS[id];
+  if(G.gold<it.price)return;
+  G.gold-=it.price;
+  // Equip immediately if weapon/armor/accessory
+  if(it.type==='weapon'){G.equipment.weapon=id;addLog(`קנית וציידת: ${it.icon} ${it.name}`,'good');}
+  else if(it.type==='armor'){G.equipment.armor=id;addLog(`קנית וציידת: ${it.icon} ${it.name}`,'good');}
+  else if(it.type==='accessory'){G.equipment.ring=id;if(it.str)G.stats.str+=it.str;if(it.lck)G.stats.lck+=it.lck;addLog(`ציידת: ${it.icon} ${it.name}`,'good');}
+  else{addItem(id);addLog(`קנית: ${it.icon} ${it.name}`,'neutral');}
+  closeModal();renderGame();
+}
+
+function sellModal(){
+  if(!G.inventory.length){showAlert('תיק ריק','אין לך מה למכור.');return;}
+  const counts={};G.inventory.forEach(id=>counts[id]=(counts[id]||0)+1);
+  mc().innerHTML=`<div class="overlay"><div class="modal">
+    <h2>💰 מכור פריטים | 🪙 ${G.gold}</h2>
+    ${Object.entries(counts).map(([id,q])=>{const it=ITEMS[id];const sp=Math.floor(it.price*.5);
+      return `<div class="shop-item">
+        <div class="sii"><div class="sin">${it.icon} ${it.name} x${q}</div></div>
+        <button class="buy-btn" onclick="sellItem('${id}')">₪${sp}</button>
+      </div>`;}).join('')}
+    <div class="mrow"><button class="mclose" onclick="closeModal()">סגור</button></div>
+  </div></div>`;
+}
+
+function sellItem(id){
+  const idx=G.inventory.indexOf(id);if(idx<0)return;
+  G.inventory.splice(idx,1);
+  const sp=Math.floor(ITEMS[id].price*.5);G.gold+=sp;
+  addLog(`מכרת: ${ITEMS[id].icon} ${ITEMS[id].name} ב₪${sp}`,'neutral');
+  sellModal();renderGame();
+}
+
+// ══════════════════════════════════════════════
+//  NPC DIALOGUE
+// ══════════════════════════════════════════════
+function motiModal(){
+  mc().innerHTML=`<div class="overlay"><div class="modal">
+    <h2>🍺 מוטי הברמן</h2>
+    <div class="npc-bubble">שלום ${G.name}! שמחתי לראות אותך. יש לי כמה שמועות בשבילך...<br><br>
+    שמעתי שהדרקון חי בכלא העתיק שבהרים. הוא שם מאז שהמלך האחרון נפל. מי שיהרוג אותו — יקבל את כל האוצר שלו.<br><br>
+    אבל זהירות — רבים ניסו, ושום אחד לא חזר. תהיה חזק לפחות רמה 5 לפני שתתמרד.</div>
+    <div class="dlg-opts">
+      <button class="dlg-opt" onclick="closeModal()">תודה מוטי!</button>
+      <button class="dlg-opt" onclick="motiQuest()">יש לך משימה בשבילי?</button>
+    </div>
+  </div></div>`;
+}
+
+function motiQuest(){
+  if(G.flags.moti_quest_given){
+    mc().innerHTML=`<div class="overlay"><div class="modal">
+      <h2>🍺 מוטי</h2>
+      <div class="npc-bubble">כבר נתתי לך משימה. תחזור כשתסיים!</div>
+      <div class="mrow"><button class="mprimary" onclick="closeModal()">סגור</button></div>
+    </div></div>`;return;
+  }
+  G.flags.moti_quest_given=true;
+  G.quests.push({id:'moti_bandits',name:'שודדים בשדות',desc:'הבס 3 שודדים עבור מוטי',goal:3,progress:0,done:false,reward:{gold:150,xp:100}});
+  mc().innerHTML=`<div class="overlay"><div class="modal">
+    <h2>📜 משימה חדשה!</h2>
+    <div class="npc-bubble">שלושה שודדים מציקים ללקוחות שלי בדרך לשדות. תסלק אותם — ואשלם לך טוב.</div>
+    <div class="mrow"><button class="mprimary" onclick="closeModal();renderGame()">קיבלתי!</button></div>
+  </div></div>`;
+}
+
+function guildModal(){
+  const q=G.quests.find(q=>q.id==='first_blood');
+  const done=q&&q.progress>=q.goal&&!q.done;
+  mc().innerHTML=`<div class="overlay"><div class="modal">
+    <h2>⚔️ גילדת הלוחמים</h2>
+    <div class="npc-bubble">שלום לוחם! גילדת הלוחמים מברכת אותך. כאן תוכל לקבל משימות, לאמן ולגדול.
+    ${done?'<br><br>🎉 <strong>השלמת את משימת ברית הדם! בוא לאסוף את הפרס!</strong>':''}</div>
+    <div class="dlg-opts">
+      ${done?`<button class="dlg-opt" onclick="collectQuest('first_blood')">🏆 אסוף פרס: ₪30 + 50XP</button>`:''}
+      <button class="dlg-opt" onclick="closeModal()">לא עכשיו</button>
+    </div>
+  </div></div>`;
+}
+
+function collectQuest(id){
+  const q=G.quests.find(q=>q.id===id);
+  if(!q||q.done||q.progress<q.goal)return;
+  q.done=true;
+  G.gold+=q.reward.gold;gainXP(q.reward.xp);
+  closeModal();
+  addLog(`✅ משימה הושלמה: ${q.name}! +₪${q.reward.gold} +${q.reward.xp}XP`,'evt');
+  renderGame();
+}
+
+// ══════════════════════════════════════════════
+//  INVENTORY ITEM USE
+// ══════════════════════════════════════════════
+function useItem(id){
+  const it=ITEMS[id];
+  if(it.type==='potion'||it.type==='food'){
+    const idx=G.inventory.indexOf(id);if(idx<0)return;
+    G.inventory.splice(idx,1);
+    if(it.hp){G.hp=Math.min(G.maxHp,G.hp+it.hp);addLog(`${it.icon} +${it.hp}HP`,'good');}
+    if(it.mp){G.mp=Math.min(G.maxMp,G.mp+it.mp);addLog(`${it.icon} +${it.mp}MP`,'good');}
+    renderGame();
+  }else if(it.type==='weapon'){G.equipment.weapon=id;addLog(`ציידת: ${it.icon} ${it.name}`,'neutral');renderGame();}
+  else if(it.type==='armor'){G.equipment.armor=id;addLog(`ציידת: ${it.icon} ${it.name}`,'neutral');renderGame();}
+  else if(it.type==='accessory'){
+    G.equipment.ring=id;
+    const idx=G.inventory.indexOf(id);if(idx>=0)G.inventory.splice(idx,1);
+    if(it.str)G.stats.str+=it.str;if(it.lck)G.stats.lck+=it.lck;
+    addLog(`ציידת: ${it.icon} ${it.name}`,'neutral');renderGame();
+  }
+}
+
+function useSkillField(id){
+  // Outside combat — only heal/buff usable
+  const skill=CLASSES[G.cls].skills.find(s=>s.id===id);
+  if(!skill)return;
+  if(G.mp<skill.cost){addLog('אין מספיק MP!','bad');renderGame();return;}
+  G.mp-=skill.cost;
+  if(skill.type==='heal'){
+    const h=25+G.stats.int*3;G.hp=Math.min(G.maxHp,G.hp+h);
+    addLog(`${skill.icon} ריפאת עצמך! +${h}HP`,'good');
+  }else{addLog(`${skill.icon} הכישור הזה שימושי רק בקרב.`,'neutral');}
+  renderGame();
+}
+
+// ══════════════════════════════════════════════
+//  XP & LEVELING
+// ══════════════════════════════════════════════
+function gainXP(amt){
+  G.xp+=amt;
+  if(G.xp>=G.xpNext)levelUp();
+}
+
+function levelUp(){
+  G.level++;G.xp-=G.xpNext;G.xpNext=Math.floor(G.xpNext*1.45);
+  const gains={hp:15,mp:10,str:1,int:1,agi:1};
+  if(G.cls==='warrior'){gains.hp=20;gains.str=2;}
+  if(G.cls==='mage'){gains.mp=20;gains.int=2;}
+  if(G.cls==='rogue'){gains.agi=2;gains.lck=1;}
+  if(G.cls==='cleric'){gains.mp=15;gains.hp=15;gains.cha=1;}
+  G.maxHp+=gains.hp;G.hp=Math.min(G.maxHp,G.hp+gains.hp);
+  G.maxMp+=gains.mp;G.mp=Math.min(G.maxMp,G.mp+gains.mp);
+  G.stats.str+=gains.str||0;G.stats.int+=gains.int||0;G.stats.agi+=gains.agi||0;
+  G.stats.cha+=(gains.cha||0);G.stats.lck+=(gains.lck||0);
+  mc().innerHTML=`<div class="overlay"><div class="modal"><div class="lvlup-screen">
+    <div class="big">⭐</div>
+    <h2>עלית רמה!</h2>
+    <div style="color:var(--p2);font-size:1.3em;margin-bottom:10px">רמה ${G.level}</div>
+    <div class="stat-gain">
+      ${gains.hp?`<div class="sg"><span>❤️ HP מקסימלי</span><span style="color:var(--g)">+${gains.hp}</span></div>`:''}
+      ${gains.mp?`<div class="sg"><span>💙 MP מקסימלי</span><span style="color:var(--b)">+${gains.mp}</span></div>`:''}
+      ${gains.str?`<div class="sg"><span>💪 כוח</span><span style="color:var(--g)">+${gains.str}</span></div>`:''}
+      ${gains.int?`<div class="sg"><span>🧠 אינטלקט</span><span style="color:var(--g)">+${gains.int}</span></div>`:''}
+      ${gains.agi?`<div class="sg"><span>🌪️ זריזות</span><span style="color:var(--g)">+${gains.agi}</span></div>`:''}
+    </div>
+    <button class="mprimary" onclick="closeModal();renderGame()">המשך ✨</button>
+  </div></div></div>`;
+  addLog(`⭐ עלית לרמה ${G.level}!`,'evt');
+  if(G.xp>=G.xpNext)setTimeout(levelUp,500);
+}
+
+// ══════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════
+function addItem(id){G.inventory.push(id);}
+function addLog(text,type='neutral'){G.log.unshift({text,type,day:G.day});}
+function closeModal(){mc().innerHTML='';renderGame();}
+function mc(){return document.getElementById('mc');}
+
+function showAlert(title,msg){
+  mc().innerHTML=`<div class="overlay"><div class="modal"><div class="alert-box">
+    <div class="aico">ℹ️</div>
+    <h2>${title}</h2>
+    <p>${msg}</p>
+    <button class="mprimary" onclick="closeModal()">סגור</button>
+  </div></div></div>`;
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+buildCreation();
+document.getElementById('cname').addEventListener('input',()=>{});
+// Add a global obtn style
+const st=document.createElement('style');
+st.textContent='.obtn{background:var(--c2);border:1px solid var(--border);color:var(--text);padding:11px;border-radius:8px;cursor:pointer;text-align:right;font-family:inherit;width:100%;transition:all .15s}.obtn:hover:not([disabled]){border-color:var(--p);background:var(--c3)}.obtn[disabled]{opacity:.35;cursor:not-allowed}.olist{display:flex;flex-direction:column;gap:7px}';
+document.head.appendChild(st);
+</script>
+</body>
+</html>
