@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>המבורגר מרקוב 🎂 גרסת יום הולדת לליאם</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #6b21a8;
+      --purple-light: #9333ea;
+      --pink: #ec4899;
+      --pink-light: #f472b6;
+      --gold: #fbbf24;
+      --gold-light: #fde68a;
+      --teal: #14b8a6;
+      --red: #ef4444;
+      --bg: #fdf4ff;
+      --white: #ffffff;
+      --dark: #1e1b4b;
+      --gray: #6b7280;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── CONFETTI ── */
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 14px;
+      top: -20px;
+      opacity: 0;
+      animation: confetti-fall linear infinite;
+      z-index: 9998;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+    @keyframes confetti-fall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      border-bottom: 3px solid var(--gold);
+      box-shadow: 0 4px 20px rgba(107,33,168,0.4);
+    }
+
+    .nav-brand {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    .nav-brand .nav-bday { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.8);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-order {
+      background: var(--gold) !important;
+      color: var(--purple) !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 100px;
+      font-weight: 900 !important;
+    }
+    .nav-order:hover { background: var(--gold-light) !important; }
+
+    /* ── BIRTHDAY BANNER ── */
+    .bday-banner {
+      position: fixed;
+      top: 64px;
+      left: 0; right: 0;
+      z-index: 99;
+      background: linear-gradient(90deg, var(--pink), var(--gold), var(--purple-light), var(--pink));
+      background-size: 300% 100%;
+      animation: banner-shift 4s ease infinite;
+      padding: 0.45rem 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+    @keyframes banner-shift {
+      0%,100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 5% 80px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(160deg, #1e1b4b 0%, #4c1d95 50%, #6b21a8 100%);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(236,72,153,0.25) 0%, transparent 60%),
+                  radial-gradient(circle at 20% 80%, rgba(251,191,36,0.2) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent, transparent 40px,
+        rgba(255,255,255,0.015) 40px,
+        rgba(255,255,255,0.015) 80px
+      );
+      pointer-events: none;
+    }
+
+    .hero-logo-img {
+      position: relative;
+      z-index: 1;
+      width: min(380px, 82vw);
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      margin-bottom: 1.4rem;
+      animation: logo-float 3s ease-in-out infinite;
+    }
+    @keyframes logo-float {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-10px); }
+    }
+
+    .hero-bday-tag {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      background: linear-gradient(135deg, var(--pink), var(--gold));
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.2rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 16px rgba(236,72,153,0.5);
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.08;
+      margin-bottom: 0.5em;
+    }
+    .hero h1 .accent { color: var(--gold); }
+    .hero h1 .accent2 { color: var(--pink-light); }
+
+    .hero-liam {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--pink-light), var(--gold));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      line-height: 1;
+      margin-bottom: 0.3em;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-sub {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: rgba(255,255,255,0.65);
+      font-weight: 400;
+      margin-bottom: 2.5rem;
+      max-width: 540px;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: 'Heebo', sans-serif;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.3); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-gold    { background: var(--gold); color: var(--purple); }
+    .btn-pink    { background: var(--pink); color: var(--white); }
+    .btn-outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,0.4); }
+    .btn-outline:hover { border-color: var(--white); }
+    .btn-purple  { background: var(--purple); color: var(--white); }
+
+    .hero-tag-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .hero-tag {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.75);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+    }
+
+    /* ── BALLOON DECO ── */
+    .balloons {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .balloon {
+      position: absolute;
+      bottom: -10px;
+      font-size: 3rem;
+      animation: balloon-float ease-in-out infinite;
+    }
+    @keyframes balloon-float {
+      0%,100% { transform: translateX(0) rotate(-5deg); }
+      50%     { transform: translateX(12px) rotate(5deg); }
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      overflow: hidden;
+      background: var(--gold);
+      padding: 0.7rem 0;
+      border-top: 3px solid var(--purple);
+      border-bottom: 3px solid var(--purple);
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 20s linear infinite;
+    }
+    .marquee-track span {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--purple);
+      padding: 0 1.5rem;
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SECTIONS SHARED ── */
+    section { padding: 80px 5%; }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: 0.9rem;
+    }
+    .tag-gold   { background: var(--gold); color: var(--purple); }
+    .tag-pink   { background: var(--pink); color: var(--white); }
+    .tag-purple { background: var(--purple); color: var(--white); }
+    .tag-teal   { background: var(--teal); color: var(--white); }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: var(--dark);
+      line-height: 1.1;
+      margin-bottom: 0.6rem;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--gray);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    /* ── MENU ── */
+    #menu-section { background: var(--bg); }
+    .menu-header { text-align: center; margin-bottom: 2.5rem; }
+
+    .single-card-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .single-card { width: min(340px, 90vw); }
+
+    .menu-card {
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+    }
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(107,33,168,0.15);
+      border-color: var(--pink);
+    }
+    .menu-card-top {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .menu-card-top.purple { background: linear-gradient(135deg, var(--purple), var(--purple-light)); }
+    .menu-card-top.pink   { background: linear-gradient(135deg, var(--pink), var(--pink-light)); }
+    .menu-card-top.gold   { background: linear-gradient(135deg, #d97706, var(--gold)); }
+    .menu-card-top.teal   { background: linear-gradient(135deg, #0f766e, var(--teal)); }
+    .menu-card-top::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(255,255,255,0.05) 12px, rgba(255,255,255,0.05) 24px);
+    }
+
+    .menu-card-body { padding: 1.2rem; }
+    .menu-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.4rem;
+      gap: 0.5rem;
+    }
+    .menu-card-name  { font-weight: 900; font-size: 1.05rem; color: var(--dark); }
+    .menu-card-price { font-weight: 900; font-size: 1.05rem; color: var(--purple); white-space: nowrap; direction: ltr; }
+    .menu-card-desc  { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+    .menu-card-tag {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 0.2rem 0.65rem;
+      border-radius: 100px;
+    }
+    .tag-hot   { background: rgba(239,68,68,0.1);   color: var(--red); }
+    .tag-new   { background: rgba(236,72,153,0.12);  color: var(--pink); }
+    .tag-bday  { background: rgba(251,191,36,0.15);  color: #92400e; }
+    .tag-veg   { background: rgba(20,184,166,0.1);   color: var(--teal); }
+
+    .menu-panel { display: none; }
+    .menu-panel.active { display: block; }
+
+    /* ── CARD CLICKABLE ── */
+    .single-card {
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .single-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(107,33,168,0.2);
+      border-color: var(--gold);
+    }
+    .single-card .menu-card-name { font-size: 1.2rem; }
+    .click-hint {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--gray);
+      margin-top: 0.9rem;
+    }
+
+    /* ── ORDER MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,10,40,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal {
+      background: var(--white);
+      border-radius: 24px;
+      width: min(480px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      padding: 1.2rem 1.5rem;
+      border-radius: 24px 24px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .modal-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--white);
+    }
+    .modal-close {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: var(--white);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.35); }
+
+    /* progress bar */
+    .modal-progress {
+      height: 4px;
+      background: #e5e7eb;
+    }
+    .modal-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--pink));
+      transition: width 0.3s ease;
+    }
+
+    .modal-body { padding: 1.5rem; flex: 1; }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .step-label {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 0.4rem;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--dark);
+      margin-bottom: 1.2rem;
+    }
+
+    /* single-choice chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .chip {
+      padding: 0.55rem 1.1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gray);
+      cursor: pointer;
+      font-family: 'Heebo', sans-serif;
+      background: var(--white);
+      transition: all 0.15s;
+    }
+    .chip:hover { border-color: var(--purple); color: var(--purple); }
+    .chip.selected { background: var(--purple); border-color: var(--purple); color: var(--white); }
+    .chip.multi.selected { background: var(--pink); border-color: var(--pink); color: var(--white); }
+
+    .step-hint {
+      font-size: 0.78rem;
+      color: var(--gray);
+      margin-bottom: 0.9rem;
+    }
+
+    /* notes textarea */
+    .notes-area {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.95rem;
+      color: var(--dark);
+      background: var(--bg);
+      outline: none;
+      resize: vertical;
+      min-height: 100px;
+      text-align: right;
+      transition: border-color 0.2s;
+    }
+    .notes-area:focus { border-color: var(--pink); }
+    .step-field-label { display: block; font-size: 0.82rem; font-weight: 800; color: var(--dark); margin-bottom: 0.4rem; }
+
+    /* modal footer nav */
+    .modal-footer {
+      padding: 1rem 1.5rem 1.5rem;
+      display: flex;
+      gap: 0.8rem;
+    }
+    .modal-btn {
+      flex: 1;
+      padding: 0.85rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 900;
+      font-family: 'Heebo', sans-serif;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .modal-btn:hover { transform: translateY(-2px); }
+    .btn-back  { background: #f3f4f6; color: var(--gray); }
+    .btn-next  { background: linear-gradient(135deg, var(--purple), var(--pink)); color: var(--white); }
+    .btn-order { background: linear-gradient(135deg, #d97706, var(--gold)); color: var(--dark); }
+
+    /* summary step */
+    .summary-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-key { font-weight: 800; color: var(--dark); }
+    .summary-val { color: var(--gray); text-align: left; max-width: 55%; }
+
+    /* done screen */
+    .done-screen { text-align: center; padding: 1rem 0 0.5rem; }
+    .done-icon { font-size: 4rem; margin-bottom: 0.6rem; }
+    .done-screen h3 { font-size: 1.6rem; font-weight: 900; margin-bottom: 0.4rem; }
+    .done-screen p  { color: var(--gray); font-size: 0.95rem; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%     { transform: translateX(-6px); }
+      75%     { transform: translateX(6px); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: linear-gradient(135deg, #1e1b4b, var(--purple));
+      color: rgba(255,255,255,0.6);
+      padding: 50px 5% 28px;
+    }
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 1.5rem;
+    }
+    .footer-logo { font-size: 1.2rem; font-weight: 900; color: var(--white); margin-bottom: 0.6rem; }
+    .footer-logo .gold { color: var(--gold); }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+    footer h4 { font-size: 0.78rem; letter-spacing: 0.08em; color: var(--gold); font-weight: 800; margin-bottom: 0.9rem; text-transform: uppercase; }
+    footer ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    footer ul a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+    footer ul a:hover { color: var(--white); }
+    .footer-bottom { text-align: center; font-size: 0.82rem; max-width: 900px; margin: 0 auto; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .wish-form { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONFETTI (generated via JS) -->
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-brand">🍔 המבורגר מרקוב <span class="nav-bday">🎂</span></a>
+    <ul class="nav-links">
+      <li><a href="#menu-section">תפריט</a></li>
+    </ul>
+  </nav>
+
+  <!-- BIRTHDAY BANNER -->
+  <div class="bday-banner">
+    🎉 &nbsp; יום הולדת שמח ליאם! &nbsp; 🎂 &nbsp; גרסה מיוחדת לכבוד יום ההולדת שלך &nbsp; 🎈 &nbsp; עשינו הכל בשבילך! &nbsp; 🎉
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="./logo.jpg" alt="המבורגר מרקוב — יום הולדת לליאם" class="hero-logo-img">
+    <span class="hero-bday-tag">✨ גרסת יום הולדת מיוחדת ✨</span>
+    <h1>המבורגר<br><span class="accent">מרקוב</span></h1>
+    <div class="hero-liam">ליאם!</div>
+    <p class="hero-sub">ביום ההולדת שלך, כל המבורגר הוא חגיגה. אנחנו מכינים לך ארוחה שלא תשכח לעולם 🎉</p>
+    <div class="hero-actions">
+      <a href="#menu-section" class="btn btn-gold">🍔 לתפריט המיוחד</a>
+    </div>
+    <div class="hero-tag-row">
+      <span class="hero-tag">🎂 מבורגר יום הולדת</span>
+      <span class="hero-tag">🎁 מנות מפתיעות</span>
+      <span class="hero-tag">🥳 אווירה חגיגית</span>
+      <span class="hero-tag">🍟 תוספות בלי גבול</span>
+      <span class="hero-tag">🎈 שייק חגיגי</span>
+    </div>
+
+    <div class="balloons">
+      <span class="balloon" style="left:5%;  animation-duration:3.2s; animation-delay:0s;">🎈</span>
+      <span class="balloon" style="left:15%; animation-duration:2.8s; animation-delay:0.5s;">🎉</span>
+      <span class="balloon" style="left:30%; animation-duration:3.5s; animation-delay:0.2s;">🎈</span>
+      <span class="balloon" style="left:50%; animation-duration:3s;   animation-delay:0.8s;">🎂</span>
+      <span class="balloon" style="left:65%; animation-duration:2.9s; animation-delay:0.3s;">🎈</span>
+      <span class="balloon" style="left:80%; animation-duration:3.3s; animation-delay:0.7s;">🎉</span>
+      <span class="balloon" style="left:92%; animation-duration:2.7s; animation-delay:0.1s;">🎈</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>🎂 יום הולדת שמח ליאם!</span>
+      <span>🍔 המבורגרים הכי טובים בעיר</span>
+      <span>🎈 גרסת יום הולדת מיוחדת</span>
+      <span>🥳 חגיגה בכל ביס</span>
+      <span>🎁 מנות בלעדיות לכבודך</span>
+      <span>🍟 כי ליאם אוהב אוכל טוב</span>
+      <span>🎂 יום הולדת שמח ליאם!</span>
+      <span>🍔 המבורגרים הכי טובים בעיר</span>
+      <span>🎈 גרסת יום הולדת מיוחדת</span>
+      <span>🥳 חגיגה בכל ביס</span>
+      <span>🎁 מנות בלעדיות לכבודך</span>
+      <span>🍟 כי ליאם אוהב אוכל טוב</span>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <section id="menu-section">
+    <div class="menu-header">
+      <span class="section-tag tag-pink">🍔 תפריט</span>
+      <h2 class="section-title">המנה שלנו</h2>
+    </div>
+    <div class="single-card-wrap">
+      <div>
+        <div class="menu-card single-card" id="open-order">
+          <div class="menu-card-top gold">🍔</div>
+          <div class="menu-card-body">
+            <div class="menu-card-header">
+              <span class="menu-card-name">ארוחת המבורגר</span>
+            </div>
+          </div>
+        </div>
+        <p class="click-hint">לחץ להזמנה 👆</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDER MODAL -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-title">ארוחת המבורגר</span>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-progress">
+        <div class="modal-progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- שלב 1: מידת עשייה -->
+        <div class="step active" id="step-1">
+          <div class="step-label">שלב 1 מתוך 7</div>
+          <div class="step-title">מידת עשייה</div>
+          <div class="chips">
+            <button class="chip" data-group="doneness" data-val="מדיום">מדיום</button>
+            <button class="chip" data-group="doneness" data-val="מדיום וול">מדיום וול</button>
+            <button class="chip" data-group="doneness" data-val="וול דאן">וול דאן</button>
+          </div>
+        </div>
+
+        <!-- שלב 2: לחמניה -->
+        <div class="step" id="step-2">
+          <div class="step-label">שלב 2 מתוך 7</div>
+          <div class="step-title">לחמניה</div>
+          <div class="chips">
+            <button class="chip" data-group="bun" data-val="רגילה">רגילה</button>
+            <button class="chip" data-group="bun" data-val="על הגריל">על הגריל</button>
+          </div>
+        </div>
+
+        <!-- שלב 3: תוספות -->
+        <div class="step" id="step-3">
+          <div class="step-label">שלב 3 מתוך 7</div>
+          <div class="step-title">תוספות</div>
+          <p class="step-hint">אפשר לבחור כמה שרוצים, או כלום</p>
+          <div class="chips">
+            <button class="chip multi" data-group="toppings" data-val="חסה">חסה</button>
+            <button class="chip multi" data-group="toppings" data-val="מלפפון חמוץ">מלפפון חמוץ</button>
+            <button class="chip multi" data-group="toppings" data-val="עגבניה">עגבניה</button>
+            <button class="chip multi" data-group="toppings" data-val="בצל">בצל</button>
+          </div>
+        </div>
+
+        <!-- שלב 4: רטבים -->
+        <div class="step" id="step-4">
+          <div class="step-label">שלב 4 מתוך 7</div>
+          <div class="step-title">רטבים</div>
+          <p class="step-hint">אפשר לבחור כמה שרוצים, או כלום</p>
+          <div class="chips">
+            <button class="chip multi" data-group="sauces" data-val="קטשופ">קטשופ</button>
+            <button class="chip multi" data-group="sauces" data-val="מיונז">מיונז</button>
+            <button class="chip multi" data-group="sauces" data-val="קטשופ/מיונז">קטשופ/מיונז</button>
+            <button class="chip multi" data-group="sauces" data-val="ספייסי מיונז">ספייסי מיונז</button>
+            <button class="chip multi" data-group="sauces" data-val="מיונז כמהין">מיונז כמהין</button>
+            <button class="chip multi" data-group="sauces" data-val="איולי שום">איולי שום</button>
+          </div>
+        </div>
+
+        <!-- שלב 5: שתייה -->
+        <div class="step" id="step-5">
+          <div class="step-label">שלב 5 מתוך 7</div>
+          <div class="step-title">שתייה</div>
+          <div class="chips">
+            <button class="chip" data-group="drink" data-val="קולה">קולה</button>
+            <button class="chip" data-group="drink" data-val="לימונדה">לימונדה</button>
+            <button class="chip" data-group="drink" data-val="מים">מים</button>
+            <button class="chip" data-group="drink" data-val="ללא">ללא</button>
+          </div>
+        </div>
+
+        <!-- שלב 6: תוספות בצד -->
+        <div class="step" id="step-6">
+          <div class="step-label">שלב 6 מתוך 7</div>
+          <div class="step-title">תוספות בצד</div>
+          <div class="chips">
+            <button class="chip" data-group="side" data-val="צ'יפס">צ'יפס</button>
+            <button class="chip" data-group="side" data-val="ללא">ללא</button>
+          </div>
+        </div>
+
+        <!-- שלב 7: שם והערות -->
+        <div class="step" id="step-7">
+          <div class="step-label">שלב 7 מתוך 7</div>
+          <div class="step-title">פרטים אחרונים</div>
+          <label class="step-field-label">שם <span style="color:var(--pink)">*</span></label>
+          <input type="text" class="notes-area" id="name-input" placeholder="מה שמך?" style="min-height:unset;margin-bottom:1rem;">
+          <label class="step-field-label">הערות מיוחדות</label>
+          <textarea class="notes-area" id="notes-input" placeholder="לדוגמה: בלי בצל על הלחמנייה, אלרגיה לגלוטן..."></textarea>
+        </div>
+
+        <!-- סיכום -->
+        <div class="step" id="step-summary">
+          <div class="step-title">סיכום ההזמנה 🍔</div>
+          <div class="summary-list" id="summary-list"></div>
+        </div>
+
+        <!-- בוצע -->
+        <div class="step" id="step-done">
+          <div class="done-screen">
+            <div class="done-icon">🎉</div>
+            <h3>ההזמנה בוצעה!</h3>
+            <p>ארוחת המבורגר שלך בדרך. בתיאבון ליאם! 🍔🎂</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" id="modal-footer">
+        <button class="modal-btn btn-back" id="btn-back">חזור</button>
+        <button class="modal-btn btn-next" id="btn-next">המשך</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">🍔 המבורגר מרקוב <span class="gold">🎂</span></div>
+        <p>גרסת יום הולדת מיוחדת לכבוד ליאם. המסעדה שנוסדה מאהבה, ומכינה המבורגרים שהופכים כל יום ליום הולדת.</p>
+      </div>
+      <div class="footer-nav">
+        <h4>ניווט מהיר</h4>
+        <ul>
+          <li><a href="#menu-section">התפריט</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      🎂 יום הולדת שמח ליאם! &nbsp;•&nbsp; המבורגר מרקוב — גרסת יום הולדת &nbsp;•&nbsp; כל הזכויות שמורות לך ❤️
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    emailjs.init({ publicKey: 'uXJuR-q1I_YcA6qvW' });
+
+    /* ── CONFETTI ── */
+    const COLORS = ['#ec4899','#fbbf24','#9333ea','#14b8a6','#f472b6','#fde68a','#6b21a8'];
+    function spawnConfetti() {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+      el.style.animationDuration = (2.5 + Math.random() * 4) + 's';
+      el.style.animationDelay    = (Math.random() * 3) + 's';
+      el.style.width  = (8 + Math.random() * 8) + 'px';
+      el.style.height = (10 + Math.random() * 10) + 'px';
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 8000);
+    }
+    for (let i = 0; i < 60; i++) setTimeout(spawnConfetti, i * 120);
+    setInterval(() => spawnConfetti(), 1200);
+
+    /* ── ORDER MODAL ── */
+    const TOTAL_STEPS = 7;
+    let currentStep = 1;
+    const order = { name:'', doneness:'', bun:'', toppings:[], sauces:[], drink:'', side:'', notes:'' };
+
+    const overlay   = document.getElementById('modal-overlay');
+    const btnNext   = document.getElementById('btn-next');
+    const btnBack   = document.getElementById('btn-back');
+    const footer    = document.getElementById('modal-footer');
+    const progFill  = document.getElementById('progress-fill');
+
+    document.getElementById('open-order').addEventListener('click', () => {
+      currentStep = 1;
+      Object.assign(order, { name:'', doneness:'', bun:'', toppings:[], sauces:[], drink:'', side:'', notes:'' });
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      document.getElementById('name-input').value = '';
+      document.getElementById('notes-input').value = '';
+      showStep(1);
+      overlay.classList.add('open');
+    });
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+    function closeModal() { overlay.classList.remove('open'); }
+
+    function showStep(n) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      const id = n <= TOTAL_STEPS ? 'step-' + n : (n === TOTAL_STEPS + 1 ? 'step-summary' : 'step-done');
+      document.getElementById(id).classList.add('active');
+
+      progFill.style.width = (Math.min(n, TOTAL_STEPS) / TOTAL_STEPS * 100) + '%';
+
+      // footer buttons
+      if (n === TOTAL_STEPS + 2) { // done screen
+        footer.style.display = 'none';
+      } else if (n === TOTAL_STEPS + 1) { // summary
+        btnBack.style.display = '';
+        btnNext.textContent = '✅ בצע הזמנה';
+        btnNext.className = 'modal-btn btn-order';
+      } else {
+        btnBack.style.display = n === 1 ? 'none' : '';
+        btnNext.textContent = n === TOTAL_STEPS ? 'לסיכום' : 'המשך';
+        btnNext.className = 'modal-btn btn-next';
+      }
+
+      document.getElementById('modal-title').textContent =
+        ['', 'מידת עשייה', 'לחמניה', 'תוספות', 'רטבים', 'שתייה', 'תוספות בצד', 'הערות', 'סיכום', 'בוצע!'][n] || 'ארוחת המבורגר';
+    }
+
+    btnNext.addEventListener('click', () => {
+      // validate single-choice steps
+      const singleSteps = { 1:'doneness', 2:'bun', 5:'drink', 6:'side' };
+      if (singleSteps[currentStep] && !order[singleSteps[currentStep]]) {
+        const chips = document.querySelectorAll(`[data-group="${singleSteps[currentStep]}"]`);
+        chips.forEach(c => { c.style.animation='shake 0.3s'; setTimeout(()=>c.style.animation='',300); });
+        return;
+      }
+      if (currentStep === TOTAL_STEPS) {
+        order.name  = document.getElementById('name-input').value.trim();
+        order.notes = document.getElementById('notes-input').value.trim();
+        if (!order.name) {
+          const inp = document.getElementById('name-input');
+          inp.style.borderColor = 'var(--pink)';
+          inp.style.animation = 'shake 0.3s';
+          setTimeout(() => { inp.style.animation = ''; inp.style.borderColor = ''; }, 300);
+          return;
+        }
+        buildSummary();
+      }
+      if (currentStep === TOTAL_STEPS + 1) {
+        // place order — send email
+        const orderText = [
+          `מידת עשייה: ${order.doneness}`,
+          `לחמניה: ${order.bun}`,
+          `תוספות: ${order.toppings.length ? order.toppings.join(', ') : 'ללא'}`,
+          `רטבים: ${order.sauces.length ? order.sauces.join(', ') : 'ללא'}`,
+          `שתייה: ${order.drink}`,
+          `תוספות בצד: ${order.side}`,
+          `הערות: ${order.notes || '—'}`,
+        ].join('\n');
+        emailjs.send('service_potato9', 'template_35iqbnv', {
+          to_email:   'hamarkovim@gmail.com',
+          from_name:  order.name,
+          from_email: 'hamarkovim@gmail.com',
+          order_text: orderText,
+          order_time: new Date().toLocaleString('he-IL'),
+        }).catch(err => console.error('emailjs:', err));
+        for (let i = 0; i < 30; i++) setTimeout(spawnConfetti, i * 60);
+        currentStep = TOTAL_STEPS + 2;
+        showStep(currentStep);
+        return;
+      }
+      currentStep++;
+      showStep(currentStep);
+    });
+
+    btnBack.addEventListener('click', () => {
+      currentStep--;
+      showStep(currentStep);
+    });
+
+    // chip clicks
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const group = chip.dataset.group;
+        const val   = chip.dataset.val;
+        const isMulti = chip.classList.contains('multi');
+
+        if (isMulti) {
+          if (chip.classList.contains('selected')) {
+            chip.classList.remove('selected');
+            order[group] = order[group].filter(v => v !== val);
+          } else {
+            chip.classList.add('selected');
+            order[group].push(val);
+          }
+        } else {
+          document.querySelectorAll(`[data-group="${group}"]`).forEach(c => c.classList.remove('selected'));
+          chip.classList.add('selected');
+          order[group] = val;
+        }
+      });
+    });
+
+    function buildSummary() {
+      const rows = [
+        ['שם',         order.name],
+        ['מידת עשייה', order.doneness],
+        ['לחמניה',     order.bun],
+        ['תוספות',     order.toppings.length ? order.toppings.join(', ') : 'ללא'],
+        ['רטבים',      order.sauces.length   ? order.sauces.join(', ')   : 'ללא'],
+        ['שתייה',      order.drink],
+        ['תוספות בצד', order.side],
+        ['הערות',      order.notes || '—'],
+      ];
+      document.getElementById('summary-list').innerHTML = rows.map(([k,v]) =>
+        `<div class="summary-row"><span class="summary-key">${k}</span><span class="summary-val">${v}</span></div>`
+      ).join('');
+    }
+  </script>
+</body>
+</html>
