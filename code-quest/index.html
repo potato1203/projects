@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>קוד מאסטר 🤖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ══════════════════════════════
+       DESIGN TOKENS — Duolingo palette
+    ══════════════════════════════ */
+    :root {
+      --green:      #58CC02;
+      --green-dk:   #46A302;
+      --green-bg:   #D7FFB8;
+      --red:        #FF4B4B;
+      --red-dk:     #CC3A3A;
+      --red-bg:     #FFE0E0;
+      --blue:       #1CB0F6;
+      --blue-dk:    #1899D6;
+      --blue-bg:    #DDF4FF;
+      --yellow:     #FFD900;
+      --yellow-dk:  #D9B800;
+      --orange:     #FF9600;
+      --orange-dk:  #D97D00;
+      --purple:     #CE82FF;
+      --purple-dk:  #A855E5;
+      --purple-bg:  #F1E0FF;
+
+      --bg:         #F7F7F7;
+      --white:      #FFFFFF;
+      --border:     #E5E5E5;
+      --border-dk:  #CACACA;
+      --text:       #3C3C3C;
+      --muted:      #AFAFAF;
+      --gray-bg:    #F0F0F0;
+    }
+
+    html, body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); }
+
+    /* ══════════════════════════════
+       SCREEN SYSTEM
+    ══════════════════════════════ */
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 0 0 60px;
+      min-height: 100vh;
+    }
+    .screen.active { display: flex; }
+
+    /* ══════════════════════════════
+       SHARED COMPONENTS
+    ══════════════════════════════ */
+
+    /* Top nav bar (back + title) */
+    .top-bar {
+      width: 100%; display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px 0; margin-bottom: 8px;
+    }
+    .top-bar-title { font-size: 1rem; font-weight: 800; color: var(--text); flex: 1; }
+    .back-btn {
+      background: none; border: 2px solid var(--border); border-radius: 50%;
+      width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--muted); font-size: 1rem; flex-shrink: 0;
+      transition: border-color .15s, color .15s;
+    }
+    .back-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* Buttons */
+    .btn {
+      border: none; font-family: 'Heebo', sans-serif; font-weight: 800;
+      cursor: pointer; transition: transform .1s, filter .15s; display: inline-flex;
+      align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn:hover { filter: brightness(1.06); }
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--green); color: white;
+      padding: 14px 36px; font-size: 1.05rem; border-radius: 14px;
+      box-shadow: 0 4px 0 var(--green-dk);
+    }
+    .btn-primary:active { box-shadow: 0 2px 0 var(--green-dk); transform: translateY(2px); }
+
+    .btn-outline {
+      background: white; color: var(--text);
+      border: 2px solid var(--border-dk);
+      padding: 12px 32px; font-size: 1rem; border-radius: 14px;
+      box-shadow: 0 3px 0 var(--border-dk);
+    }
+    .btn-outline:active { box-shadow: 0 1px 0 var(--border-dk); transform: translateY(2px); }
+
+    .btn-blue {
+      background: var(--blue); color: white;
+      padding: 13px 32px; font-size: 1rem; border-radius: 14px;
+      box-shadow: 0 4px 0 var(--blue-dk);
+    }
+    .btn-blue:active { box-shadow: 0 2px 0 var(--blue-dk); transform: translateY(2px); }
+
+    .btn-red {
+      background: var(--red); color: white;
+      padding: 13px 32px; font-size: 1rem; border-radius: 14px;
+      box-shadow: 0 4px 0 var(--red-dk);
+    }
+
+    .btn-sm { padding: 9px 18px; font-size: 0.88rem; border-radius: 10px; }
+
+    .btn-run {
+      background: var(--green); color: white; font-weight: 800;
+      padding: 9px 20px; font-size: 0.9rem; border-radius: 10px;
+      box-shadow: 0 3px 0 var(--green-dk); display: inline-flex; align-items: center; gap: 5px;
+    }
+    .btn-run:active { box-shadow: 0 1px 0 var(--green-dk); transform: translateY(2px); }
+
+    .btn-submit {
+      background: var(--orange); color: white; font-weight: 800;
+      padding: 9px 20px; font-size: 0.9rem; border-radius: 10px;
+      box-shadow: 0 3px 0 var(--orange-dk);
+    }
+
+    /* ══════════════════════════════
+       START SCREEN
+    ══════════════════════════════ */
+    #start {
+      justify-content: center;
+      gap: 20px;
+      text-align: center;
+      padding: 40px 24px 60px;
+    }
+
+    .owl-wrap {
+      position: relative;
+      width: 120px; height: 120px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+      box-shadow: 0 6px 0 var(--green-dk);
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .start-title {
+      font-size: 2.5rem; font-weight: 900;
+      color: var(--text); line-height: 1.1;
+    }
+    .start-sub { color: var(--muted); font-size: 1rem; }
+
+    .mode-cards { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+    .mode-card {
+      background: white; border: 2.5px solid var(--border);
+      border-radius: 16px; padding: 18px 20px;
+      cursor: pointer; display: flex; align-items: center; gap: 16px;
+      transition: border-color .2s, box-shadow .2s, transform .15s;
+      text-align: right;
+    }
+    .mode-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+    .mode-card.quiz    { border-color: var(--purple); }
+    .mode-card.practice{ border-color: var(--blue); }
+    .mode-card-icon { font-size: 2.2rem; flex-shrink: 0; }
+    .mode-card-body { flex: 1; }
+    .mode-card-title { font-weight: 800; font-size: 1.05rem; }
+    .mode-card-desc { color: var(--muted); font-size: .84rem; margin-top: 2px; }
+    .mode-card-arrow { color: var(--muted); }
+
+    .start-tags {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      font-size: .8rem; color: var(--muted);
+    }
+    .start-tags span {
+      background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 3px 12px;
+    }
+
+    /* ══════════════════════════════
+       SKILL PATH (worlds screen)
+    ══════════════════════════════ */
+    #worlds { padding: 0 20px 80px; gap: 0; }
+
+    .worlds-header {
+      width: 100%; background: var(--green); border-bottom: 3px solid var(--green-dk);
+      padding: 20px; text-align: center; margin-bottom: 24px;
+      color: white;
+    }
+    .worlds-header h2 { font-size: 1.3rem; font-weight: 900; }
+    .worlds-header p  { font-size: .88rem; opacity: .85; margin-top: 4px; }
+
+    .skill-path {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0; width: 100%;
+    }
+
+    .path-row {
+      display: flex; justify-content: center; align-items: flex-start;
+      width: 100%; position: relative;
+    }
+    .path-row:nth-child(even) { justify-content: flex-end; margin-right: 40px; }
+    .path-row:nth-child(odd)  { justify-content: flex-start; margin-left: 40px; }
+
+    .skill-node-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .skill-node {
+      width: 80px; height: 80px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; cursor: pointer;
+      transition: transform .2s;
+      position: relative;
+      border: 4px solid;
+    }
+    .skill-node:not(.locked):hover { transform: scale(1.08); }
+    .skill-node.locked { filter: grayscale(1); opacity: .55; cursor: default; }
+
+    .skill-node.c0 { background: var(--green);  border-color: var(--green-dk); box-shadow: 0 5px 0 var(--green-dk); }
+    .skill-node.c1 { background: var(--blue);   border-color: var(--blue-dk);  box-shadow: 0 5px 0 var(--blue-dk); }
+    .skill-node.c2 { background: var(--purple); border-color: var(--purple-dk);box-shadow: 0 5px 0 var(--purple-dk); }
+    .skill-node.c3 { background: var(--orange); border-color: var(--orange-dk);box-shadow: 0 5px 0 var(--orange-dk); }
+
+    .node-label { font-weight: 800; font-size: .88rem; text-align: center; }
+    .node-stars { font-size: .8rem; color: var(--yellow); letter-spacing: 2px; }
+    .node-crown { position: absolute; top: -12px; right: -8px; font-size: 1.2rem; }
+
+    .path-line {
+      width: 4px; height: 36px; background: var(--border); border-radius: 4px;
+      margin: 6px 0;
+    }
+
+    .worlds-back { margin-top: 32px; }
+
+    /* ══════════════════════════════
+       QUESTION SCREEN  (Duolingo layout)
+    ══════════════════════════════ */
+    #question {
+      padding: 0;
+      min-height: 100vh;
+      background: white;
+      position: relative;
+      max-width: 500px;
+    }
+
+    .q-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px;
+      position: sticky; top: 0;
+      background: white; z-index: 20;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .q-exit {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1.5rem; line-height: 1;
+      padding: 2px; flex-shrink: 0;
+    }
+    .q-exit:hover { color: var(--text); }
+
+    .q-progress-wrap {
+      flex: 1; height: 14px; background: var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+    .q-progress {
+      height: 100%; background: var(--green);
+      border-radius: 10px; transition: width .5s ease;
+    }
+
+    .q-hearts {
+      font-size: .95rem; color: var(--red);
+      font-weight: 800; display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    }
+
+    .q-xp {
+      display: flex; align-items: center; gap: 3px;
+      font-size: .88rem; font-weight: 800; color: var(--yellow-dk);
+      flex-shrink: 0;
+    }
+
+    .q-body {
+      padding: 28px 20px 160px; /* big bottom padding for sticky footer */
+      display: flex; flex-direction: column; gap: 18px;
+    }
+
+    .q-world-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--gray-bg); border-radius: 20px;
+      padding: 5px 14px; font-size: .78rem; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: .05em;
+      align-self: flex-start;
+    }
+
+    .q-prompt { font-size: 1.2rem; font-weight: 700; line-height: 1.5; color: var(--text); }
+
+    .code-block {
+      background: #1e1e2e; border-radius: 12px;
+      padding: 16px; font-family: 'Courier New', Consolas, monospace;
+      font-size: .88rem; line-height: 1.7; direction: ltr; text-align: left;
+      overflow-x: auto; white-space: pre;
+      border: 2px solid #2d2d3f;
+    }
+    /* syntax */
+    .kw   { color: #ff79c6; }
+    .str  { color: #f1fa8c; }
+    .num  { color: #bd93f9; }
+    .fn   { color: #50fa7b; }
+    .cmt  { color: #6272a4; font-style: italic; }
+    .obj  { color: #ffb86c; }
+    .blank{ color: #f1fa8c; font-weight: 700; background: rgba(241,250,140,.15); border-radius: 3px; padding: 0 3px; }
+
+    /* Options */
+    .options-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .opt {
+      width: 100%; padding: 15px 16px;
+      background: white; border: 2.5px solid var(--border-dk);
+      border-radius: 14px; cursor: pointer;
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'Heebo', sans-serif; font-size: 1rem; font-weight: 600;
+      color: var(--text); text-align: right;
+      transition: border-color .12s, background .12s;
+      box-shadow: 0 2px 0 var(--border-dk);
+    }
+    .opt:hover:not(:disabled):not(.selected):not(.correct):not(.wrong) {
+      border-color: var(--blue); background: var(--blue-bg);
+      box-shadow: 0 2px 0 var(--blue-dk);
+    }
+    .opt.selected {
+      border-color: var(--blue); background: var(--blue-bg);
+      box-shadow: 0 2px 0 var(--blue-dk);
+    }
+    .opt.correct {
+      border-color: var(--green); background: var(--green-bg);
+      box-shadow: 0 2px 0 var(--green-dk);
+    }
+    .opt.wrong {
+      border-color: var(--red); background: var(--red-bg);
+      box-shadow: 0 2px 0 var(--red-dk);
+    }
+    .opt:disabled { cursor: default; }
+    .opt-code { font-family: 'Courier New', monospace; font-size: .9rem; direction: ltr; }
+
+    .opt-key {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 2px solid var(--border-dk); background: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .85rem; flex-shrink: 0;
+      color: var(--muted); transition: border-color .12s, color .12s;
+    }
+    .opt.selected .opt-key { border-color: var(--blue); color: var(--blue); background: white; }
+    .opt.correct  .opt-key { border-color: var(--green); color: var(--green); background: white; }
+    .opt.wrong    .opt-key { border-color: var(--red); color: var(--red); background: white; }
+
+    /* Question footer — Check button */
+    .q-footer {
+      position: sticky; bottom: 0; left: 0; right: 0;
+      background: white; padding: 14px 20px 20px;
+      border-top: 2px solid var(--border); z-index: 15;
+    }
+
+    .check-btn {
+      width: 100%; padding: 16px; font-size: 1.1rem; font-weight: 800;
+      border: none; border-radius: 14px; cursor: not-allowed;
+      background: var(--gray-bg); color: var(--muted);
+      transition: background .2s, color .2s, box-shadow .2s;
+      font-family: 'Heebo', sans-serif;
+    }
+    .check-btn.ready {
+      background: var(--green); color: white; cursor: pointer;
+      box-shadow: 0 4px 0 var(--green-dk);
+    }
+    .check-btn.ready:hover { filter: brightness(1.06); }
+    .check-btn.ready:active { box-shadow: 0 2px 0 var(--green-dk); transform: translateY(2px); }
+
+    /* Result panel — slides up from bottom */
+    .result-panel {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      padding: 20px 20px 28px;
+      transform: translateY(105%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      z-index: 200; display: flex; flex-direction: column; gap: 12px;
+    }
+    .result-panel.show { transform: translateY(0); }
+
+    .result-panel.correct {
+      background: var(--green-bg);
+      border-top: 3px solid var(--green);
+    }
+    .result-panel.wrong {
+      background: var(--red-bg);
+      border-top: 3px solid var(--red);
+    }
+
+    .rp-inner { max-width: 500px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+
+    .rp-header {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.15rem; font-weight: 900;
+    }
+    .result-panel.correct .rp-header { color: var(--green-dk); }
+    .result-panel.wrong   .rp-header { color: var(--red); }
+
+    .rp-text { font-size: .93rem; line-height: 1.55; color: var(--text); }
+    .rp-correct-ans { font-size: .88rem; color: var(--muted); }
+    .rp-correct-ans strong { color: var(--text); }
+
+    .rp-continue {
+      width: 100%; padding: 15px; font-size: 1.05rem; font-weight: 800;
+      border: none; border-radius: 14px; cursor: pointer; color: white;
+      font-family: 'Heebo', sans-serif;
+    }
+    .result-panel.correct .rp-continue { background: var(--green); box-shadow: 0 4px 0 var(--green-dk); }
+    .result-panel.wrong   .rp-continue { background: var(--red);   box-shadow: 0 4px 0 var(--red-dk); }
+    .rp-continue:active { box-shadow: 0 2px 0; transform: translateY(2px); }
+
+    /* Animations */
+    @keyframes shake {
+      0%,100%{transform:translateX(0)} 20%{transform:translateX(-10px)}
+      40%{transform:translateX(10px)} 60%{transform:translateX(-7px)} 80%{transform:translateX(7px)}
+    }
+    .shake { animation: shake .45s ease; }
+
+    @keyframes pop {
+      0%{transform:scale(1)} 40%{transform:scale(1.05)} 100%{transform:scale(1)}
+    }
+    .pop { animation: pop .3s ease; }
+
+    /* XP pop animation */
+    .xp-pop {
+      position: fixed; font-size: 1.1rem; font-weight: 900;
+      color: var(--yellow-dk); pointer-events: none; z-index: 300;
+      animation: xpFloat 1s ease forwards;
+    }
+    @keyframes xpFloat {
+      0%   { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-50px); }
+    }
+
+    /* ══════════════════════════════
+       WORLD COMPLETE / GAME OVER / VICTORY
+    ══════════════════════════════ */
+    #world-complete, #game-over, #victory {
+      justify-content: center; min-height: 100vh;
+      text-align: center; gap: 20px; padding: 40px 24px;
+    }
+
+    .celebration-icon { font-size: 5rem; animation: bounce 2s ease-in-out infinite; }
+
+    .result-title { font-size: 2rem; font-weight: 900; }
+    .result-sub   { color: var(--muted); font-size: 1rem; line-height: 1.5; }
+
+    .stars-row { display: flex; gap: 8px; justify-content: center; margin: 4px 0; }
+    .star-big { font-size: 2.5rem; animation: starPop .4s ease both; }
+    .star-big:nth-child(1){ animation-delay:.1s }
+    .star-big:nth-child(2){ animation-delay:.25s }
+    .star-big:nth-child(3){ animation-delay:.4s }
+    @keyframes starPop {
+      0%{transform:scale(0) rotate(-20deg);opacity:0}
+      70%{transform:scale(1.2) rotate(5deg);opacity:1}
+      100%{transform:scale(1) rotate(0);opacity:1}
+    }
+
+    .xp-earned-box {
+      background: var(--yellow); border-radius: 14px;
+      padding: 14px 28px; display: inline-flex; align-items: center; gap: 8px;
+      font-size: 1.2rem; font-weight: 900; color: var(--text);
+      box-shadow: 0 4px 0 var(--yellow-dk);
+    }
+
+    .stats-row {
+      display: flex; gap: 20px; justify-content: center;
+    }
+    .stat-box {
+      background: var(--gray-bg); border: 2px solid var(--border);
+      border-radius: 12px; padding: 14px 20px; text-align: center;
+    }
+    .stat-val { font-size: 1.6rem; font-weight: 900; }
+    .stat-lbl { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+
+    /* ══════════════════════════════
+       PRACTICE HUB
+    ══════════════════════════════ */
+    #practice-hub { gap: 0; padding: 0 0 60px; }
+
+    .practice-header {
+      width: 100%; background: var(--blue); padding: 28px 24px 24px;
+      text-align: center; color: white;
+      border-bottom: 3px solid var(--blue-dk);
+    }
+    .practice-header .ph-icon { font-size: 3rem; display: block; margin-bottom: 8px; }
+    .practice-header h2 { font-size: 1.4rem; font-weight: 900; }
+    .practice-header p  { font-size: .88rem; opacity: .85; margin-top: 4px; }
+
+    .practice-cards {
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 24px 20px 0;width: 100%;
+    }
+
+    .prac-card {
+      background: white; border: 2.5px solid var(--border);
+      border-radius: 16px; padding: 18px 20px;
+      cursor: pointer; display: flex; align-items: center; gap: 16px;
+      transition: border-color .2s, transform .15s, box-shadow .15s;
+      box-shadow: 0 2px 0 var(--border);
+    }
+    .prac-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+    .prac-card.pg:hover { border-color: var(--green); }
+    .prac-card.ls:hover { border-color: var(--purple); }
+    .prac-card.ms:hover { border-color: var(--orange); }
+
+    .pc-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; flex-shrink: 0;
+    }
+    .pg .pc-icon-wrap { background: #D7FFB8; }
+    .ls .pc-icon-wrap { background: var(--purple-bg); }
+    .ms .pc-icon-wrap { background: #FFF0D7; }
+
+    .pc-body { flex: 1; }
+    .pc-title { font-weight: 800; font-size: 1.02rem; }
+    .pc-desc  { color: var(--muted); font-size: .83rem; margin-top: 2px; }
+
+    .pc-badge {
+      background: var(--gray-bg); border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 3px 10px; font-size: .78rem;
+      color: var(--muted); font-weight: 700; white-space: nowrap;
+    }
+    .pc-badge.done { background: var(--green-bg); border-color: var(--green); color: var(--green-dk); }
+
+    /* ══════════════════════════════
+       PLAYGROUND
+    ══════════════════════════════ */
+    #playground { padding: 0 20px 60px; gap: 14px; }
+
+    .snippet-bar { display: flex; gap: 7px; flex-wrap: wrap; }
+    .snip {
+      background: white; border: 1.5px solid var(--border-dk); border-radius: 20px;
+      padding: 5px 13px; font-family: 'Courier New', monospace;
+      font-size: .8rem; color: var(--blue); cursor: pointer;
+      font-weight: 700; transition: background .15s, border-color .15s;
+    }
+    .snip:hover { background: var(--blue-bg); border-color: var(--blue); }
+
+    .editor-card {
+      width: 100%; background: white; border: 2px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .editor-toolbar {
+      background: var(--gray-bg); padding: 9px 14px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .toolbar-dots { display: flex; gap: 5px; }
+    .toolbar-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .toolbar-dot:nth-child(1){ background: #FF5F57; }
+    .toolbar-dot:nth-child(2){ background: #FEBC2E; }
+    .toolbar-dot:nth-child(3){ background: #28C840; }
+    .toolbar-filename { flex: 1; text-align: center; font-size: .78rem; color: var(--muted); font-family: monospace; }
+    .toolbar-actions { display: flex; gap: 7px; }
+
+    .code-editor {
+      width: 100%; background: #1e1e2e; color: #cdd6f4;
+      border: none; outline: none;
+      padding: 16px; font-family: 'Courier New', Consolas, monospace;
+      font-size: .88rem; line-height: 1.65; resize: vertical;
+      min-height: 180px; direction: ltr; text-align: left; tab-size: 2;
+    }
+
+    .console-card {
+      width: 100%; background: white; border: 2px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .console-header {
+      background: #1e1e2e; padding: 7px 14px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .console-header span { color: #6272a4; font-size: .78rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; font-family: monospace; }
+    .console-clear-btn { background: none; border: none; color: #6272a4; cursor: pointer; font-size: .75rem; font-family: 'Heebo', sans-serif; }
+    .console-clear-btn:hover { color: #cdd6f4; }
+
+    .console-out {
+      background: #1e1e2e; padding: 10px 16px;
+      font-family: 'Courier New', Consolas, monospace;
+      font-size: .85rem; min-height: 60px; max-height: 200px; overflow-y: auto;
+      direction: ltr; text-align: left;
+    }
+    .con-line  { color: #cdd6f4; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+    .con-error { color: #ff5555; }
+    .con-warn  { color: #f1fa8c; }
+    .con-empty { color: #6272a4; font-style: italic; }
+
+    .editor-tips { color: var(--muted); font-size: .78rem; text-align: center; }
+
+    /* ══════════════════════════════
+       LESSONS
+    ══════════════════════════════ */
+    #lessons-hub  { padding: 0 20px 60px; gap: 16px; }
+    #lesson-view  { padding: 0 20px 60px; gap: 16px; }
+
+    .lessons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+
+    .lesson-card {
+      background: white; border: 2.5px solid var(--border);
+      border-radius: 16px; padding: 20px 14px; cursor: pointer;
+      text-align: center; transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 2px 0 var(--border);
+    }
+    .lesson-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,.1); }
+    .lesson-card.done { border-color: var(--green); box-shadow: 0 2px 0 var(--green-dk); }
+    .lc-icon { font-size: 2rem; margin-bottom: 6px; }
+    .lc-name { font-weight: 800; font-size: 1rem; }
+    .lc-steps { color: var(--muted); font-size: .78rem; margin-top: 4px; }
+    .lc-crown { color: var(--yellow); font-size: .85rem; margin-top: 4px; }
+
+    /* Lesson step view */
+    .step-dots { display: flex; gap: 8px; justify-content: center; }
+    .sdot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--border); border: 2px solid var(--border-dk);
+      transition: all .2s;
+    }
+    .sdot.cur  { background: var(--blue); border-color: var(--blue); transform: scale(1.2); }
+    .sdot.past { background: var(--green); border-color: var(--green-dk); }
+
+    .step-heading { font-size: 1.3rem; font-weight: 900; text-align: center; }
+
+    .explain-card {
+      background: var(--gray-bg); border: 2px solid var(--border);
+      border-radius: 14px; padding: 16px 18px;
+      line-height: 1.7; font-size: .95rem; color: var(--text);
+      width: 100%;
+    }
+    .explain-card b { color: var(--text); }
+    .explain-card code {
+      font-family: 'Courier New', monospace;
+      background: white; border: 1px solid var(--border);
+      padding: 1px 5px; border-radius: 5px; font-size: .9em; color: var(--blue);
+    }
+
+    .step-nav { display: flex; gap: 10px; width: 100%; }
+    .step-nav .btn-outline { flex: 1; }
+    .step-nav .btn-primary { flex: 2; }
+
+    /* ══════════════════════════════
+       MISSIONS
+    ══════════════════════════════ */
+    #missions-hub { padding: 0 20px 60px; gap: 16px; }
+    #mission-view { padding: 0 20px 60px; gap: 16px; }
+
+    .missions-list { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+
+    .mission-card {
+      background: white; border: 2.5px solid var(--border);
+      border-radius: 14px; padding: 16px 18px;
+      cursor: pointer; display: flex; align-items: center; gap: 14px;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 2px 0 var(--border);
+    }
+    .mission-card:hover { transform: translateY(-2px); box-shadow: 0 5px 14px rgba(0,0,0,.08); }
+    .mission-card.done { border-color: var(--green); }
+    .mc-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .mc-info { flex: 1; }
+    .mc-title { font-weight: 800; }
+    .mc-diff { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+    .d-easy   { color: var(--green); font-weight: 700; }
+    .d-medium { color: var(--orange); font-weight: 700; }
+    .d-hard   { color: var(--red); font-weight: 700; }
+    .mc-check { font-size: 1.3rem; }
+
+    /* Mission view */
+    .mission-desc-card {
+      background: var(--gray-bg); border: 2px solid var(--border);
+      border-radius: 14px; padding: 16px 18px;
+      line-height: 1.65; font-size: .95rem; width: 100%;
+    }
+    .mission-desc-card b { color: var(--text); }
+    .mission-desc-card code {
+      font-family: 'Courier New', monospace; background: white;
+      border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px;
+      color: var(--blue); font-size: .9em;
+    }
+
+    .hint-toggle {
+      background: none; border: 1.5px dashed var(--yellow-dk);
+      border-radius: 10px; padding: 8px 16px;
+      font-family: 'Heebo', sans-serif; font-weight: 700;
+      color: var(--yellow-dk); cursor: pointer; font-size: .9rem;
+      width: 100%; text-align: center;
+    }
+    .hint-toggle:hover { background: #FFFBE6; }
+
+    .hint-box {
+      background: #FFFBE6; border: 1.5px solid var(--yellow-dk);
+      border-radius: 12px; padding: 12px 16px; display: none; width: 100%;
+    }
+    .hint-box.show { display: block; }
+    .hint-box pre {
+      font-family: 'Courier New', monospace; font-size: .84rem;
+      color: var(--text); direction: ltr; text-align: left;
+      white-space: pre-wrap; margin-top: 6px;
+    }
+
+    .mission-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .feedback-card {
+      width: 100%; border-radius: 14px; padding: 16px 18px;
+      display: none; animation: slideUp .3s ease;
+    }
+    .feedback-card.show { display: block; }
+    .feedback-card.ok   { background: var(--green-bg); border: 2px solid var(--green); }
+    .feedback-card.fail { background: var(--red-bg);   border: 2px solid var(--red); }
+    .fb-title { font-weight: 900; font-size: 1.05rem; margin-bottom: 6px; }
+    .feedback-card.ok   .fb-title { color: var(--green-dk); }
+    .feedback-card.fail .fb-title { color: var(--red); }
+    .fb-body { font-size: .9rem; color: var(--text); line-height: 1.5; }
+    .fb-body code { font-family: 'Courier New', monospace; background: white; padding: 1px 5px; border-radius: 4px; }
+
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ══════════════════════════════
+       CONFETTI
+    ══════════════════════════════ */
+    .confetti-p {
+      position: fixed; pointer-events: none; z-index: 999;
+      animation: cfFall linear forwards;
+    }
+    @keyframes cfFall {
+      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ══════════════════════════════
+       MOBILE
+    ══════════════════════════════ */
+    @media (max-width: 420px) {
+      .lessons-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .q-prompt { font-size: 1.05rem; }
+      .opt { font-size: .93rem; padding: 13px 13px; }
+      .result-title { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════ START ════════════════ -->
+  <div id="start" class="screen active">
+    <div class="owl-wrap">🦉</div>
+    <div>
+      <div class="start-title">קוד מאסטר</div>
+      <p class="start-sub" style="margin-top:6px">למד JavaScript — כמו Duolingo, רק לתכנות</p>
+    </div>
+    <div class="mode-cards">
+      <div class="mode-card quiz" onclick="showWorlds()">
+        <span class="mode-card-icon">🎮</span>
+        <div class="mode-card-body">
+          <div class="mode-card-title">שאלות ועולמות</div>
+          <div class="mode-card-desc">4 עולמות · 20 שאלות · לבבות וכוכבים</div>
+        </div>
+        <span class="mode-card-arrow">◀</span>
+      </div>
+      <div class="mode-card practice" onclick="showPracticeHub()">
+        <span class="mode-card-icon">💻</span>
+        <div class="mode-card-body">
+          <div class="mode-card-title">תרגול וכתיבה</div>
+          <div class="mode-card-desc">לקחים · מגרש משחקים · משימות קוד</div>
+        </div>
+        <span class="mode-card-arrow">◀</span>
+      </div>
+    </div>
+    <div class="start-tags">
+      <span>JavaScript</span><span>למתחילים</span><span>בעברית</span>
+    </div>
+  </div>
+
+  <!-- ════════════════ WORLDS ════════════════ -->
+  <div id="worlds" class="screen">
+    <div class="worlds-header">
+      <h2>🗺️ בחר עולם</h2>
+      <p>השלם עולמות כדי לפתוח את הבאים</p>
+    </div>
+    <div class="skill-path" id="skill-path"></div>
+    <button class="btn btn-outline worlds-back" onclick="showScreen('start')">◀ חזור לתפריט</button>
+  </div>
+
+  <!-- ════════════════ QUESTION ════════════════ -->
+  <div id="question" class="screen">
+    <div class="q-header">
+      <button class="q-exit" onclick="exitToWorlds()">✕</button>
+      <div class="q-progress-wrap"><div class="q-progress" id="q-progress"></div></div>
+      <div class="q-hearts" id="q-hearts"></div>
+      <div class="q-xp" id="q-xp">⚡ <span id="q-xp-val">0</span></div>
+    </div>
+    <div class="q-body" id="q-body"></div>
+    <div class="q-footer">
+      <button class="check-btn" id="check-btn" onclick="checkAnswer()">בדוק</button>
+    </div>
+  </div>
+
+  <!-- Result panel (fixed, outside question screen) -->
+  <div class="result-panel" id="result-panel">
+    <div class="rp-inner" id="rp-inner"></div>
+  </div>
+
+  <!-- ════════════════ WORLD COMPLETE ════════════════ -->
+  <div id="world-complete" class="screen">
+    <div class="celebration-icon">🏆</div>
+    <div class="result-title" id="wc-title"></div>
+    <div class="stars-row" id="wc-stars"></div>
+    <div class="xp-earned-box" id="wc-xp"></div>
+    <div class="stats-row" id="wc-stats"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="onWorldCompleteContinue()">המשך</button>
+    <button class="btn btn-outline" style="width:100%" onclick="retryWorld()">שחק שוב ↺</button>
+  </div>
+
+  <!-- ════════════════ GAME OVER ════════════════ -->
+  <div id="game-over" class="screen">
+    <div class="celebration-icon" style="animation:none">💔</div>
+    <div class="result-title" style="color:var(--red)">נגמרו הלבבות!</div>
+    <p class="result-sub" id="go-text"></p>
+    <button class="btn btn-primary" style="width:100%" onclick="retryWorld()">נסה שוב</button>
+    <button class="btn btn-outline" style="width:100%" onclick="showWorlds()">עולם אחר</button>
+  </div>
+
+  <!-- ════════════════ VICTORY ════════════════ -->
+  <div id="victory" class="screen">
+    <div class="celebration-icon">🎉</div>
+    <div class="result-title">כל הכבוד! סיימת הכל!</div>
+    <p class="result-sub">אתה עכשיו קוד מאסטר אמיתי 🌟<br>ידעת משתנים, תנאים, לולאות ופונקציות!</p>
+    <div class="xp-earned-box">⚡ <span id="v-xp"></span> XP סה"כ</div>
+    <button class="btn btn-primary" style="width:100%" onclick="resetQuiz()">שחק שוב מההתחלה</button>
+    <button class="btn btn-outline" style="width:100%" onclick="showPracticeHub()">💻 לתרגול</button>
+  </div>
+
+  <!-- ════════════════ PRACTICE HUB ════════════════ -->
+  <div id="practice-hub" class="screen">
+    <div class="practice-header">
+      <span class="ph-icon">💻</span>
+      <h2>תרגול וכתיבה</h2>
+      <p>למד, תרגל, ופתור אתגרים</p>
+    </div>
+    <div class="practice-cards">
+      <div class="prac-card pg" onclick="openPlayground()">
+        <div class="pc-icon-wrap">🎮</div>
+        <div class="pc-body">
+          <div class="pc-title">מגרש משחקים</div>
+          <div class="pc-desc">כתוב JavaScript חופשי וראה מה קורה</div>
+        </div>
+      </div>
+      <div class="prac-card ls" onclick="openLessonsHub()">
+        <div class="pc-icon-wrap">📚</div>
+        <div class="pc-body">
+          <div class="pc-title">לקחים אינטראקטיביים</div>
+          <div class="pc-desc">4 נושאים עם קוד שאפשר לערוך ולהריץ</div>
+        </div>
+        <span class="pc-badge" id="lessons-badge">0/4</span>
+      </div>
+      <div class="prac-card ms" onclick="openMissionsHub()">
+        <div class="pc-icon-wrap">🎯</div>
+        <div class="pc-body">
+          <div class="pc-title">משימות קוד</div>
+          <div class="pc-desc">8 אתגרים — מתחיל עד מאתגר</div>
+        </div>
+        <span class="pc-badge" id="missions-badge">0/8</span>
+      </div>
+    </div>
+    <div style="padding: 0 20px; width: 100%;">
+      <button class="btn btn-outline" style="width:100%;margin-top:8px" onclick="showScreen('start')">◀ חזור</button>
+    </div>
+  </div>
+
+  <!-- ════════════════ PLAYGROUND ════════════════ -->
+  <div id="playground" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" onclick="showPracticeHub()">◀</button>
+      <span class="top-bar-title">🎮 מגרש משחקים</span>
+    </div>
+    <div style="padding:0 20px;width:100%;display:flex;flex-direction:column;gap:14px">
+      <p style="color:var(--muted);font-size:.88rem;text-align:center">כתוב כל קוד JavaScript וראה מיד את הפלט</p>
+      <div class="snippet-bar" id="pg-snippets"></div>
+      <div class="editor-card">
+        <div class="editor-toolbar">
+          <div class="toolbar-dots">
+            <div class="toolbar-dot"></div><div class="toolbar-dot"></div><div class="toolbar-dot"></div>
+          </div>
+          <span class="toolbar-filename">script.js</span>
+          <div class="toolbar-actions">
+            <button class="btn btn-run" onclick="runPlayground()">▶ הרץ</button>
+            <button class="btn btn-outline btn-sm" onclick="clearPG()">נקה</button>
+          </div>
+        </div>
+        <textarea class="code-editor" id="pg-editor" rows="12"
+          placeholder="// כתוב קוד JavaScript כאן...
+let name = &quot;עמי&quot;;
+console.log(&quot;שלום, &quot; + name + &quot;!&quot;);"></textarea>
+      </div>
+      <div class="console-card">
+        <div class="console-header">
+          <span>Console Output</span>
+          <button class="console-clear-btn" onclick="clearPGConsole()">נקה</button>
+        </div>
+        <div class="console-out" id="pg-out"><div class="con-empty">// לחץ ▶ הרץ...</div></div>
+      </div>
+      <p class="editor-tips">💡 Tab = הזחה &nbsp;·&nbsp; Ctrl+Enter = הרץ &nbsp;·&nbsp; ⚠ לולאה אינסופית? לחץ F5</p>
+    </div>
+  </div>
+
+  <!-- ════════════════ LESSONS HUB ════════════════ -->
+  <div id="lessons-hub" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" onclick="showPracticeHub()">◀</button>
+      <span class="top-bar-title">📚 לקחים</span>
+    </div>
+    <div class="lessons-grid" style="padding:0 20px;width:100%" id="lessons-grid"></div>
+  </div>
+
+  <!-- ════════════════ LESSON VIEW ════════════════ -->
+  <div id="lesson-view" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" onclick="openLessonsHub()">◀</button>
+      <span class="top-bar-title" id="lv-title-bar"></span>
+    </div>
+    <div style="padding:0 20px;width:100%;display:flex;flex-direction:column;gap:16px">
+      <div class="step-dots" id="lv-dots"></div>
+      <div class="step-heading" id="lv-step-h"></div>
+      <div class="explain-card" id="lv-explain"></div>
+      <div class="editor-card">
+        <div class="editor-toolbar">
+          <div class="toolbar-dots">
+            <div class="toolbar-dot"></div><div class="toolbar-dot"></div><div class="toolbar-dot"></div>
+          </div>
+          <span class="toolbar-filename">נסה בעצמך</span>
+          <div class="toolbar-actions">
+            <button class="btn btn-run" onclick="runLesson()">▶ הרץ</button>
+            <button class="btn btn-outline btn-sm" onclick="resetLessonCode()">↺</button>
+          </div>
+        </div>
+        <textarea class="code-editor" id="lv-editor" rows="9"></textarea>
+      </div>
+      <div class="console-card">
+        <div class="console-header"><span>Console Output</span></div>
+        <div class="console-out" id="lv-out"><div class="con-empty">// לחץ ▶ הרץ...</div></div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-outline" id="lv-prev-btn" onclick="lessonStep(-1)">◀ הקודם</button>
+        <button class="btn btn-primary" id="lv-next-btn" onclick="lessonStep(1)">הבא ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════ MISSIONS HUB ════════════════ -->
+  <div id="missions-hub" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" onclick="showPracticeHub()">◀</button>
+      <span class="top-bar-title">🎯 משימות קוד</span>
+    </div>
+    <p style="padding:0 20px;color:var(--muted);font-size:.88rem;text-align:center">כתוב קוד שיעמוד בדרישות — המערכת תבדוק אוטומטית ✅</p>
+    <div class="missions-list" style="padding:0 20px;width:100%" id="missions-list"></div>
+  </div>
+
+  <!-- ════════════════ MISSION VIEW ════════════════ -->
+  <div id="mission-view" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" onclick="openMissionsHub()">◀</button>
+      <span class="top-bar-title" id="mv-title-bar"></span>
+    </div>
+    <div style="padding:0 20px;width:100%;display:flex;flex-direction:column;gap:14px">
+      <div class="mission-desc-card" id="mv-desc"></div>
+      <button class="hint-toggle" onclick="toggleHint()">💡 הצג רמז</button>
+      <div class="hint-box" id="mv-hint"><b>רמז:</b><pre id="mv-hint-code"></pre></div>
+      <div class="editor-card">
+        <div class="editor-toolbar">
+          <div class="toolbar-dots">
+            <div class="toolbar-dot"></div><div class="toolbar-dot"></div><div class="toolbar-dot"></div>
+          </div>
+          <span class="toolbar-filename">solution.js</span>
+          <div class="toolbar-actions">
+            <button class="btn btn-run" onclick="runMission()">▶ הרץ</button>
+            <button class="btn btn-submit" onclick="submitMission()">✔ שלח</button>
+          </div>
+        </div>
+        <textarea class="code-editor" id="mv-editor" rows="12"></textarea>
+      </div>
+      <div class="console-card">
+        <div class="console-header"><span>Console Output</span></div>
+        <div class="console-out" id="mv-out"><div class="con-empty">// לחץ ▶ הרץ...</div></div>
+      </div>
+      <div class="feedback-card" id="mv-feedback">
+        <div class="fb-title" id="fb-title"></div>
+        <div class="fb-body" id="fb-body"></div>
+      </div>
+    </div>
+  </div>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════ -->
+<script>
+// ────────────────────────────────────────────────
+//  QUIZ DATA
+// ────────────────────────────────────────────────
+const WORLDS = [
+  {
+    id:0, name:'משתנים', icon:'📦', color:'c0',
+    questions:[
+      {q:'מה זה משתנה בתכנות?',options:['קופסה לשמירת מידע','שגיאה בקוד','לולאה שחוזרת','כלל תחבירי'],correct:0,exp:'משתנה הוא כמו קופסה — אפשר לשים בה מידע, לקרוא לה בשם ולשנות את תוכנה בכל עת.'},
+      {q:'מה יודפס בקונסול?',code:'let name = "אלי";\nconsole.log(name);',options:['"name"','"אלי"','undefined','אלי'],correct:3,exp:'console.log(name) מדפיס את הערך שבמשתנה name — שהוא אלי — ללא מרכאות.'},
+      {q:'מה חסר בשורה?',code:'___ age = 25;',codeOpts:true,options:['let / const / var','function','return','if'],correct:0,exp:'כדי להגדיר משתנה ב-JavaScript צריך let, const, או var לפני שם המשתנה.'},
+      {q:'מה הערך של c?',code:'let a = 10;\nlet b = 3;\nlet c = a - b;',options:['13','30','7','3'],correct:2,exp:'10 − 3 = 7. המשתנה c מקבל את תוצאת החיסור.'},
+      {q:'איזה שם משתנה תקין?',codeOpts:true,options:['2score','my score','myScore','my-score'],correct:2,exp:'שם משתנה לא יכול להתחיל במספר, להכיל רווחים או מקפים. camelCase כמו myScore הוא הסגנון הנכון.'}
+    ]
+  },
+  {
+    id:1, name:'תנאים', icon:'🔀', color:'c1',
+    questions:[
+      {q:'מה יודפס?',code:'if (5 > 3) {\n  console.log("כן!");\n}',options:['כן!','לא','שגיאה','כלום'],correct:0,exp:'5 > 3 הוא true, ולכן הקוד בתוך ה-if ירוץ ויודפס "כן!".'},
+      {q:'מה יודפס?',code:'let x = 2;\nif (x > 5) {\n  console.log("גדול");\n} else {\n  console.log("קטן");\n}',options:['גדול','קטן','גדול וקטן','שגיאה'],correct:1,exp:'2 > 5 הוא false, ולכן הקוד עובר ל-else ומדפיס "קטן".'},
+      {q:'מה האופרטור הנכון לשיוויון?',codeOpts:true,options:['=','==','===',':='],correct:2,exp:'=== בודק שיוויון מדויק (ערך וגם סוג). = הוא השמה ולא השוואה.'},
+      {q:'מה יודפס?',code:'let score = 90;\nif (score >= 90) {\n  console.log("A");\n} else if (score >= 80) {\n  console.log("B");\n} else {\n  console.log("C");\n}',options:['A','B','C','A וגם B'],correct:0,exp:'score הוא 90, התנאי הראשון מתקיים ומדפיס A. שאר ה-else if לא נבדקים.'},
+      {q:'מה הבאג?',code:'let age = 20;\nif age > 18 {\n  console.log("מבוגר");\n}',options:['חסרות סוגריים עגולים סביב התנאי','צריך while','אין return','אין באג'],correct:0,exp:'חובה לעטוף את תנאי ה-if בסוגריים: if (age > 18) { ... }'}
+    ]
+  },
+  {
+    id:2, name:'לולאות', icon:'🔄', color:'c2',
+    questions:[
+      {q:'כמה פעמים תירוץ הלולאה?',code:'for (let i = 0; i < 4; i++) {\n  console.log(i);\n}',options:['3','4','5','אינסוף'],correct:1,exp:'הלולאה מתחילה ב-i=0 ורצה כל עוד i < 4, כלומר הערכים 0,1,2,3 — ארבע פעמים.'},
+      {q:'מה יודפס?',code:'for (let i = 1; i <= 3; i++) {\n  console.log(i);\n}',codeOpts:true,options:['0  1  2','1  2  3','1  2  3  4','0  1  2  3'],correct:1,exp:'הלולאה מתחילה ב-1 ורצה כל עוד i <= 3, מדפיסה 1, 2, 3.'},
+      {q:'מה תפקיד i++ בלולאת for?',options:['מאתחל את i','בודק אם להמשיך','מגדיל את i בכל סיבוב','עוצר את הלולאה'],correct:2,exp:'i++ שקול ל-i = i + 1. הביטוי מופעל בסוף כל סיבוב ומקדם את המונה.'},
+      {q:'מה הבאג?',code:'let i = 0;\nwhile (i < 5) {\n  console.log(i);\n  // חסר משהו!\n}',options:['הסוגריים שגויים','חסר i++ — לולאה אינסופית!','צריך for','i צריך להתחיל מ-1'],correct:1,exp:'ללא i++ המונה לא מתקדם, i תמיד 0, התנאי תמיד true — לולאה אינסופית!'},
+      {q:'מה יודפס?',code:'let sum = 0;\nfor (let i = 1; i <= 4; i++) {\n  sum += i;\n}\nconsole.log(sum);',options:['4','8','10','12'],correct:2,exp:'sum += i מוסיף לסכום בכל סיבוב: 1+2+3+4 = 10.'}
+    ]
+  },
+  {
+    id:3, name:'פונקציות', icon:'⚙️', color:'c3',
+    questions:[
+      {q:'מה זו פונקציה?',options:['קטע קוד עם שם לשימוש חוזר','סוג משתנה','שגיאה','שם קובץ'],correct:0,exp:'פונקציה היא בלוק קוד עם שם — אפשר לקרוא לה כמה פעמים שרוצים.'},
+      {q:'מה יודפס?',code:'function greet(name) {\n  return "שלום " + name;\n}\nconsole.log(greet("עמי"));',options:['"שלום name"','שלום','שלום עמי','undefined'],correct:2,exp:'greet מקבלת "עמי", מחזירה "שלום עמי", ו-console.log מדפיס את הערך שהוחזר.'},
+      {q:'מה תפקיד return?',options:['עוצרת ומחזירה ערך','מדפיסה לקונסול','יוצרת לולאה','מגדירה משתנה'],correct:0,exp:'return עוצרת את הפונקציה ומחזירה ערך. אפשר לשמור: let r = greet("עמי");'},
+      {q:'מה יודפס?',code:'function double(n) {\n  return n * 2;\n}\nlet x = double(5);\nconsole.log(x);',options:['5','n * 2','10','25'],correct:2,exp:'double(5) מחזירה 5×2=10, אז x=10, ו-console.log(x) מדפיס 10.'},
+      {q:'מה הבאג?',code:'function sayHi() {\n  console.log("היי!");\n}\nsayhi();',options:['חסרות סוגריים','JavaScript תלוי רישיות — sayhi ≠ sayHi','הפונקציה ריקה','אין בעיה'],correct:1,exp:'JavaScript תלוי רישיות. sayHi ו-sayhi הם שמות שונים — הקפד על עקביות.'}
+    ]
+  }
+];
+
+// ────────────────────────────────────────────────
+//  LESSONS DATA
+// ────────────────────────────────────────────────
+const LESSONS = [
+  { id:0, title:'משתנים', icon:'📦', steps:[
+    { title:'מה זה משתנה?', explain:'משתנה הוא כמו <b>קופסה עם שם</b> — אפשר לשים בה מידע ולשלוף אותו בכל עת.\n\nב-JavaScript משתמשים ב-<code>let</code> ליצירת משתנה.', code:'let name = "עמי";\nlet age = 17;\n\nconsole.log(name);\nconsole.log(age);' },
+    { title:'שינוי ערך', explain:'אפשר לשנות את ערך המשתנה בכל עת.\n\nשים לב: <code>let</code> כותבים רק פעם אחת בהגדרה.', code:'let score = 0;\nconsole.log("התחלה:", score);\n\nscore = 10;\nconsole.log("אחרי עדכון:", score);\n\nscore = score + 5;\nconsole.log("ועוד 5:", score);' },
+    { title:'סוגי ערכים', explain:'• <b>String</b> — טקסט בין מרכאות\n• <b>Number</b> — מספר\n• <b>Boolean</b> — <code>true</code> או <code>false</code>', code:'let text = "שלום!";     // String\nlet age = 17;          // Number\nlet isStudent = true;  // Boolean\n\nconsole.log(text);\nconsole.log(age);\nconsole.log(isStudent);\nconsole.log(typeof text);' },
+    { title:'const — קבוע', explain:'<code>const</code> כמו <code>let</code>, אך הערך <b>לא ניתן לשינוי</b> לאחר ההגדרה.\n\nמשתמשים בו לערכים שלא אמורים להשתנות.', code:'const PI = 3.14159;\nconst SITE = "קוד מאסטר";\n\nconsole.log("π =", PI);\nconsole.log("שם:", SITE);\n\n// הסר את // כדי לראות שגיאה:\n// PI = 5;' }
+  ]},
+  { id:1, title:'תנאים', icon:'🔀', steps:[
+    { title:'if — אם', explain:'<b>if</b> בודק תנאי. אם <b>true</b> — הקוד בתוך הסוגריים המסולסלות ירוץ.', code:'let age = 18;\n\nif (age >= 18) {\n  console.log("מבוגר!");\n}\n\nconsole.log("שורה זו תמיד מודפסת");' },
+    { title:'else — אחרת', explain:'<code>else</code> — קוד שירוץ רק כשהתנאי <b>false</b>.\n\nרק אחד מהבלוקים ירוץ.', code:'let hour = 20;\n\nif (hour < 12) {\n  console.log("בוקר טוב!");\n} else {\n  console.log("שלום!");\n}\n// שנה את hour ל-8' },
+    { title:'else if', explain:'כשיש יותר מאפשרות אחת משתמשים ב-<code>else if</code>.', code:'let score = 85;\n\nif (score >= 90) {\n  console.log("A - מצוין!");\n} else if (score >= 80) {\n  console.log("B - טוב מאוד");\n} else {\n  console.log("C - טוב");\n}' },
+    { title:'אופרטורי השוואה', explain:'• <code>===</code> שווה · <code>!==</code> לא שווה\n• <code>&gt;</code> גדול · <code>&lt;</code> קטן\n• <code>&gt;=</code> גדול-שווה · <code>&lt;=</code> קטן-שווה', code:'let x = 5;\nconsole.log(x === 5);   // true\nconsole.log(x !== 3);   // true\nconsole.log(x > 10);    // false\nconsole.log(x <= 5);    // true\nconsole.log(x === "5"); // false (סוג שונה)' }
+  ]},
+  { id:2, title:'לולאות', icon:'🔄', steps:[
+    { title:'לולאת for', explain:'לולאת <code>for</code> חוזרת על קוד מספר מסוים של פעמים.\n\n3 חלקים: <code>let i=0</code> (התחלה) · <code>i&lt;5</code> (תנאי) · <code>i++</code> (קידום)', code:'for (let i = 0; i < 5; i++) {\n  console.log("סיבוב מספר " + i);\n}\n\nconsole.log("סיימנו!");' },
+    { title:'שליטה על הלולאה', explain:'אפשר לקבוע נקודת התחלה, סיום, וגודל הקפיצה בחופשיות.', code:'// ספירה קדימה:\nfor (let i = 1; i <= 5; i++) {\n  console.log(i);\n}\n\nconsole.log("---");\n\n// ספירה אחורה:\nfor (let i = 5; i >= 1; i--) {\n  console.log(i);\n}' },
+    { title:'לולאת while', explain:'<code>while</code> ממשיכה לרוץ כל עוד התנאי נכון.\n\n⚠ <b>חשוב:</b> ודא שהתנאי ייפסק — אחרת לולאה אינסופית!', code:'let count = 1;\n\nwhile (count <= 5) {\n  console.log("count =", count);\n  count++; // בלי זה — לולאה אינסופית!\n}' },
+    { title:'חישובים בלולאה', explain:'לולאות מצוינות לחישובים חוזרים — סכומים, חיפוש, עיבוד.', code:'let sum = 0;\n\nfor (let i = 1; i <= 100; i++) {\n  sum += i;\n}\n\nconsole.log("סכום 1 עד 100:", sum);' }
+  ]},
+  { id:3, title:'פונקציות', icon:'⚙️', steps:[
+    { title:'מה זו פונקציה?', explain:'פונקציה היא <b>בלוק קוד עם שם</b>.\nמגדירים פעם אחת — ומשתמשים כמה פעמים שרוצים.', code:'function sayHello() {\n  console.log("שלום!");\n  console.log("ברוכים הבאים!");\n}\n\nsayHello();\nsayHello();\nsayHello();' },
+    { title:'פרמטרים', explain:'פונקציה יכולה לקבל <b>פרמטרים</b> — ערכים שמועברים אליה.\nכך ניתן לשנות את התנהגותה בכל קריאה.', code:'function greet(name, age) {\n  console.log("שלום, " + name + "!");\n  console.log("גיל: " + age);\n}\n\ngreet("עמי", 17);\ngreet("דנה", 15);' },
+    { title:'return — החזרת ערך', explain:'<code>return</code> מחזיר ערך מהפונקציה.\n\nאחרי <code>return</code> הפונקציה עוצרת לחלוטין.', code:'function add(a, b) {\n  return a + b;\n}\n\nlet result = add(3, 4);\nconsole.log("3 + 4 =", result);\nconsole.log("10 + 20 =", add(10, 20));' },
+    { title:'פונקציה שלמה', explain:'הנה פונקציה שמשתמשת בכל מה שלמדנו — פרמטרים, תנאי, ו-return.', code:'function getGrade(score) {\n  if (score >= 90) return "A - מצוין";\n  if (score >= 80) return "B - טוב מאוד";\n  if (score >= 70) return "C - טוב";\n  return "D - צריך לשפר";\n}\n\nconsole.log(getGrade(95));\nconsole.log(getGrade(83));\nconsole.log(getGrade(55));' }
+  ]}
+];
+
+// ────────────────────────────────────────────────
+//  MISSIONS DATA
+// ────────────────────────────────────────────────
+const MISSIONS = [
+  { id:0, title:'שלום עולם!', icon:'👋', diff:'קל', dc:'d-easy', desc:'המשימה הראשונה של כל מתכנת — הדפס את הטקסט <b>שלום עולם!</b> לקונסול.', hint:'console.log("שלום עולם!");', starter:'// הדפס: שלום עולם!\n', check:o=>o[0]==='שלום עולם!', expect:'שלום עולם!' },
+  { id:1, title:'משתנה מספר', icon:'📦', diff:'קל', dc:'d-easy', desc:'צור משתנה בשם <b>x</b> עם הערך <b>42</b> ולאחר מכן הדפס אותו.', hint:'let x = 42;\nconsole.log(x);', starter:'// צור x = 42 והדפס\n', check:o=>o[0]==='42', expect:'42' },
+  { id:2, title:'חיבור מספרים', icon:'➕', diff:'קל', dc:'d-easy', desc:'צור <b>a = 7</b> ו-<b>b = 3</b>. הדפס את <b>הסכום</b> שלהם.', hint:'let a = 7;\nlet b = 3;\nconsole.log(a + b);', starter:'// צור a ו-b והדפס סכום\n', check:o=>o[0]==='10', expect:'10' },
+  { id:3, title:'תנאי גדול/קטן', icon:'🔀', diff:'בינוני', dc:'d-medium', desc:'צור <b>x = 15</b>. אם x גדול מ-10 הדפס <b>"גדול"</b>. אחרת הדפס <b>"קטן"</b>.', hint:'if (x > 10) {\n  console.log("גדול");\n} else {\n  console.log("קטן");\n}', starter:'let x = 15;\n// כתוב תנאי\n', check:o=>o[0]==='גדול', expect:'גדול' },
+  { id:4, title:'לולאה 1 עד 5', icon:'🔄', diff:'בינוני', dc:'d-medium', desc:'כתוב לולאת <b>for</b> שמדפיסה את המספרים מ-<b>1 עד 5</b>, כל אחד בשורה נפרדת.', hint:'for (let i = 1; i <= 5; i++) {\n  console.log(i);\n}', starter:'// כתוב לולאת for\n', check:o=>o.join(',') ==='1,2,3,4,5', expect:'1\n2\n3\n4\n5' },
+  { id:5, title:'פונקציית ברכה', icon:'⚙️', diff:'בינוני', dc:'d-medium', desc:'כתוב פונקציה <b>greet(name)</b> שמדפיסה <b>"שלום [שם]"</b>. קרא לה עם <b>"עמי"</b>.', hint:'function greet(name) {\n  console.log("שלום " + name);\n}\ngreet("עמי");', starter:'// הגדר greet וקרא לה\n', check:o=>o[0]==='שלום עמי', expect:'שלום עמי' },
+  { id:6, title:'סכום 1 עד 10', icon:'🧮', diff:'מאתגר', dc:'d-hard', desc:'השתמש בלולאה לחישוב <b>סכום המספרים מ-1 עד 10</b>. הדפס את התוצאה.', hint:'let sum = 0;\nfor (let i = 1; i <= 10; i++) {\n  sum += i;\n}\nconsole.log(sum);', starter:'// חשב סכום 1 עד 10\n', check:o=>o[0]==='55', expect:'55' },
+  { id:7, title:'פונקציית מקסימום', icon:'🏆', diff:'מאתגר', dc:'d-hard', desc:'כתוב פונקציה <b>max(a, b)</b> שמחזירה את הגדול. הדפס: <code>max(5, 8)</code> → <b>8</b>.', hint:'function max(a, b) {\n  if (a > b) return a;\n  return b;\n}', starter:'function max(a, b) {\n  // כתוב כאן\n}\nconsole.log(max(5, 8)); // צריך 8\n', check:o=>o[0]==='8', expect:'8' }
+];
+
+// ────────────────────────────────────────────────
+//  STATE
+// ────────────────────────────────────────────────
+const Q = {
+  currentWorld: null, currentQ: 0,
+  hearts: 5, wrongAnswers: 0,
+  selectedAnswer: null,
+  xp: 0,
+  worldProgress: [false,false,false,false],
+  worldStars:    [0,0,0,0]
+};
+const P = {
+  currentLesson: null, currentStep: 0,
+  lessonsDone:  [],
+  missionsDone: []
+};
+let _curMission = null;
+
+function load() {
+  try {
+    const q=localStorage.getItem('cm3_quiz');
+    if(q){const d=JSON.parse(q);Q.worldProgress=d.wp||Q.worldProgress;Q.worldStars=d.ws||Q.worldStars;Q.xp=d.xp||0;}
+    const p=localStorage.getItem('cm3_prac');
+    if(p){const d=JSON.parse(p);P.lessonsDone=d.ld||[];P.missionsDone=d.md||[];}
+  } catch(e){}
+}
+function saveQ(){try{localStorage.setItem('cm3_quiz',JSON.stringify({wp:Q.worldProgress,ws:Q.worldStars,xp:Q.xp}));}catch(e){}}
+function saveP(){try{localStorage.setItem('cm3_prac',JSON.stringify({ld:P.lessonsDone,md:P.missionsDone}));}catch(e){}}
+
+// ────────────────────────────────────────────────
+//  SCREEN SYSTEM
+// ────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  // Hide result panel when leaving question
+  if (id !== 'question') hideResultPanel();
+}
+
+// ────────────────────────────────────────────────
+//  WORLDS / SKILL PATH
+// ────────────────────────────────────────────────
+function showWorlds() {
+  renderSkillPath();
+  showScreen('worlds');
+}
+
+function renderSkillPath() {
+  const path = document.getElementById('skill-path');
+  path.innerHTML = '';
+  WORLDS.forEach((w,i) => {
+    if (i>0) { const line=document.createElement('div'); line.className='path-line'; path.appendChild(line); }
+    const unlocked = i===0||Q.worldProgress[i-1];
+    const done = Q.worldProgress[i];
+    const wrap = document.createElement('div'); wrap.className='skill-node-wrap';
+    const node = document.createElement('div');
+    node.className = `skill-node ${w.color}${unlocked?'':' locked'}`;
+    node.innerHTML = unlocked ? w.icon : '🔒';
+    if (done) node.innerHTML += '<div class="node-crown">👑</div>';
+    if (unlocked) node.addEventListener('click',()=>startWorld(i));
+    const lbl = document.createElement('div'); lbl.className='node-label'; lbl.textContent=w.name;
+    const stars = document.createElement('div'); stars.className='node-stars';
+    stars.textContent = Q.worldStars[i]>0 ? '⭐'.repeat(Q.worldStars[i]) : '';
+    wrap.appendChild(node); wrap.appendChild(lbl); wrap.appendChild(stars);
+    path.appendChild(wrap);
+  });
+}
+
+// ────────────────────────────────────────────────
+//  QUIZ GAME
+// ────────────────────────────────────────────────
+function startWorld(id) {
+  Object.assign(Q,{currentWorld:id,currentQ:0,hearts:5,wrongAnswers:0,selectedAnswer:null});
+  showScreen('question');
+  renderQuestion();
+}
+function retryWorld() { startWorld(Q.currentWorld); }
+function exitToWorlds() { if(confirm('לצאת? ההתקדמות בשלב זה תאבד.')) { hideResultPanel(); showWorlds(); } }
+
+function renderQuestion() {
+  const w=WORLDS[Q.currentWorld], q=w.questions[Q.currentQ], tot=w.questions.length;
+  Q.selectedAnswer = null;
+
+  // Progress
+  document.getElementById('q-progress').style.width=`${(Q.currentQ/tot)*100}%`;
+
+  // Hearts
+  document.getElementById('q-hearts').innerHTML = '♥'.repeat(Q.hearts)+'♡'.repeat(5-Q.hearts);
+
+  // XP
+  document.getElementById('q-xp-val').textContent = Q.xp;
+
+  // Check button reset
+  const cb=document.getElementById('check-btn');
+  cb.className='check-btn'; cb.textContent='בדוק';
+
+  // Body
+  const body=document.getElementById('q-body');
+  body.innerHTML='';
+
+  // Badge
+  body.innerHTML+=`<div class="q-world-badge">${w.icon} ${w.name} · שאלה ${Q.currentQ+1}/${tot}</div>`;
+
+  // Prompt
+  body.innerHTML+=`<div class="q-prompt">${q.q}</div>`;
+
+  // Code
+  if(q.code) body.innerHTML+=`<div class="code-block">${hlCode(q.code)}</div>`;
+
+  // Options
+  const list=document.createElement('div'); list.className='options-list';
+  const keys=['א','ב','ג','ד'];
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button'); btn.className='opt';
+    btn.innerHTML=`<span class="opt-key">${keys[i]}</span><span class="${q.codeOpts?'opt-code':''}">${opt}</span>`;
+    btn.addEventListener('click',()=>selectOption(i));
+    list.appendChild(btn);
+  });
+  body.appendChild(list);
+}
+
+function selectOption(idx) {
+  Q.selectedAnswer=idx;
+  document.querySelectorAll('.opt').forEach((b,i)=>b.classList.toggle('selected',i===idx));
+  const cb=document.getElementById('check-btn');
+  cb.className='check-btn ready'; cb.textContent='בדוק ✓';
+}
+
+function checkAnswer() {
+  if(Q.selectedAnswer===null) return;
+  const w=WORLDS[Q.currentWorld], q=w.questions[Q.currentQ];
+  const ok=Q.selectedAnswer===q.correct;
+
+  // Mark options
+  document.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    b.classList.remove('selected');
+    if(i===q.correct) b.classList.add('correct');
+    if(i===Q.selectedAnswer&&!ok) b.classList.add('wrong');
+  });
+
+  if(ok) {
+    Q.xp+=10; document.getElementById('q-xp-val').textContent=Q.xp;
+    showXpPop('+10 XP ⚡');
+    playTone(true); spawnConfetti(5);
+  } else {
+    Q.hearts--; Q.wrongAnswers++;
+    document.getElementById('q-hearts').innerHTML='♥'.repeat(Q.hearts)+'♡'.repeat(5-Q.hearts);
+    playTone(false);
+    document.getElementById('q-body').classList.add('shake');
+    setTimeout(()=>document.getElementById('q-body').classList.remove('shake'),450);
+  }
+
+  showResultPanel(ok, q);
+
+  if(Q.hearts<=0) {
+    setTimeout(()=>{ hideResultPanel(); document.getElementById('go-text').textContent=`השגת ${w.questions.length-Q.wrongAnswers} מתוך ${w.questions.length} תשובות נכונות.`; showScreen('game-over'); },2000);
+  }
+}
+
+function showResultPanel(ok, q) {
+  const panel=document.getElementById('result-panel');
+  const inner=document.getElementById('rp-inner');
+  panel.className='result-panel '+(ok?'correct':'wrong');
+
+  const wrongAns = q.options[Q.selectedAnswer];
+  const correctAns = q.options[q.correct];
+
+  inner.innerHTML=`
+    <div class="rp-header">${ok?'✅ נכון מצוין!':'❌ לא נכון'}</div>
+    ${!ok?`<div class="rp-correct-ans">התשובה הנכונה: <strong>${correctAns}</strong></div>`:''}
+    <div class="rp-text">${q.exp}</div>
+    <button class="rp-continue" onclick="continueAfterAnswer()">המשך</button>
+  `;
+
+  // Trigger animation
+  requestAnimationFrame(()=>{ panel.style.display='flex'; requestAnimationFrame(()=>panel.classList.add('show')); });
+}
+
+function hideResultPanel() {
+  const p=document.getElementById('result-panel');
+  p.classList.remove('show');
+  setTimeout(()=>{ p.style.display=''; p.className='result-panel'; },350);
+}
+
+function continueAfterAnswer() {
+  hideResultPanel();
+  if(Q.hearts<=0) return;
+  const w=WORLDS[Q.currentWorld];
+  Q.currentQ++;
+
+  if(Q.currentQ>=w.questions.length) {
+    // World complete
+    const correct=w.questions.length-Q.wrongAnswers;
+    const ratio=correct/w.questions.length;
+    const stars=ratio===1?3:ratio>=.6?2:1;
+    const bonusXP=stars*20;
+    Q.xp+=bonusXP;
+    Q.worldProgress[Q.currentWorld]=true;
+    Q.worldStars[Q.currentWorld]=Math.max(Q.worldStars[Q.currentWorld],stars);
+    saveQ();
+
+    document.getElementById('wc-title').textContent=`סיימת את ${w.name}! ${w.icon}`;
+
+    const starsEl=document.getElementById('wc-stars');
+    starsEl.innerHTML='';
+    for(let i=0;i<3;i++){
+      const s=document.createElement('div'); s.className='star-big';
+      s.textContent=i<stars?'⭐':'☆'; starsEl.appendChild(s);
+    }
+
+    document.getElementById('wc-xp').innerHTML=`⚡ +${bonusXP} XP בונוס!`;
+    document.getElementById('wc-stats').innerHTML=`
+      <div class="stat-box"><div class="stat-val">${correct}/${w.questions.length}</div><div class="stat-lbl">נכונות</div></div>
+      <div class="stat-box"><div class="stat-val">${Q.xp}</div><div class="stat-lbl">XP סה"כ ⚡</div></div>
+    `;
+
+    showScreen('world-complete'); spawnConfetti(50);
+  } else {
+    renderQuestion(); window.scrollTo(0,0);
+  }
+}
+
+function onWorldCompleteContinue() {
+  if(Q.worldProgress.every(Boolean)){
+    document.getElementById('v-xp').textContent=Q.xp;
+    showScreen('victory'); spawnConfetti(80);
+  } else showWorlds();
+}
+function resetQuiz() { Q.worldProgress=[false,false,false,false];Q.worldStars=[0,0,0,0];Q.xp=0;saveQ();showWorlds(); }
+
+// ────────────────────────────────────────────────
+//  CODE RUNNER
+// ────────────────────────────────────────────────
+function sv(v){if(v===null)return'null';if(v===undefined)return'undefined';if(typeof v==='object'){try{return JSON.stringify(v,null,2);}catch(e){return'[Object]';}}return String(v);}
+
+function runCode(code){
+  const logs=[]; const fc={
+    log:(...a)=>logs.push({t:'log',s:a.map(sv).join(' ')}),
+    error:(...a)=>logs.push({t:'error',s:a.map(sv).join(' ')}),
+    warn:(...a)=>logs.push({t:'warn',s:a.map(sv).join(' ')}),
+    info:(...a)=>logs.push({t:'log',s:a.map(sv).join(' ')}),
+  };
+  let err=null;
+  try{new Function('console',code)(fc);}catch(e){err=e.message;}
+  return{logs,err,output:logs.map(l=>l.s)};
+}
+
+function renderOut(el,r){
+  el.innerHTML='';
+  if(!r.logs.length&&!r.err){el.innerHTML='<div class="con-empty">// אין פלט</div>';return;}
+  r.logs.forEach(l=>{const d=document.createElement('div');d.className='con-line con-'+l.t;d.textContent=l.s;el.appendChild(d);});
+  if(r.err){const d=document.createElement('div');d.className='con-line con-error';d.textContent='⚠ שגיאה: '+r.err;el.appendChild(d);}
+}
+
+function attachKeys(ed,fn){
+  ed.onkeydown=e=>{
+    if(e.key==='Tab'){e.preventDefault();const s=ed.selectionStart,n=ed.selectionEnd;ed.value=ed.value.substring(0,s)+'  '+ed.value.substring(n);ed.selectionStart=ed.selectionEnd=s+2;}
+    if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();fn();}
+  };
+}
+
+// ────────────────────────────────────────────────
+//  PLAYGROUND
+// ────────────────────────────────────────────────
+const SNIPS=[
+  {l:'console.log',c:'console.log()'},
+  {l:'let',c:'let  = '},
+  {l:'if',c:'if () {\n  \n}'},
+  {l:'for',c:'for (let i = 0; i < 5; i++) {\n  \n}'},
+  {l:'function',c:'function name() {\n  \n}'},
+  {l:'return',c:'return '},
+];
+
+function openPlayground(){
+  const bar=document.getElementById('pg-snippets');
+  bar.innerHTML='';
+  SNIPS.forEach(sn=>{const b=document.createElement('button');b.className='snip';b.textContent=sn.l;b.onclick=()=>insertSnip(sn.c);bar.appendChild(b);});
+  attachKeys(document.getElementById('pg-editor'),runPlayground);
+  showScreen('playground');
+}
+function insertSnip(c){const ed=document.getElementById('pg-editor');const s=ed.selectionStart,e=ed.selectionEnd;ed.value=ed.value.substring(0,s)+c+ed.value.substring(e);ed.selectionStart=ed.selectionEnd=s+c.length;ed.focus();}
+function runPlayground(){renderOut(document.getElementById('pg-out'),runCode(document.getElementById('pg-editor').value));}
+function clearPG(){document.getElementById('pg-editor').value='';document.getElementById('pg-out').innerHTML='<div class="con-empty">// נוקה</div>';}
+function clearPGConsole(){document.getElementById('pg-out').innerHTML='<div class="con-empty">// נוקה</div>';}
+
+// ────────────────────────────────────────────────
+//  LESSONS
+// ────────────────────────────────────────────────
+function openLessonsHub(){renderLessonsGrid();showScreen('lessons-hub');}
+
+function renderLessonsGrid(){
+  const g=document.getElementById('lessons-grid'); g.innerHTML='';
+  LESSONS.forEach(l=>{
+    const done=P.lessonsDone.includes(l.id);
+    const c=document.createElement('div');c.className='lesson-card'+(done?' done':'');
+    c.innerHTML=`<div class="lc-icon">${l.icon}</div><div class="lc-name">${l.title}</div><div class="lc-steps">${l.steps.length} שלבים</div>${done?'<div class="lc-crown">👑 הושלם</div>':''}`;
+    c.onclick=()=>openLesson(l.id);
+    g.appendChild(c);
+  });
+  document.getElementById('lessons-badge').textContent=`${P.lessonsDone.length}/${LESSONS.length}`;
+}
+
+function openLesson(id){P.currentLesson=id;P.currentStep=0;renderStep();showScreen('lesson-view');}
+
+function renderStep(){
+  const ls=LESSONS[P.currentLesson],st=ls.steps[P.currentStep],tot=ls.steps.length,cur=P.currentStep;
+  document.getElementById('lv-title-bar').textContent=`${ls.icon} ${ls.title}`;
+
+  const dots=document.getElementById('lv-dots');dots.innerHTML='';
+  ls.steps.forEach((_,i)=>{const d=document.createElement('div');d.className='sdot'+(i===cur?' cur':i<cur?' past':'');dots.appendChild(d);});
+
+  document.getElementById('lv-step-h').textContent=st.title;
+  document.getElementById('lv-explain').innerHTML=st.explain.replace(/\n/g,'<br>');
+  document.getElementById('lv-editor').value=st.code;
+  document.getElementById('lv-out').innerHTML='<div class="con-empty">// לחץ ▶ הרץ...</div>';
+
+  document.getElementById('lv-prev-btn').disabled=cur===0;
+  document.getElementById('lv-prev-btn').style.opacity=cur===0?.4:1;
+  document.getElementById('lv-next-btn').textContent=cur===tot-1?'✓ סיים לקח':'הבא ▶';
+
+  attachKeys(document.getElementById('lv-editor'),runLesson);
+}
+
+function runLesson(){renderOut(document.getElementById('lv-out'),runCode(document.getElementById('lv-editor').value));}
+function resetLessonCode(){const st=LESSONS[P.currentLesson].steps[P.currentStep];document.getElementById('lv-editor').value=st.code;document.getElementById('lv-out').innerHTML='<div class="con-empty">// לחץ ▶ הרץ...</div>';}
+
+function lessonStep(dir){
+  const ls=LESSONS[P.currentLesson],nxt=P.currentStep+dir;
+  if(nxt<0)return;
+  if(nxt>=ls.steps.length){
+    if(!P.lessonsDone.includes(ls.id)){P.lessonsDone.push(ls.id);saveP();}
+    spawnConfetti(25);
+    openLessonsHub();return;
+  }
+  P.currentStep=nxt;renderStep();window.scrollTo(0,0);
+}
+
+// ────────────────────────────────────────────────
+//  MISSIONS
+// ────────────────────────────────────────────────
+function openMissionsHub(){renderMissionsList();showScreen('missions-hub');}
+
+function renderMissionsList(){
+  const list=document.getElementById('missions-list');list.innerHTML='';
+  MISSIONS.forEach(m=>{
+    const done=P.missionsDone.includes(m.id);
+    const c=document.createElement('div');c.className='mission-card'+(done?' done':'');
+    c.innerHTML=`<div class="mc-icon">${m.icon}</div><div class="mc-info"><div class="mc-title">${m.title}</div><div class="mc-diff"><span class="${m.dc}">●</span> ${m.diff}</div></div><div class="mc-check">${done?'✅':'▶'}</div>`;
+    c.onclick=()=>openMission(m.id);list.appendChild(c);
+  });
+  document.getElementById('missions-badge').textContent=`${P.missionsDone.length}/${MISSIONS.length}`;
+}
+
+function openMission(id){
+  _curMission=MISSIONS.find(m=>m.id===id);
+  document.getElementById('mv-title-bar').textContent=`${_curMission.icon} ${_curMission.title}`;
+  document.getElementById('mv-desc').innerHTML=_curMission.desc.replace(/\n/g,'<br>');
+  document.getElementById('mv-hint-code').textContent=_curMission.hint;
+  document.getElementById('mv-hint').classList.remove('show');
+  document.getElementById('mv-editor').value=_curMission.starter;
+  document.getElementById('mv-out').innerHTML='<div class="con-empty">// לחץ ▶ הרץ...</div>';
+  const fb=document.getElementById('mv-feedback');fb.className='feedback-card';fb.style.display='none';
+  attachKeys(document.getElementById('mv-editor'),runMission);
+  showScreen('mission-view');
+}
+
+function toggleHint(){document.getElementById('mv-hint').classList.toggle('show');}
+function runMission(){renderOut(document.getElementById('mv-out'),runCode(document.getElementById('mv-editor').value));}
+
+function submitMission(){
+  if(!_curMission)return;
+  const r=runCode(document.getElementById('mv-editor').value);
+  renderOut(document.getElementById('mv-out'),r);
+  const fb=document.getElementById('mv-feedback');
+  const tEl=document.getElementById('fb-title'),bEl=document.getElementById('fb-body');
+  if(_curMission.check(r.output)){
+    fb.className='feedback-card ok show';fb.style.display='block';
+    tEl.textContent='✅ כל הכבוד! הצלחת!';bEl.textContent='המשימה הושלמה בהצלחה 🎉';
+    if(!P.missionsDone.includes(_curMission.id)){P.missionsDone.push(_curMission.id);saveP();}
+    document.getElementById('missions-badge').textContent=`${P.missionsDone.length}/${MISSIONS.length}`;
+    playTone(true);spawnConfetti(35);
+  }else{
+    fb.className='feedback-card fail show';fb.style.display='block';
+    tEl.textContent='❌ לא בדיוק...';
+    const got=r.output.length?`"${r.output[0]}"`:r.err?'שגיאה: '+r.err:'(אין פלט)';
+    bEl.innerHTML=`ציפינו לקבל: <code>${_curMission.expect}</code><br>קיבלנו: ${got}`;
+    playTone(false);
+  }
+  setTimeout(()=>fb.scrollIntoView({behavior:'smooth',block:'nearest'}),150);
+}
+
+// ────────────────────────────────────────────────
+//  PRACTICE HUB
+// ────────────────────────────────────────────────
+function showPracticeHub(){
+  document.getElementById('lessons-badge').textContent=`${P.lessonsDone.length}/${LESSONS.length}`;
+  document.getElementById('missions-badge').textContent=`${P.missionsDone.length}/${MISSIONS.length}`;
+  showScreen('practice-hub');
+}
+
+// ────────────────────────────────────────────────
+//  SYNTAX HIGHLIGHT
+// ────────────────────────────────────────────────
+function hlCode(raw){
+  let s=raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s=s.replace(/(\/\/[^\n]*)/g,'<span class="cmt">$1</span>');
+  s=s.replace(/\b(let|const|var|function|return|if|else|while|for|new|true|false|null|undefined)\b/g,'<span class="kw">$1</span>');
+  s=s.replace(/(["'])((?:(?!\1)[^\\]|\\.)*)\1/g,'<span class="str">$1$2$1</span>');
+  s=s.replace(/\b(\d+)\b/g,'<span class="num">$1</span>');
+  s=s.replace(/\b(console)\b/g,'<span class="obj">$1</span>');
+  s=s.replace(/\b(log|warn|error)\b/g,'<span class="fn">$1</span>');
+  s=s.replace(/___/g,'<span class="blank">___</span>');
+  return s;
+}
+
+// ────────────────────────────────────────────────
+//  CONFETTI
+// ────────────────────────────────────────────────
+function spawnConfetti(n){
+  const cols=['#58CC02','#1CB0F6','#FF9600','#CE82FF','#FF4B4B','#FFD900'];
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div');el.className='confetti-p';
+    const sz=Math.random()*8+5;
+    el.style.cssText=`left:${Math.random()*100}vw;top:-10px;width:${sz}px;height:${sz}px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${Math.random()*1.5+1.5}s;animation-delay:${Math.random()*0.4}s`;
+    document.body.appendChild(el);
+    el.addEventListener('animationend',()=>el.remove());
+  }
+}
+
+// ────────────────────────────────────────────────
+//  XP POP ANIMATION
+// ────────────────────────────────────────────────
+function showXpPop(text){
+  const el=document.getElementById('q-xp');
+  const r=el.getBoundingClientRect();
+  const pop=document.createElement('div');pop.className='xp-pop';pop.textContent=text;
+  pop.style.cssText=`top:${r.top-30}px;left:${r.left}px`;
+  document.body.appendChild(pop);
+  pop.addEventListener('animationend',()=>pop.remove());
+}
+
+// ────────────────────────────────────────────────
+//  SOUND
+// ────────────────────────────────────────────────
+let _ctx;
+function getCtx(){if(!_ctx)_ctx=new(window.AudioContext||window.webkitAudioContext)();return _ctx;}
+function playTone(ok){
+  try{
+    const ctx=getCtx(),osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';
+    const t=ctx.currentTime;
+    if(ok){osc.frequency.setValueAtTime(523,t);osc.frequency.setValueAtTime(659,t+.1);osc.frequency.setValueAtTime(784,t+.2);gain.gain.setValueAtTime(.2,t);gain.gain.exponentialRampToValueAtTime(.001,t+.45);osc.start(t);osc.stop(t+.45);}
+    else{osc.frequency.setValueAtTime(220,t);osc.frequency.setValueAtTime(160,t+.12);gain.gain.setValueAtTime(.2,t);gain.gain.exponentialRampToValueAtTime(.001,t+.35);osc.start(t);osc.stop(t+.35);}
+  }catch(e){}
+}
+
+// ────────────────────────────────────────────────
+//  INIT
+// ────────────────────────────────────────────────
+load();
+document.getElementById('result-panel').style.display='';
+</script>
+</body>
+</html>
